@@ -23,9 +23,14 @@ admin.site.index_title = "MHTTC administration"
 handler404 = "mhttc.apps.base.views.handler404"
 handler500 = "mhttc.apps.base.views.handler500"
 
+# Make a simple error-generator, to test Sentry!
+def trigger_error(request):
+    return (1 / 0)
+
 urlpatterns = [
     path("", include(base_urls)),
     path("", include(main_urls)),
     path("", include(user_urls)),
     path("admin/", admin.site.urls),
+    path("sentry-debug/", trigger_error),
 ]
