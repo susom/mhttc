@@ -5,3 +5,6 @@ env
 __pycache__
 Gemfile.lock
 app.yaml
+bin
+lib
+pyvenv.cfg
