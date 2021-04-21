@@ -15,7 +15,7 @@ services:
             - "8000:8000"
             - "4000:4000" #VSCODE Debug port
         volumes:
-            - ./mhttc:/app:delegated
+            - ./mhttc:/mhttc:delegated
     db:
         image: mysql:5.7
         env_file:
