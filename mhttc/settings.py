@@ -43,7 +43,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Update the secret key to a value of your own before deploying the app.
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY=os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -158,8 +158,12 @@ else:
     # Use sqlite when testing locally
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+            "ENGINE": "django.db.backends.mysql",
+            "HOST": os.environ.get("MYSQL_HOST"),
+            "USER": os.environ.get("MYSQL_USER"),
+            "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
+            "NAME": os.environ.get("MYSQL_DATABASE"),
+            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
         }
     }
 
