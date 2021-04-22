@@ -21,6 +21,16 @@ class ProjectAdmin(admin.ModelAdmin):
         "contact",
     )
 
+    fields = (
+        "name",
+        "description",
+        "stage",
+        "visibility",
+        "form",
+        "center",
+        "contact",
+    )
+
 
 class TrainingAdmin(admin.ModelAdmin):
     list_display = (

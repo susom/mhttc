@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.contrib import admin
-from mhttc.apps.users.models import User, Center
+from mhttc.apps.users.models import User, Center, CenterGroup
 
 
 class CenterAdmin(admin.ModelAdmin):
@@ -18,8 +18,22 @@ class CenterAdmin(admin.ModelAdmin):
         "email",
         "owners",
         "full_access",
+        "center_group",
     )
 
+class CenterGroupAdmin(admin.ModelAdmin):
+    fields = (
+        "name",
+    )
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        if not obj.pk:
+            obj.created_by = request.user
+        else:
+            obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
 
 admin.site.register(User)
 admin.site.register(Center, CenterAdmin)
+admin.site.register(CenterGroup, CenterGroupAdmin)

@@ -84,6 +84,23 @@ def new_project(request):
     return render(request, "projects/new_project.html", {"form": form})
 
 
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def publish_project(request, uuid):
+    try:
+        project = Project.objects.get(uuid=uuid)
+    except Project.DoesNotExist:
+        raise Http404
+
+    project.status = Project.PUBLISHED
+    project.save()
+    messages.info(request, "This project is published.")
+    return redirect("user_projects")
+
+
+
 ## Form Templates
 
 

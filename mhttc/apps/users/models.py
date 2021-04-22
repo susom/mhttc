@@ -127,6 +127,36 @@ class User(AbstractUser):
     def get_label(self):
         return "users"
 
+class CenterGroup(models.Model):
+    '''
+    Center group is used to allow multiple center to access same information like projects.
+    '''
+
+    name = models.CharField(max_length=255, unique=True, default=None)
+
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="center_group_created_by")
+    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="center_group_updated_by")
+    created_at = models.DateTimeField("date of creation", auto_now_add=True)
+    updated_at = models.DateTimeField("date of last update", auto_now=True)
+
+    def has_edit_permission(self, request):
+        """determine if a user has edit permission for a team.
+        1. A superuser has edit permission, always
+        2. A global admin has edit permission, always
+        3. A user has edit permission if is one of the owners
+        """
+        # Global edit permission for superuser and staff
+        if request.user.is_superuser or request.user.is_staff:
+            return True
+
+        # Edit permission to owners given so
+        elif request.user in self.owners.all():
+            return True
+
+        return False
+
+    class Meta:
+        app_label = "users"
 
 class Center(models.Model):
     """A center is a group of users with shared affiliation. It can have
@@ -146,6 +176,9 @@ class Center(models.Model):
     full_access = models.BooleanField(
         default=False, help_text="The center has full access to the interweb."
     )
+
+    center_group = models.ForeignKey(CenterGroup, on_delete=models.CASCADE, blank=True, null=True, related_name="center_group")
+
     created_at = models.DateTimeField("date of creation", auto_now_add=True)
     updated_at = models.DateTimeField("date of last update", auto_now=True)
 
@@ -185,3 +218,4 @@ class Center(models.Model):
 
     class Meta:
         app_label = "users"
+

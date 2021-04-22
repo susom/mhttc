@@ -18,7 +18,7 @@ class ProjectForm(forms.ModelForm):
         model = Project
 
         # Center is associated to the user creating the project
-        fields = ("name", "description", "contact")
+        fields = ("name", "description", "contact", "visibility")
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)

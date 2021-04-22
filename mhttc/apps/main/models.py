@@ -130,6 +130,22 @@ class TrainingParticipant(models.Model):
 class Project(models.Model):
     """A project is owned by a center, and includes one or more form templates."""
 
+    DRAFT = 0
+    PUBLISHED = 1
+
+    PUBLIC = 0
+    PRIVATE = 1
+
+    STATUS_CHOICES = (
+        (DRAFT, 'Draft'),
+        (PUBLISHED, 'Published')
+    )
+
+
+    VISIBILITY_CHOICES = (
+        (PUBLIC, 'Public'),
+        (PUBLISHED, 'Private')
+    )
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Why do these fields use time, and others use date (e.g., see ip_check*)
@@ -138,6 +154,10 @@ class Project(models.Model):
     name = models.CharField(max_length=250, blank=False)
     description = models.CharField(max_length=500, blank=True, null=True)
     stage = models.PositiveIntegerField(default=1)
+
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0, null=False, blank=True)
+
+    visibility = models.IntegerField(choices=VISIBILITY_CHOICES, default=0, null=False, blank=True)
 
     # Manage project forms
     form = models.ForeignKey(
