@@ -17,6 +17,8 @@
                 <a href="{% url 'user_projects' %}">My Projects</a></li>
               <li class="{% if request.path == '/projects/new/'%}active{% endif %}">
                 <a href="{% url 'new_project' %}">New Project</a></li>
+{#              <li class="{% if request.path == '/projects/search/'%}active{% endif %}">#}
+{#                <a href="{% url 'search_project' %}">Search Projects</a></li>#}
             </ul>
           </div>{% endif %}
           <!--Events-->

@@ -94,8 +94,9 @@ def search_project(request):
     if request.method == "POST":
         term = request.POST['term']
         words = term.split(" ")
-        projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)))
+        projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
     return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term})
+
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -237,12 +238,12 @@ def view_project_form(request, uuid):
             form = FormTemplateForm(initial=model_to_dict(project.form))
 
         # If the form already belongs to another center
-        if project.center != None and project.center != request.user.center:
-            messages.warning(
-                request,
-                "You are not allowed to edit a form not owned by your center.",
-            )
-            return redirect("index")
+        # if project.center != None and project.center != request.user.center:
+        #     messages.warning(
+        #         request,
+        #         "You are not allowed to edit a form not owned by your center.",
+        #     )
+        #     return redirect("index")
 
         # If the form isn't started yet...
         if project.form == None:
