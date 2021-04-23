@@ -29,7 +29,9 @@ from mhttc.apps.main.forms import (
 from mhttc.apps.main.utils import make_certificate_response
 import re
 import base64
-
+from django.db.models import Q
+from functools import reduce
+import operator
 ## Projects
 
 
@@ -83,6 +85,17 @@ def new_project(request):
         form = ProjectForm()
     return render(request, "projects/new_project.html", {"form": form})
 
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def search_project(request):
+    projects = None
+    term = ''
+    if request.method == "POST":
+        term = request.POST['term']
+        words = term.split(" ")
+        projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)))
+    return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term})
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)

@@ -1,0 +1,17 @@
+{% extends "base/page.html" %}
+{% load static %}
+{% block content %}
+    <h1>Search other centers projects</h1>
+    <hr>
+    <form method="post">{% csrf_token %}
+        <div class="row">
+            <div class="col-10"><input value="{{ term }}" type="text" name="term" class="form-control" id="search-project" aria-describedby="emailHelp"
+                                       placeholder="Search using project name or description"></div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+{% if projects.count > 0 %}{% include "projects/projects_table.html" %}{% elif term != '' %}<div class="alert alert-warning">No projects found!</div>{% endif %}
+{% endblock %}
