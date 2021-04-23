@@ -31,8 +31,14 @@
 
 <script>
 jQuery(document).ready(function() {
-    console.log('log log')
-  jQuery('#projects_table').DataTable();
+  jQuery('#projects_table').DataTable({
+      "language": {
+                    "paginate": {
+                        "previous": '<<',
+                        "next": '>>'
+                    }
+                }
+  });
 });
 </script>
 {% endblock %}

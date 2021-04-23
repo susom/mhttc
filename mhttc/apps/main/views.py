@@ -26,6 +26,7 @@ from mhttc.apps.main.forms import (
     FormTemplateForm,
     CertificateForm,
 )
+from mhttc.apps.users.models import Center
 from mhttc.apps.main.utils import make_certificate_response
 import re
 import base64
@@ -134,7 +135,8 @@ def edit_form_template(request, uuid, stage=1):
     if request.method == "POST":
 
         # If the form already belongs to another center
-        if project.center != None and project.center != request.user.center:
+
+        if not Center.is_user_part_of_center(project.center, request.user) and not Center.is_center_part_of_same_group(project.center, request.user.center):
             return JsonResponse(
                 {
                     "message": "You are not allowed to edit a form not owned by your center."
