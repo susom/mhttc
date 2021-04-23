@@ -95,6 +95,8 @@ def search_project(request):
         term = request.POST['term']
         words = term.split(" ")
         projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
+    else:
+        projects = Project.objects.filter(status=Project.PUBLISHED)
     return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term})
 
 

@@ -1,6 +1,4 @@
 {% load custom_tags %}
-
-
 <table class="table table-bordered" id="projects_table" width="100%" cellspacing="0">
     <thead>
     <tr>
@@ -29,7 +27,7 @@
                                 {% if project.form %}{% else %}disabled{% endif %}>View
                         </button>
                     </a>
-                    {% if project.status == 0 %}
+                    {% if project.status == 0 and project|can_edit:request %}
                         <a href="{% url 'publish_project' project.uuid %}">
                             <button type="button" class="btn btn-primary btn-sm">Publish
                             </button>
