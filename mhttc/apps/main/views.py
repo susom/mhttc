@@ -17,8 +17,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.forms.models import model_to_dict
 from mhttc.apps.users.decorators import user_agree_terms
+from django.db.models import CharField, TextField
 
-from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy
+from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -91,11 +92,20 @@ def new_project(request):
 @user_agree_terms
 def search_project(request):
     projects = None
-    term = ''
+    term = ""
+
+
     if request.method == "POST":
         term = request.POST['term']
         words = term.split(" ")
-        projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
+        fields = [f for f in FormTemplate._meta.fields if isinstance(f, TextField)]
+        queries = [reduce(operator.or_, (Q(**{f.name + "__icontains": x}) for x in words)) for f in fields]
+        qs = Q()
+        for query in queries:
+            qs = qs | query
+        forms_list = FormTemplate.objects.filter(qs).values_list('uuid')
+        projects = Project.objects.filter(form_id__in=forms_list, status=Project.PUBLISHED)
+        #projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
     else:
         projects = Project.objects.filter(status=Project.PUBLISHED)
     return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term})
