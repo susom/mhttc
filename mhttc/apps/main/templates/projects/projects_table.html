@@ -39,4 +39,17 @@
     {% endfor %}
     </tbody>
 </table>
-
+{% block scripts %}
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('#projects_table').DataTable({
+                "language": {
+                    "paginate": {
+                        "previous": '<<',
+                        "next": '>>'
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
