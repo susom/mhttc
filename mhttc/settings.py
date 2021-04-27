@@ -82,6 +82,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "csp.middleware.CSPMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -216,3 +217,15 @@ VIEW_RATE_LIMIT_BLOCK = (
 
 # On any admin or plugin login redirect to standard social-auth entry point for agreement to terms
 LOGIN_REDIRECT_URL = "/login"
+
+
+# Keep our policy as strict as possible
+CSP_DEFAULT_SRC = ["'self'"]
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "https://code.jquery.com/", "https://cdn.datatables.net/"]
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdn.datatables.net/")
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
+CSP_IMG_SRC = ("* 'self' data: https:")
+
+SECURE_HSTS_SECONDS = 342534534
+
+SECURE_BROWSER_XSS_FILTER = True

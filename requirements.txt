@@ -8,3 +8,4 @@ reportlab
 sendgrid
 requests
 sentry-sdk
+django-csp
