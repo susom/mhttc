@@ -16,7 +16,7 @@
     <p style="max-width:100%" class="alert alert-info">The template can track the progress of your project during the exploratory/planning (or pre-implementation), implementation, and sustainment phases. There is a version of the template for each phase, and they build on one another. Enter info into the exploratory/planning phase form, and it will then be transferred to the implementation phase form, where you can edit, add, and revise when you are in that phase; likewise for the sustainment phase form.</p>
     {% if form.errors %}{% for field, error in form.errors.items %}<p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
     {{ form.media }}
-    <form id="templateform" method="POST" class="post-form">{% csrf_token %}    
+    <form id="templateform" method="POST" class="post-form">{% csrf_token %}
      {% include "projects/form.html" %}
      <p class="submit-message alert alert-warning" style="display:none"></p>
     <button type="submit" class="save btn btn-default">Save</button>
