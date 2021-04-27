@@ -219,13 +219,19 @@ VIEW_RATE_LIMIT_BLOCK = (
 LOGIN_REDIRECT_URL = "/login"
 
 
-# Keep our policy as strict as possible
+# CSP config
 CSP_DEFAULT_SRC = ["'self'"]
 CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "https://code.jquery.com/", "https://cdn.datatables.net/"]
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdn.datatables.net/")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
 CSP_IMG_SRC = ("* 'self' data: https:")
 
-SECURE_HSTS_SECONDS = 342534534
 
 SECURE_BROWSER_XSS_FILTER = True
+
+SESSION_COOKIE_SECURE = True
+
+#HSTS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_SECONDS = 86400
