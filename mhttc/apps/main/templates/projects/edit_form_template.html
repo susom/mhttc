@@ -9,11 +9,14 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
+
+
 {% endblock %}
 {% block content %}
     <h1>Form Template for {{ project.name }}</h1>
     <hr>
     <p style="max-width:100%" class="alert alert-info">The template can track the progress of your project during the exploratory/planning (or pre-implementation), implementation, and sustainment phases. There is a version of the template for each phase, and they build on one another. Enter info into the exploratory/planning phase form, and it will then be transferred to the implementation phase form, where you can edit, add, and revise when you are in that phase; likewise for the sustainment phase form.</p>
+    {% if form.errors %}{% for field, error in form.errors.items %}<p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
     {% if form.errors %}{% for field, error in form.errors.items %}<p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
     {{ form.media }}
     <form id="templateform" method="POST" class="post-form">{% csrf_token %}

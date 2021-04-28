@@ -1,0 +1,127 @@
+<h2>5. Implementation Strategy (HOW)</h2>{% if disabled %}{% else %}
+    <span class="help-test">The training and TA services you provide. For each strategy, choose the strategy from the list,* then describe the strategy briefly, and provide the format, # of units, and frequency details. Note if strategy was tailored for specific/cultural groups. Add or delete rows if needed):</span>
+    <p>Implementation strategies are the training and technical assistance services that you provide as part of the
+        project. Determine which of the following categories best describe(s) the implementation strategies used in your
+        project. Then fill in the table below.</p>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Evaluative and iterative strategies</strong><br> (e.g., Assess for
+            readiness; Identify barriers and facilitators; Audit and feedback)
+        </li>
+        <li class="list-group-item"><strong>Interactive assistance</strong><br> (e.g., Facilitation; Technical
+            assistance; Coaching; Clinical Supervision; Mentoring)
+        </li>
+        <li class="list-group-item"><strong>Adapting and tailoring strategies</strong><br> (e.g., Based on barriers or
+            facilitators; Stage of readiness; Characteristics of the Intervention; Baseline performance)
+        </li>
+        <li class="list-group-item"><strong>Develop stakeholder relationships</strong><br> (e.g., Identify and prepare
+            champions; Inform local opinion leaders; Build coalitions)
+        </li>
+        <li class="list-group-item"><strong>Train/educate stakeholders</strong><br> (e.g., Conduct ongoing training;
+            Develop educational materials; Learning Collaborative; Practice Improvement Collaborative)
+        </li>
+        <li class="list-group-item"><strong>Support deliverers of the intervention/program/service</strong><br> (e.g.
+            Reminders; Resource sharing agreements; Role revision)
+        </li>
+        <li class="list-group-item"><strong>Engage consumers</strong><br> (e.g., Involve consumers and family members;
+            Use mass media or public service announcements)
+        </li>
+        <li class="list-group-item"><strong>Use financial strategies</strong><br> (e.g., Access new funding
+            [time-limited grant or 3rd party insurance]; Provide incentives/allowance; Develop disincentives)
+        </li>
+        <li class="list-group-item"><strong>Change infrastructure</strong><br> (e.g., Policy mandates; Alter physical
+            environment)
+        </li>
+    </ul>
+    <p>(Use strategies from above; add or delete rows if needed):</p>{% endif %}
+<div class="table-responsive" id="table">
+    <div>
+        {% if disabled %}{% else %}
+            <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i class="fa fa-plus"
+                                                                                               aria-hidden="true"></i></a></span>{% endif %}
+        <table class="table align-items-center">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="sort" data-sort="type">Category</th>
+                <th scope="col" class="sort" data-sort="format">Format</th>
+                <th scope="col" class="sort" data-sort="units">Planned Number of Units</th>
+                <th scope="col" class="sort" data-sort="frequency">Frequency</th>
+                {% if disabled %}{% else %}
+                    <th scope="col"></th>{% endif %}
+            </tr>
+            </thead>
+            <tbody class="list">
+            <tr class="hide">
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="type">
+                </td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="format">
+                </td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="units" type="number" step="1">
+                </td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="frequency">
+                </td>
+                {% if disabled %}{% else %}
+                    <td>
+                        <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                    </td>{% endif %}
+            </tr>
+            {% if strategies %}{% for strategy in strategies %}
+                <tr>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                        class="type">
+                        <select class="form-control" id="id_strategy_type" name="strategy_type"
+                                {% if disabled %}disabled{% endif %}>
+                            <option>Select Strategy</option>
+                            {% for type in strategies_types %}
+                                <option  value="{{ type.pk }}" {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                        class="format">{{ strategy.strategy_format }}
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="units" type="number"
+                        step="1">{{ strategy.planned_number_units }}
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                        class="frequency">{{ strategy.frequency }}
+                    </td>
+                    {% if disabled %}{% else %}
+                        <td>
+                            <span class="table-remove"><button type="button"
+                                                               class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                        </td>{% endif %}
+                </tr>{% endfor %}{% else %}
+                <tr>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="type">
+                        <select class="form-control" id="strategy_type" name="strategy_type"
+                                {% if disabled %}disabled{% endif %}>
+                                <option>Select Strategy</option>
+                            {% for type in strategies_types %}
+                                <option value="{{ type.pk }}">{{ type.strategy }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="format">
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="units" type="number"
+                        step="1">
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="frequency">
+                    </td>
+                    {% if disabled %}{% else %}
+                        <td>
+                            <span class="table-remove"><button type="button"
+                                                               class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                        </td>{% endif %}
+                </tr>{% endif %}
+        </table>
+    </div>
+</div>
+<div class="form-group">
+    <label for="id_implement_strategy_description">Describe the sequence of the planned Implementation Strategies, step
+        by step:</label>
+    <textarea name="implement_strategy_description" cols="40" rows="5" class="form-control" required
+              id="id_implement_strategy_description"
+              {% if disabled %}disabled{% endif %}>{{ form.implement_strategy_description.value|default_if_none:"" }}</textarea>
+    <span class="helptext">Free Text Description (Provide a Description of the Planned Implementation Steps)</span>
+</div>

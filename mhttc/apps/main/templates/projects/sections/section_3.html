@@ -1,0 +1,85 @@
+<h2>3. Target audience/TA recipients (WHO and WHERE)</h2><small class="help-text">(e.g., behavioral health providers,
+    prevention staff, educators):</small><br>
+<div class="form-group">
+    <label for="id_target_audience_who">a) Describe the audience (including organizations, individuals, and cultural
+        considerations): </label>
+    <textarea name="target_audience_who" cols="40" rows="1" class="form-control" required id="id_target_audience_who"
+              {% if disabled %}disabled{% endif %}>{{ form.target_audience_who.value|default_if_none:"" }}</textarea>
+</div>
+<div class="form-group">
+    <label for="id_target_audience_disciplines">b) Specify the audience’s setting (e.g., emergency departments, schools,
+        opioid treatment programs): </label>
+    <textarea name="target_audience_disciplines" cols="40" rows="1" class="form-control" required
+              id="id_target_audience_disciplines"
+              {% if disabled %}disabled{% endif %}>{{ form.target_audience_disciplines.value|default_if_none:"" }}</textarea>
+</div>
+<div class="form-group">
+    <label for="id_target_audience_disciplines">c) Specify discipline(s) of individuals: </label>
+    <textarea name="target_audience_settings" cols="40" rows="1" class="form-control" required
+              id="id_target_audience_settings"
+              {% if disabled %}disabled{% endif %}>{{ form.target_audience_settings.value|default_if_none:"" }}</textarea>
+</div>
+<div class="form-group">
+    <label for="id_target_audience_roles">d) Specify roles of individuals: </label>
+    <textarea name="target_audience_roles" cols="40" rows="1" class="form-control" required
+              id="id_target_audience_roles"
+              {% if disabled %}disabled{% endif %}>{{ form.target_audience_roles.value|default_if_none:"" }}</textarea>
+</div>
+
+<label>e) Specify audience relationship to one another (Choose one): </label>
+<br><br>
+
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="1" {% if form.target_audience_relations.value and form.target_audience_relations.value == "1" %}checked{% endif %}>
+  <label class="form-check-label" for="exampleRadios1">
+    Single individuals from multiple organizations
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="2" {% if form.target_audience_relations.value and form.target_audience_relations.value == "2" %}checked{% endif %}>
+  <label class="form-check-label" for="exampleRadios2">
+    Multiple individuals within one organization
+  </label>
+</div>
+<div class="form-check disabled">
+  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="3" {% if form.target_audience_relations.value and form.target_audience_relations.value == "3" %}checked{% endif %}>
+  <label class="form-check-label" for="exampleRadios3">
+    Multiple individuals or teams from multiple organizations
+  </label>
+</div>
+<br>
+<div class="form-group">
+    <label for="id_target_audience_roles">f) How will your target audience/TA recipients be recruited?</label>
+    <textarea name="target_audience_ta_recipients" cols="40" rows="1" class="form-control" required
+              id="id_target_audience_ta_recipients"
+              {% if disabled %}disabled{% endif %}>{{ form.target_audience_ta_recipients.value|default_if_none:"" }}</textarea>
+</div>
+{#<div class="form-group">#}
+{#    <span style="padding-right:20px" class="helptext">Multiple individuals across organizations:</span>#}
+{#    <label style="float:right" class="custom-toggle" for="id_target_audience_across_orgs">#}
+{#        <input type="checkbox" name="target_audience_across_orgs" class="form-control"#}
+{#               id="id_target_audience_across_orgs" {% if form.target_audience_across_orgs.value %}checked{% endif %}#}
+{#               {% if disabled %}disabled{% endif %}>#}
+{#        <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>#}
+{#    </label>#}
+{#</div>#}
+{##}
+{#<div class="form-group">#}
+{#    <span style="padding-right:20px" class="helptext">Multiple individuals within an organization:</span>#}
+{#    <label style="float:right" class="custom-toggle" for="id_target_audience_within_orgs">#}
+{#        <input type="checkbox" name="target_audience_within_orgs" class="form-control"#}
+{#               id="id_target_audience_within_orgs" {% if form.target_audience_within_org.value %}checked{% endif %}#}
+{#               {% if disabled %}disabled{% endif %}>#}
+{#        <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>#}
+{#    </label>#}
+{#</div>#}
+{#<div class="form-group">#}
+{#    <span style="padding-right:20px" class="helptext">Multiple individuals or teams across organizations:</span>#}
+{#    <label style="float:right" class="custom-toggle" for="id_target_audience_teams_across_orgs">#}
+{#        <input type="checkbox" name="target_audience_teams_across_orgs" class="form-control"#}
+{#               id="id_target_audience_teams_across_orgs"#}
+{#               {% if form.target_audience_teams_across_orgs.value %}checked{% endif %}#}
+{#               {% if disabled %}disabled{% endif %}>#}
+{#        <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>#}
+{#    </label>#}
+{#</div>#}

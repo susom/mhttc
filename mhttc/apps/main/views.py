@@ -19,7 +19,7 @@ from django.forms.models import model_to_dict
 from mhttc.apps.users.decorators import user_agree_terms
 from django.db.models import CharField, TextField
 
-from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate
+from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -229,6 +229,8 @@ def edit_form_template(request, uuid, stage=1):
     if project.form is not None and project.form.implement_strategy is not None:
         strategies = project.form.implement_strategy.all()
 
+    strategies_types = StrategyType.objects.all()
+
     return render(
         request,
         "projects/edit_form_template.html",
@@ -236,6 +238,7 @@ def edit_form_template(request, uuid, stage=1):
             "form": form,
             "project": project,
             "strategies": strategies,
+            "strategies_types": strategies_types,
         },
     )
 

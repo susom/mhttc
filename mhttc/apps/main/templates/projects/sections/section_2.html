@@ -1,0 +1,5 @@
+<h2>2. What is the need/rationale for this project? Why/how did you decide to do this project?</h2>
+<div class="form-group">
+    <textarea name="need" cols="40" rows="5" class="form-control" required id="id_need"
+              {% if disabled %}disabled{% endif %}>{{ form.need.value|default_if_none:"" }}</textarea>
+</div>

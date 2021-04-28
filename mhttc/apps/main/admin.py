@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.contrib import admin
-from mhttc.apps.main.models import Project, FormTemplate, Training, TrainingParticipant
+from mhttc.apps.main.models import Project, FormTemplate, Training, TrainingParticipant, StrategyType, Strategy
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -48,6 +48,29 @@ class TrainingParticipantAdmin(admin.ModelAdmin):
         "training",
     )
 
+class StrategyAdmin(admin.ModelAdmin):
+    fields = [
+        'strategy_type',
+        'strategy_format',
+        'frequency',
+        'planned_number_units',
+    ]
+
+    list_display = [
+        'strategy_type',
+        'strategy_format',
+        'frequency',
+        'planned_number_units',
+    ]
+
+class StrategyTypeAdmin(admin.ModelAdmin):
+    fields = [
+        'strategy'
+    ]
+
+    list_display = [
+        'strategy'
+    ]
 
 class FormTemplateAdmin(admin.ModelAdmin):
     list_display = (
@@ -70,11 +93,16 @@ class FormTemplateAdmin(admin.ModelAdmin):
         "outcome_quality",
         "outcome_cost",
         "outcome_other",
-        "implementation_recruited",
-        "implementation_participants",
-        "implementation_enrolled",
-        "implementation_completing_half",
-        "implementation_completing_majority",
+        "evaluation_planned_enrollment_organization",
+        "evaluation_planned_enrollment_individual",
+        "evaluation_enrolled_organization",
+        "evaluation_enrolled_individual",
+        "evaluation_percent_init_implementation_strategy_organization",
+        "evaluation_percent_init_implementation_strategy_individual",
+        "evaluation_percent_complete_50_strategy_organization",
+        "evaluation_percent_complete_50_strategy_individual",
+        "evaluation_percent_complete_80_strategy_organization",
+        "evaluation_percent_complete_80_strategy_individual",
         "results_reach",
         "results_effectiveness",
         "results_adoption",
@@ -84,6 +112,8 @@ class FormTemplateAdmin(admin.ModelAdmin):
     )
 
 
+admin.site.register(Strategy, StrategyAdmin)
+admin.site.register(StrategyType, StrategyTypeAdmin)
 admin.site.register(Training, TrainingAdmin)
 admin.site.register(TrainingParticipant, TrainingParticipantAdmin)
 admin.site.register(FormTemplate, FormTemplateAdmin)
