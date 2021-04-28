@@ -225,6 +225,12 @@ class Strategy(models.Model):
     class Meta:
         app_label = "main"
 
+class TrainingOutcome(models.Model):
+    '''
+    capture evaluation training outcome
+    '''
+    outcome = models.TextField(null=True, blank=True)
+    how_outcome_measured = models.TextField(null=True, blank=True)
 
 class FormTemplate(models.Model):
     """A form template collects basic information about the project. We render
@@ -278,16 +284,7 @@ class FormTemplate(models.Model):
     target_audience_relations = models.IntegerField(choices=RELATIONSHIP_CHOICES, default=1, null=False, blank=True, help_text="Specify audience relationship to one another (Choose one):")
 
     target_audience_ta_recipients = models.TextField(blank=False, help_text="How will your target audience/TA recipients be recruited?")
-    # TODO remove below three fields **********************************
-    target_audience_across_orgs = models.BooleanField(
-        default=False, help_text="Multiple individuals across organizations"
-    )
-    target_audience_within_org = models.BooleanField(
-        default=False, help_text="Multiple individuals within an organization"
-    )
-    target_audience_teams_across_orgs = models.BooleanField(
-        default=False, help_text="Multiple individuals or teams across organizations"
-    )
+
     # **********************************************************************
 
 
@@ -345,6 +342,13 @@ class FormTemplate(models.Model):
     evaluation_planned_enrollment_organization = models.IntegerField(help_text="How many organization planned for enrollment?",blank=True,null=True,)
     evaluation_planned_enrollment_individual = models.IntegerField(help_text="How many individual planned for enrollment?",blank=True,null=True,)
 
+    evaluation_proximal_training_outcome = models.ManyToManyField(
+        "main.TrainingOutcome",
+        blank=True,
+        default=None,
+        related_name="form_training_outcome",
+        related_query_name="form_training_outcome",
+    )
     # 6 Evaluation Stage 2
     evaluation_enrolled_organization = models.IntegerField(help_text="How many organizations enrolled?",blank=True,null=True,)
     evaluation_enrolled_individual = models.IntegerField(help_text="How many individuals enrolled?",blank=True,null=True,)
@@ -361,7 +365,7 @@ class FormTemplate(models.Model):
     evaluation_percent_complete_80_strategy_individual = models.FloatField(
         help_text="Percentage of individual completing 80% or more of implementation strategy activities:",blank=True,null=True,)
 
-    # 5. Measures being planned (stage 1)
+    # 6. Measures being planned (stage 1)
     outcome_reach = models.TextField(
         help_text="Reach (# or percentage of population, what is the population, and how will you be measuring the outcome?"
     )
@@ -417,6 +421,11 @@ class FormTemplate(models.Model):
     )
     results_other = models.TextField(
         help_text="Results available for other?", blank=True, null=True
+    )
+
+    # 7 Other relevant issues
+    other_relevant_issues = models.TextField(
+        help_text="Other relevant issues?", blank=True, null=True
     )
 
     def get_absolute_url(self):

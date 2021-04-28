@@ -48,12 +48,14 @@
   </label>
 </div>
 <br>
+{% if project.stage > 1 %}
 <div class="form-group">
     <label for="id_target_audience_roles">f) How will your target audience/TA recipients be recruited?</label>
     <textarea name="target_audience_ta_recipients" cols="40" rows="1" class="form-control" required
               id="id_target_audience_ta_recipients"
               {% if disabled %}disabled{% endif %}>{{ form.target_audience_ta_recipients.value|default_if_none:"" }}</textarea>
 </div>
+{% endif %}
 {#<div class="form-group">#}
 {#    <span style="padding-right:20px" class="helptext">Multiple individuals across organizations:</span>#}
 {#    <label style="float:right" class="custom-toggle" for="id_target_audience_across_orgs">#}

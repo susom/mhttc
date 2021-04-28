@@ -222,7 +222,7 @@ LOGIN_REDIRECT_URL = "/login"
 
 # CSP config
 CSP_DEFAULT_SRC = ["'self'"]
-CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "https://code.jquery.com/", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/", "https://maxcdn.bootstrapcdn.com/", "https://cdn.jsdelivr.net/"]
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "https://med.stanford.edu/", "https://code.jquery.com/", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/", "https://maxcdn.bootstrapcdn.com/", "https://cdn.jsdelivr.net/"]
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/", "https://maxcdn.bootstrapcdn.com/", "http://code.jquery.com/", "https://cdn.jsdelivr.net/")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com", "https://maxcdn.bootstrapcdn.com/", "http://maxcdn.bootstrapcdn.com/")
 CSP_IMG_SRC = ("* 'self' data: https:")

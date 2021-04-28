@@ -4,32 +4,55 @@
         project. Determine which of the following categories best describe(s) the implementation strategies used in your
         project. Then fill in the table below.</p>
     <ul class="list-group">
-        <li class="list-group-item"><strong>Evaluative and iterative strategies</strong><br> (e.g., Assess for
-            readiness; Identify barriers and facilitators; Audit and feedback)
+        <li class="list-group-item"><strong>Use evaluative and iterative strategies</strong><br>
+            Assess for readiness<br>
+            Identify barriers and facilitators <br>
+            Audit and feedback<br>
         </li>
-        <li class="list-group-item"><strong>Interactive assistance</strong><br> (e.g., Facilitation; Technical
-            assistance; Coaching; Clinical Supervision; Mentoring)
+        <li class="list-group-item"><strong>Provide interactive assistance</strong><br>
+            Facilitation <br>
+            Technical assistance <br>
+            Coaching <br>
+            Clinical supervision <br>
+            Mentoring<br>
         </li>
-        <li class="list-group-item"><strong>Adapting and tailoring strategies</strong><br> (e.g., Based on barriers or
-            facilitators; Stage of readiness; Characteristics of the Intervention; Baseline performance)
+        <li class="list-group-item"><strong>Adapt and tailor content</strong><br> Tailor content based on barriers or
+            facilitators, stage of readiness, characteristics of the intervention, or baseline performance
         </li>
-        <li class="list-group-item"><strong>Develop stakeholder relationships</strong><br> (e.g., Identify and prepare
-            champions; Inform local opinion leaders; Build coalitions)
+        <li class="list-group-item"><strong>Develop stakeholder relationships</strong><br>
+            Identify and prepare champions <br>
+            Inform local opinion leaders <br>
+            Build coalitions<br>
+
         </li>
-        <li class="list-group-item"><strong>Train/educate stakeholders</strong><br> (e.g., Conduct ongoing training;
-            Develop educational materials; Learning Collaborative; Practice Improvement Collaborative)
+        <li class="list-group-item"><strong>Train and educate stakeholders</strong><br>
+            Conduct ongoing training <br>
+            Develop educational materials <br>
+            Learning collaborative <br>
+            Practice improvement collaborative<br>
+
         </li>
-        <li class="list-group-item"><strong>Support deliverers of the intervention/program/service</strong><br> (e.g.
-            Reminders; Resource sharing agreements; Role revision)
+        <li class="list-group-item"><strong>Support deliverers of the intervention/program/service</strong><br>
+            Reminders <br>
+            Resource sharing agreements <br>
+            Role revision<br>
+
         </li>
-        <li class="list-group-item"><strong>Engage consumers</strong><br> (e.g., Involve consumers and family members;
-            Use mass media or public service announcements)
+        <li class="list-group-item"><strong>Engage consumers</strong><br>
+            Involve consumers and family members <br>
+            Use mass media or public service announcements<br>
+
         </li>
-        <li class="list-group-item"><strong>Use financial strategies</strong><br> (e.g., Access new funding
-            [time-limited grant or 3rd party insurance]; Provide incentives/allowance; Develop disincentives)
+        <li class="list-group-item"><strong>Use financial strategies</strong><br>
+            Access new funding [time-limited grant or 3rd party insurance] <br>
+            Provide incentives/allowance <br>
+            Develop disincentives<br>
+
         </li>
-        <li class="list-group-item"><strong>Change infrastructure</strong><br> (e.g., Policy mandates; Alter physical
-            environment)
+        <li class="list-group-item"><strong>Change infrastructure</strong><br>
+            Policy mandates <br>
+            Alter physical environment<br>
+
         </li>
     </ul>
     <p>(Use strategies from above; add or delete rows if needed):</p>{% endif %}
@@ -51,13 +74,21 @@
             </thead>
             <tbody class="list">
             <tr class="hide">
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="type">
+                <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_type">
+                    <select class="form-control" id="id_strategy_type"
+                            {% if disabled %}disabled{% endif %}>
+                        <option>Select Strategy</option>
+                        {% for type in strategies_types %}
+                            <option value="{{ type.pk }}"
+                                    {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
+                        {% endfor %}
+                    </select>
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="format">
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="units" type="number" step="1">
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number" step="1">
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="frequency">
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency">
                 </td>
                 {% if disabled %}{% else %}
                     <td>
@@ -66,24 +97,25 @@
             </tr>
             {% if strategies %}{% for strategy in strategies %}
                 <tr>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
-                        class="type">
-                        <select class="form-control" id="id_strategy_type" name="strategy_type"
+                    <td {% if disabled %}{% else %}contenteditable="false"{% endif %}
+                        class="strategy_type">
+                        <select class="form-control" id="id_strategy_type"
                                 {% if disabled %}disabled{% endif %}>
                             <option>Select Strategy</option>
                             {% for type in strategies_types %}
-                                <option  value="{{ type.pk }}" {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
+                                <option value="{{ type.pk }}"
+                                        {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
-                        class="format">{{ strategy.strategy_format }}
+                        class="strategy_format">{{ strategy.strategy_format }}
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="units" type="number"
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
                         step="1">{{ strategy.planned_number_units }}
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
-                        class="frequency">{{ strategy.frequency }}
+                        class="strategy_frequency">{{ strategy.frequency }}
                     </td>
                     {% if disabled %}{% else %}
                         <td>
@@ -92,21 +124,21 @@
                         </td>{% endif %}
                 </tr>{% endfor %}{% else %}
                 <tr>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="type">
-                        <select class="form-control" id="strategy_type" name="strategy_type"
+                    <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_type">
+                        <select class="form-control" id="strategy_type"
                                 {% if disabled %}disabled{% endif %}>
-                                <option>Select Strategy</option>
+                            <option>Select Strategy</option>
                             {% for type in strategies_types %}
                                 <option value="{{ type.pk }}">{{ type.strategy }}</option>
                             {% endfor %}
                         </select>
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="format">
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="units" type="number"
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
                         step="1">
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="frequency">
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency">
                     </td>
                     {% if disabled %}{% else %}
                         <td>
@@ -119,7 +151,7 @@
 </div>
 <div class="form-group">
     <label for="id_implement_strategy_description">Describe the sequence of the planned Implementation Strategies, step
-        by step:</label>
+        by step {% if project.stage > 1 %}edit from previous if the plan changed{% endif %}:</label>
     <textarea name="implement_strategy_description" cols="40" rows="5" class="form-control" required
               id="id_implement_strategy_description"
               {% if disabled %}disabled{% endif %}>{{ form.implement_strategy_description.value|default_if_none:"" }}</textarea>

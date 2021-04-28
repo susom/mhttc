@@ -71,8 +71,9 @@
                {% if disabled %}disabled{% endif %}>
     </div>
 
-        <div class="form-group">
-        <label for="id_evaluation_percent_complete_80_strategy_organization">Percentage of Organizations completing 80% or more
+    <div class="form-group">
+        <label for="id_evaluation_percent_complete_80_strategy_organization">Percentage of Organizations completing 80%
+            or more
             of implementation strategy activities:?</label>
         <input value='{{ form.evaluation_percent_complete_80_strategy_organization.value|default_if_none:"0" }}'
                type="number"
@@ -83,7 +84,8 @@
     </div>
 
     <div class="form-group">
-        <label for="id_evaluation_percent_complete_80_strategy_individual">Percentage of individuals completing 80% or more of
+        <label for="id_evaluation_percent_complete_80_strategy_individual">Percentage of individuals completing 80% or
+            more of
             implementation strategy activities:?</label>
         <input value='{{ form.evaluation_percent_complete_80_strategy_individual.value|default_if_none:"0" }}'
                type="number"
@@ -93,3 +95,258 @@
                {% if disabled %}disabled{% endif %}>
     </div>
 {% endif %}
+<h4>b) Proximal Training/TA Outcomes </h4><span class="help-text">(e.g., knowledge, skill, confidence, attitudes)</span>
+<div class="table-responsive" id="table">
+    <div>
+        {% if disabled %}{% else %}
+            <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i class="fa fa-plus"
+                                                                                               aria-hidden="true"></i></a></span>{% endif %}
+        <table class="table align-items-center">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="sort" data-sort="outcome">Outcome</th>
+                <th scope="col" class="sort" data-sort="measure">How will the outcome be measured?</th>
+                {% if disabled %}{% else %}
+                    <th scope="col"></th>{% endif %}
+            </tr>
+            </thead>
+            <tbody class="list">
+            <tr class="hide">
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_outcome">
+                </td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_measure">
+                </td>
+                {% if disabled %}{% else %}
+                    <td>
+                        <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                    </td>{% endif %}
+            </tr>
+            {% if training_outcomes %}{% for outcome in training_outcomes %}
+                <tr>
+
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                        class="training_outcome_outcome">{{ outcome.outcome }}
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_measure">{{ outcome.how_outcome_measured }}
+                    </td>
+                    {% if disabled %}{% else %}
+                        <td>
+                            <span class="table-remove"><button type="button"
+                                                               class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                        </td>{% endif %}
+                </tr>{% endfor %}{% else %}
+                <tr>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_outcome">
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_measure">
+                    </td>
+                    {% if disabled %}{% else %}
+                        <td>
+                            <span class="table-remove"><button type="button"
+                                                               class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                        </td>{% endif %}
+                </tr>{% endif %}
+        </table>
+    </div>
+</div>
+<hr>
+<br>
+<div class="ml-5">
+    <h3 class="text-center mt-6">RE-AIM FRAMEWORK</h3>
+    <p>Outcome are measured either at the individual level (intervention/program/practice outcomes in
+        patients/consumers/participants) or the organizational/setting level (outcomes in the staff/providers or
+        organization).</p>
+    <div class="col-12 table-responsive">
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th scope="col">Dimension</th>
+                <th style="width: 15%" scope="col">Level</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td scope="row"><strong>Reach</strong> - Absolute number, proportion, and representativeness of
+                    individuals who are willing to participate in a given initiative/intervention/program (e.g.,
+                    consumers who receive the intervention). This includes: (# of individuals receiving intervention)/(#
+                    of individuals needing the intervention). Is the target population receiving the intervention?
+                </td>
+                <td>Individual</td>
+            </tr>
+            <tr>
+                <td scope="row"><strong>Effectiveness</strong> - The impact of an intervention on individual outcomes,
+                    including potential negative effects, quality of life, cultural, and economic outcomes (e.g., on
+                    consumers). Is the intervention effective?
+                </td>
+                <td>Individual</td>
+            </tr>
+            <tr>
+                <td scope="row"><strong>Adoption</strong> - The absolute number, proportion, and representativeness of
+                    settings and intervention agents who are willing to initiate a program (e.g., target
+                    audience/providers in an organization who adopt the intervention). Are staff and programs using my
+                    intervention?
+                </td>
+                <td>Organization</td>
+            </tr>
+            <tr>
+                <td scope="row"><strong>Implementation</strong> - The intervention agents’ fidelity to the various
+                    elements of an intervention’s protocol. This includes consistency of delivery as intended,
+                    adaptations made, and the time and cost of the intervention. Is the intervention being delivered
+                    properly?
+                </td>
+                <td>Organization</td>
+            </tr>
+            <tr>
+                <td scope="row"><strong>Maintenance </strong>
+                    <ul>
+                        <li>Individual level: The long-term effects of a program on participant’s outcomes six or more
+                            months after the most recent intervention contact.
+                        </li>
+                        <li>Organizational level: The extent to which a program or policy becomes institutionalized or
+                            part of the routine organizational practices and policies.
+                        </li>
+                        <li>Is the intervention delivered over the long-term?</li>
+                    </ul>
+                </td>
+                <td>Individual and organization</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p>Adapted from Gaglio, B., & Glasgow, R. E. (2018). Evaluation approaches for dissemination and implementation
+        research. In R. C. Brownson, G. A. Colditz, & E. K. Proctor (Eds.) Dissemination and implementation research in
+        health: Translating science to practice (2nd ed.). New York: Oxford University Press. Glasgow, R. E., Harden, S.
+        M., Gaglio, B., Rabin, B., Smith, M. L., Porter, G. C., Ory, M. G., & Estabrooks, P. A. (2019). RE-AIM planning
+        and evaluation framework: Adapting to new science and practice with a 20-Year Review. Frontiers in Public
+        Health, 7, 64. <a href="https://doi.org/10.3389/fpubh.2019.00064" target="_blank">https://doi.org/10.3389/fpubh.2019.00064</a>
+    </p>
+</div>
+<h4>c) Implementation/Sustainment Measures</h4><span
+        class="help-text">(e.g., knowledge, skill, confidence, attitudes)</span>
+<div class="table-responsive">
+    <div>
+        <table class="align-items-center">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="sort" data-sort="outcome">Outcome</th>
+                <th scope="col" class="sort" data-sort="measure">How {% if project.stage == 1 %}will{% else %}
+                    did{% endif %} you measure the outcome?
+                </th>
+                {% if project.stage > 1 %}
+                    <th scope="col" class="sort" data-sort="results">Results, if Available</th>{% endif %}
+            </tr>
+            </thead>
+            <tbody class="list">
+            <tr>
+                <td class="training_outcome_outcome">a) Reach of intervention/program/service (# of individuals receiving
+                    intervention)/(# of individuals needing the intervention)
+                </td>
+                <td tabindex="-1" contenteditable="true" class="training_outcome_measure">
+                    <div class="form-group">
+                        <textarea name="outcome_reach" cols="40" rows="5" class="form-control" required
+                                  id="id_outcome_reach"
+                                  {% if disabled %}disabled{% endif %}>{{ form.outcome_reach.value|default_if_none:"" }}</textarea>
+                    </div>
+                </td>
+                {% if project.stage > 1 %}
+                    <td contenteditable="true" class="results" tabindex="-1">
+                        <div class="form-group">
+                            <textarea name="results_reach" cols="40" rows="5" class="form-control" required
+                                      id="id_results_reach"
+                                      {% if disabled %}disabled{% endif %}>{{ form.results_reach.value|default_if_none:"" }}</textarea>
+                        </div>
+                    </td>{% endif %}
+            </tr>
+
+            <tr>
+                <td  >b) Effectiveness of intervention/program/service (w/individuals)</td>
+                <td contenteditable="true"  tabindex="-1">
+                    <div class="form-group">
+                        <textarea name="outcome_effectiveness" cols="40" rows="5" class="form-control" required
+                                  id="id_outcome_effectiveness"
+                                  {% if disabled %}disabled{% endif %}>{{ form.outcome_effectiveness.value|default_if_none:"" }}</textarea>
+                    </div>
+                </td>
+                {% if project.stage > 1 %}
+                    <td contenteditable="true" class="results" tabindex="-1">
+                        <div class="form-group"><textarea name="results_effectiveness" cols="40" rows="5"
+                                                          class="form-control" required id="id_results_effectiveness"
+                                                          {% if disabled %}disabled{% endif %}>{{ form.results_effectiveness.value|default_if_none:"" }}</textarea>
+                        </div>
+                    </td>{% endif %}
+            </tr>
+
+            <tr>
+                <td  >c) Adoption (#/% of target audience/TA recipients using intervention)
+                </td>
+                <td contenteditable="true"  tabindex="-1">
+                    <div class="form-group">
+                        <textarea name="outcome_adoption" cols="40" rows="5" class="form-control" required
+                                  id="id_outcome_adoption"
+                                  {% if disabled %}disabled{% endif %}>{{ form.outcome_adoption.value|default_if_none:"" }}</textarea>
+                    </div>
+                </td>
+                {% if project.stage > 1 %}
+                    <td contenteditable="true" class="results" tabindex="-1">
+                        <div class="form-group"><textarea name="results_adoption" cols="40" rows="5"
+                                                          class="form-control" required id="id_results_adoption"
+                                                          {% if disabled %}disabled{% endif %}>{{ form.results_adoption.value|default_if_none:"" }}</textarea>
+                        </div>
+                    </td>{% endif %}
+            </tr>
+
+            <tr>
+                <td  >d) Implementation fidelity/adherence/quality, cost</td>
+                <td contenteditable="true"  tabindex="-1">
+                    <div class="form-group"><textarea name="outcome_quality" cols="40" rows="5" class="form-control"
+                                                      required id="id_outcome_quality"
+                                                      {% if disabled %}disabled{% endif %}>{{ form.outcome_quality.value|default_if_none:"" }}</textarea>
+                    </div>
+                </td>
+                {% if project.stage > 1 %}
+                    <td contenteditable="true" class="results" tabindex="-1">
+                        <div class="form-group"><textarea name="results_quality" cols="40" rows="5" class="form-control"
+                                                          required id="id_results_quality"
+                                                          {% if disabled %}disabled{% endif %}>{{ form.results_quality.value|default_if_none:"" }}</textarea>
+                        </div>
+                    </td>{% endif %}
+            </tr>
+
+            <tr>
+                <td  >e) Maintenance (individual effectiveness; target audience/TA recipients’ using
+                    intervention)
+                </td>
+                <td contenteditable="true"  tabindex="-1">
+                    <div class="form-group"><textarea name="outcome_maintenance" cols="40" rows="5"
+                                                      class="form-control" required id="id_outcome_maintenance"
+                                                      {% if disabled %}disabled{% endif %}>{{ form.outcome_maintenance.value|default_if_none:"" }}</textarea>
+                    </div>
+                </td>
+                {% if project.stage > 1 %}
+                    <td contenteditable="true" class="results" tabindex="-1">
+                        <div class="form-group"><textarea name="results_maintenance" cols="40" rows="5"
+                                                          class="form-control" required id="id_results_maintenance"
+                                                          {% if disabled %}disabled{% endif %}>{{ form.results_maintenance.value|default_if_none:"" }}</textarea>
+                        </div>
+                    </td>{% endif %}
+            </tr>
+            <tr>
+                <td  >{% if project.stage < 3 %}f){% else %}g){% endif %} Other?
+                </td>
+                <td contenteditable="true"  tabindex="-1">
+                    <div class="form-group"><textarea name="outcome_other" cols="40" rows="5" class="form-control"
+                                                      id="id_outcome_other"
+                                                      {% if disabled %}disabled{% endif %}>{{ form.outcome_other.value|default_if_none:"" }}</textarea>
+                    </div>
+                </td>
+                {% if project.stage > 1 %}
+                    <td contenteditable="true" class="results" tabindex="-1">
+                        <div class="form-group"><textarea name="results_other" cols="40" rows="5" class="form-control"
+                                                          id="id_results_other"
+                                                          {% if disabled %}disabled{% endif %}>{{ form.results_other.value|default_if_none:"" }}</textarea>
+                        </div>
+                    </td>{% endif %}
+            </tr>
+        </table>
+    </div>
+</div>

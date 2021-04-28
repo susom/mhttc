@@ -102,7 +102,6 @@ class FormTemplateForm(forms.ModelForm):
             "outcome_effectiveness",
             "outcome_adoption",
             "outcome_quality",
-            "outcome_cost",
             "outcome_maintenance",  # Only required for stage3
             "outcome_other",
             "evaluation_planned_enrollment_organization",
@@ -122,6 +121,8 @@ class FormTemplateForm(forms.ModelForm):
             "results_cost",  # Only required after stage 1
             "results_maintenance",  # Only required for stage 3
             "results_other",
+            "other_relevant_issues",
+            "evaluation_proximal_training_outcome",
         )
 
     def clean(self):

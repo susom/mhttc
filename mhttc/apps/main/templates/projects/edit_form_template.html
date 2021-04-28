@@ -34,7 +34,7 @@ $("#templateform").submit(function(event){
     var form = $(this).closest('form');
     form = form.serializeArray();
 
-     var $rows = $TABLE.find('tr:not(:hidden)');
+     var $rows = $("table").find('tr:not(:hidden)');
      var data = [];
 
      // Turn all existing rows into a loopable array
@@ -46,13 +46,21 @@ $("#templateform").submit(function(event){
         // Use the headers from earlier to name our hash keys
         $td.each(function (i, col) {
             var classname = $(col).attr("class")
+            console.log(classname)
+
             if ((classname != "") && (classname != undefined)) {
-                data.push({name: "strategy_" + classname + "_" + count, value: $(col).text()})
+                if(classname === 'strategy_type'){
+                  var v = $(col).find('select').find("option:selected").val();
+                  data.push({name:  classname + "_" + count, value: v})
+                }else{
+                    data.push({name:  classname + "_" + count, value: $(col).text()})
+                }
             }
+
         });
         count+=1
      });
-
+    console.log(data)
     form = form.concat(data)
     $.post('', form, function(d) {
         if (d.message != "") {
@@ -70,8 +78,8 @@ $("#templateform").submit(function(event){
 })
 
 $('.table-add').click(function () {
-  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide');
-  $TABLE.find('table').append($clone);
+  var $clone = $(this).next('table').find('tr.hide').clone(true).removeClass('hide');
+  $(this).next('table').append($clone);
 });
 
 $('.table-remove').click(function () {

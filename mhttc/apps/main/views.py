@@ -19,7 +19,7 @@ from django.forms.models import model_to_dict
 from mhttc.apps.users.decorators import user_agree_terms
 from django.db.models import CharField, TextField
 
-from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType
+from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, TrainingOutcome
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -161,13 +161,44 @@ def edit_form_template(request, uuid, stage=1):
             template = form.save(commit=False)
             template.save()
 
-            # Also get strategy_ fields
+            # Also get strategy_ and training_outcome_ fields
             strategy = {}
+            training_outcome = {}
             indices = set()
+            indices_training_outcome = set()
             for key in request.POST:
                 if key.startswith("strategy_"):
                     strategy[key] = request.POST[key]
                     indices.add(key.split("_")[-1])
+                if key.startswith("training_outcome_"):
+                    training_outcome[key] = request.POST[key]
+                    indices_training_outcome.add(key.split("_")[-1])
+
+            new_training_outcomes = []
+            for index in indices_training_outcome:
+                for field in ["outcome", "measure"]:
+                    if "training_outcome_%s_%s" % (field, index) not in training_outcome:
+                        continue
+
+                training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
+                training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
+
+                if not training_outcome_outcome and not training_outcome_measure:
+                    continue
+
+                new_training_outcome = TrainingOutcome.objects.create(
+                    outcome=training_outcome_outcome,
+                    how_outcome_measured=training_outcome_measure
+                )
+
+                new_training_outcomes.append(new_training_outcome)
+
+                # If we have new strategies, remove all
+                if new_training_outcomes:
+                    [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
+                    [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
+                    template.save()
+
 
             # For each index, only add if all fields are defined
             new_strategies = []
@@ -191,7 +222,7 @@ def edit_form_template(request, uuid, stage=1):
                     continue
 
                 new_strategy = Strategy.objects.create(
-                    strategy_type=strategy_type,
+                    strategy_type_id=strategy_type,
                     strategy_format=strategy_format,
                     planned_number_units=int(strategy_units)
                     if strategy_units
@@ -231,6 +262,11 @@ def edit_form_template(request, uuid, stage=1):
 
     strategies_types = StrategyType.objects.all()
 
+    training_outcomes = None
+    if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
+        training_outcomes = project.form.evaluation_proximal_training_outcome.all()
+
+
     return render(
         request,
         "projects/edit_form_template.html",
@@ -239,6 +275,7 @@ def edit_form_template(request, uuid, stage=1):
             "project": project,
             "strategies": strategies,
             "strategies_types": strategies_types,
+            "training_outcomes": training_outcomes,
         },
     )
 
