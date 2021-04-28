@@ -144,7 +144,7 @@ def edit_form_template(request, uuid, stage=1):
     # If a post is done, a JSONresponse must be returned to update the user
     if request.method == "POST":
 
-        # If the form already belongs to another center
+        # If the form already belongs to another center.
 
         if not Center.is_user_part_of_center(project.center, request.user) and not Center.is_center_part_of_same_group(project.center, request.user.center):
             return JsonResponse(
