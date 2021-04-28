@@ -25,7 +25,6 @@ class ProjectAdmin(admin.ModelAdmin):
         "name",
         "description",
         "stage",
-        "visibility",
         "form",
         "center",
         "contact",

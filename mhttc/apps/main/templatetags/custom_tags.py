@@ -16,10 +16,6 @@ def can_edit(project, request):
 
 def can_view(project, request):
 
-    # if project is marked public then display it
-    if project.visibility == Project.PUBLIC:
-        return True
-
     # check if user if part of center
     if Center.is_user_part_of_center(project.center, request.user):
         return True

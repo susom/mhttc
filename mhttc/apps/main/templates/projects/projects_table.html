@@ -5,7 +5,6 @@
         <th>Name</th>
         <th>Description</th>
         <th>Status</th>
-        <th>Visibility</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -15,7 +14,6 @@
                 <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
                 <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>
                 <td>{{ project.get_status_display }}</td>
-                <td>{{ project.get_visibility_display }}</td>
                 <td>
                     {% if project|can_edit:request %}
                         <a href="{{ project.get_absolute_url }}">
