@@ -9,7 +9,6 @@
     </tr>
     </thead>
     <tbody>{% for project in projects %}
-        {% if project|can_view:request %}
             <tr>
                 <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
                 <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>
@@ -33,7 +32,6 @@
                     {% endif %}
                 </td>
             </tr>
-        {% endif %}
     {% endfor %}
     </tbody>
 </table>

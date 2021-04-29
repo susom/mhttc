@@ -8,19 +8,12 @@ def can_edit(project, request):
     if Center.is_user_part_of_center(project.center, request.user):
         return True
 
-    # check if user is part of sister center
-    if Center.is_center_part_of_same_group(project.center, request.user.center):
-        return True
-
     return False
 
 def can_view(project, request):
 
     # check if user if part of center
     if Center.is_user_part_of_center(project.center, request.user):
-        return True
-
-    if Center.is_center_part_of_same_group(project.center, request.user.center):
         return True
 
     return False
