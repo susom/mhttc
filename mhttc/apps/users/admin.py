@@ -18,7 +18,6 @@ class CenterAdmin(admin.ModelAdmin):
         "email",
         "owners",
         "full_access",
-        "center_group",
     )
 
 admin.site.register(User)

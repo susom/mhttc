@@ -328,7 +328,7 @@ def new_event(request):
     """Create a new event. A user that does not have full access to the site
     cannot see this view
     """
-    if not request.user.has_full_access:
+    if not request.user.center.full_access:
         messages.warning(request, "You are not allowed to perform this action.")
         return redirect("index")
 
@@ -356,7 +356,7 @@ def center_events(request):
     """Return a listing of events being held by the center. A user
     that does not have full access to the site cannot see this view.
     """
-    if not request.user.has_full_access:
+    if not request.user.center.full_access:
         messages.warning(request, "You are not allowed to perform this action.")
         return redirect("index")
 
@@ -378,7 +378,7 @@ def event_details(request, uuid):
     """Return the details of an event. A user that does not have full access
     to the site cannot see this view.
     """
-    if not request.user.has_full_access:
+    if not request.user.center.full_access:
         messages.warning(request, "You are not allowed to perform this action.")
         return redirect("index")
 
@@ -391,7 +391,7 @@ def event_details(request, uuid):
             # Only allowed to edit for their center
             if (
                 request.user.center != training.center
-                or not request.user.has_full_access
+                or not request.user.center.full_access
             ):
                 messages.warning(request, "You are not allowed to perform this action.")
                 return redirect("center_events")
