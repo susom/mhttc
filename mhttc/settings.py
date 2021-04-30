@@ -227,12 +227,17 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://c
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com", "https://maxcdn.bootstrapcdn.com/", "http://maxcdn.bootstrapcdn.com/")
 CSP_IMG_SRC = ("* 'self' data: https:")
 
+CSP_CONNECT_SRC = ("'self'",)
+CSP_MANIFEST_SRC = ("'self'",)
+CSP_INCLUDE_NONCE_IN=['script-src', 'style-src']
 
 SECURE_BROWSER_XSS_FILTER = True
 
 SESSION_COOKIE_SECURE = True
 
-#HSTS
+
+
+# HSTS
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_SECONDS = 86400
+SECURE_HSTS_SECONDS = 15768000
