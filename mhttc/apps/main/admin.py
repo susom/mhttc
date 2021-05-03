@@ -15,6 +15,7 @@ from mhttc.apps.main.models import Project, FormTemplate, Training, TrainingPart
 class ProjectAdmin(admin.ModelAdmin):
     list_display = (
         "name",
+        "status",
         "center",
         "description",
         "form",
