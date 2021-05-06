@@ -10,17 +10,17 @@
             </ul>
           </div>{% endif %}
           <!--Projects-->
-          {% if request.user.is_authenticated %}<div class="ct-toc-item active">
-            <a class="ct-toc-link" href="{% url 'all_projects' %}">Implementation Projects</a>
-            <ul class="nav ct-sidenav">
-              <li class="{% if request.path == '/u/projects/'%}active{% endif %}">
-                <a href="{% url 'user_projects' %}">My Projects</a></li>
-              <li class="{% if request.path == '/projects/new/'%}active{% endif %}">
-                <a href="{% url 'new_project' %}">New Project</a></li>
-              <li class="{% if request.path == '/projects/search/'%}active{% endif %}">
-                <a href="{% url 'search_project' %}">Search Projects</a></li>
-            </ul>
-          </div>{% endif %}
+{#          {% if request.user.is_authenticated %}<div class="ct-toc-item active">#}
+{#            <a class="ct-toc-link" href="{% url 'all_projects' %}">Implementation Projects</a>#}
+{#            <ul class="nav ct-sidenav">#}
+{#              <li class="{% if request.path == '/u/projects/'%}active{% endif %}">#}
+{#                <a href="{% url 'user_projects' %}">My Projects</a></li>#}
+{#              <li class="{% if request.path == '/projects/new/'%}active{% endif %}">#}
+{#                <a href="{% url 'new_project' %}">New Project</a></li>#}
+{#              <li class="{% if request.path == '/projects/search/'%}active{% endif %}">#}
+{#                <a href="{% url 'search_project' %}">Search Projects</a></li>#}
+{#            </ul>#}
+{#          </div>{% endif %}#}
           <!--Events-->
           {% if request.user.has_full_access %}<div class="ct-toc-item active">
             <a class="ct-toc-link" href="">Event Certificates</a>
