@@ -9,29 +9,35 @@
     </tr>
     </thead>
     <tbody>{% for project in projects %}
-            <tr>
-                <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
-                <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>
-                <td>{{ project.get_status_display }}</td>
-                <td>
-                    {% if project|can_edit:request %}
-                        <a href="{{ project.get_absolute_url }}">
-                            <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                        </a>
-                    {% endif %}
-                    <a target="_blank" href="{% url 'view_project_form' project.uuid %}">
-                        <button type="button" class="btn btn-primary btn-sm"
-                                {% if project.form %}{% else %}disabled{% endif %}>View
+        <tr>
+            <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
+            <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>
+            <td>{{ project.get_status_display }}</td>
+            <td>
+                {% if project|can_edit:request %}
+                    <a href="{{ project.get_absolute_url }}">
+                        <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                    </a>
+                {% endif %}
+                <a target="_blank" href="{% url 'view_project_form' project.uuid %}">
+                    <button type="button" class="btn btn-primary btn-sm"
+                            {% if project.form %}{% else %}disabled{% endif %}>View
+                    </button>
+                </a>
+                {% if project|can_edit:request %}
+                    <a id="delete_link" href="{% url 'delete_project' project.uuid %}"
+                       onclick="return confirm('Are you sure you want to delete this Project? This action cannot be undone.');">
+                        <button id="delete_event" type="button" class="btn btn-danger btn-sm">Delete</button>
+                    </a>
+                {% endif %}
+                {% if project.status == 0 and project|can_edit:request %}
+                    <a href="{% url 'publish_project' project.uuid %}">
+                        <button type="button" class="btn btn-primary btn-sm">Publish
                         </button>
                     </a>
-                    {% if project.status == 0 and project|can_edit:request %}
-                        <a href="{% url 'publish_project' project.uuid %}">
-                            <button type="button" class="btn btn-primary btn-sm">Publish
-                            </button>
-                        </a>
-                    {% endif %}
-                </td>
-            </tr>
+                {% endif %}
+            </td>
+        </tr>
     {% endfor %}
     </tbody>
 </table>

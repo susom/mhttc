@@ -87,6 +87,28 @@ def new_project(request):
         form = ProjectForm()
     return render(request, "projects/new_project.html", {"form": form})
 
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def delete_project(request, uuid):
+    """delete a training event"""
+    try:
+        project = Project.objects.get(uuid=uuid)
+    except Training.DoesNotExist:
+        raise Http404
+
+    # Only allowed to edit for their center
+    if request.user.center != project.center:
+        messages.warning(request, "You are not allowed to perform this action.")
+        return redirect("center_events")
+
+    # Delete the training
+    project.delete()
+    messages.info(request, "Project %s has been deleted." % project.name)
+    return redirect("user_projects")
+
+
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
