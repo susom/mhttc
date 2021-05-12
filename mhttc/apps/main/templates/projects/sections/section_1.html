@@ -6,11 +6,11 @@
 </div>
 <div class="form-group">
     <label for="id_start_date">Project start date:</label>
-    <input type="text" {{ form.start_date  }} name="start_date" class="form-control" id="id_start_date" {% if disabled %}disabled{% endif %}>
+    {{ form.start_date }}
 </div>
 <div class="form-group">
     <label for="id_end_date">Project end date:</label>
-    <input type="text" name="end_date" {{ form.end_date  }} class="form-control" id="id_end_date" {% if disabled %}disabled{% endif %}>
+    {{ form.end_date }}
 </div>
   <script>
   $( function() {

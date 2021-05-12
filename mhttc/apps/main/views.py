@@ -146,12 +146,6 @@ def edit_form_template(request, uuid, stage=1):
 
         # If the form already belongs to another center.
 
-        if not Center.is_user_part_of_center(project.center, request.user) and not Center.is_center_part_of_same_group(project.center, request.user.center):
-            return JsonResponse(
-                {
-                    "message": "You are not allowed to edit a form not owned by your center."
-                }
-            )
 
         # Get standard form fields
         form = FormTemplateForm(request.POST)
