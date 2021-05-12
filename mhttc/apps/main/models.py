@@ -147,7 +147,7 @@ class Project(models.Model):
     # Why do these fields use time, and others use date (e.g., see ip_check*)
     time_created = models.DateTimeField("date created", auto_now_add=True)
     time_updated = models.DateTimeField("date modified", auto_now=True)
-    name = models.CharField(max_length=250, blank=False)
+    name = models.CharField(max_length=250, blank=False, verbose_name='Project Title')
     description = models.CharField(max_length=500, blank=True, null=True)
     stage = models.PositiveIntegerField(default=1)
 
@@ -253,7 +253,7 @@ class FormTemplate(models.Model):
     # Project start / end date
     start_date = models.DateTimeField(blank=False,
                                       null=True, help_text="project start date")
-    end_date = models.DateTimeField(blank=False,
+    end_date = models.TextField(blank=False,
                                     null=True, help_text="project end date")
 
     # 1. Evidence based intervention (what)

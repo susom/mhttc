@@ -68,7 +68,7 @@ class FormTemplateForm(forms.ModelForm):
 
     stage = 1
     start_date = forms.DateField(widget=forms.DateInput(format='%m/%d/%Y'))
-    end_date = forms.DateField(widget=forms.DateInput(format='%m/%d/%Y'))
+    end_date = forms.CharField()
     class Meta:
         model = FormTemplate
 
