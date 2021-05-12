@@ -186,8 +186,6 @@ def edit_form_template(request, uuid, stage=1):
             indices = set()
             indices_training_outcome = set()
             for key in request.POST:
-                if request.POST[key] == '':
-                    break
                 if key.startswith("strategy_"):
                     strategy[key] = request.POST[key]
                     indices.add(key.split("_")[-1])
@@ -224,15 +222,17 @@ def edit_form_template(request, uuid, stage=1):
             # For each index, only add if all fields are defined
             new_strategies = []
             for index in indices:
-                for field in ["type", "format", "units", "frequency"]:
+                for field in ["type", "format", "units", "frequency", "brief_description"]:
                     if "strategy_%s_%s" % (field, index) not in strategy:
                         continue
 
+                strategy_brief_description = ''
                 # Clean all units
                 strategy_type = strategy["strategy_type_%s" % index].strip()
                 strategy_format = strategy["strategy_format_%s" % index].strip()
                 strategy_units = strategy["strategy_units_%s" % index].strip()
                 strategy_frequency = strategy["strategy_frequency_%s" % index].strip()
+                strategy_brief_description = strategy["strategy_brief_description_%s" % index].strip()
 
                 if (
                     not strategy_type
@@ -245,6 +245,7 @@ def edit_form_template(request, uuid, stage=1):
                 new_strategy = Strategy.objects.create(
                     strategy_type_id=strategy_type,
                     strategy_format=strategy_format,
+                    brief_description=strategy_brief_description,
                     planned_number_units=int(strategy_units)
                     if strategy_units
                     else None,

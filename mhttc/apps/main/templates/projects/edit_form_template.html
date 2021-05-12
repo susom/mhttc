@@ -5,6 +5,8 @@
         .hide {
             display: none
         }
+
+        [contenteditable="true"]:hover  { background-color: rgba(217, 245, 255,0.5);}
     </style>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"
             integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
@@ -31,12 +33,12 @@
     <form id="templateform" method="POST" class="post-form">{% csrf_token %}
         {% include "projects/form.html" %}
         <p class="submit-message alert alert-warning" style="display:none"></p>
-{#        <div class="form-check">#}
-{#            <input class="form-check-input" type="checkbox" value="1" name="next-stage" id="next-stage">#}
-{#            <label class="form-check-label" for="next-stage">#}
-{#                Move to Next Stage#}
-{#            </label>#}
-{#        </div>#}
+        {#        <div class="form-check">#}
+        {#            <input class="form-check-input" type="checkbox" value="1" name="next-stage" id="next-stage">#}
+        {#            <label class="form-check-label" for="next-stage">#}
+        {#                Move to Next Stage#}
+        {#            </label>#}
+        {#        </div>#}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}
@@ -62,9 +64,9 @@
                     var classname = $(col).attr("class")
 
                     if ((classname != "") && (classname != undefined)) {
-                        if (classname === 'strategy_type') {
+                        if (classname === 'strategy_type' || classname === 'strategy_format') {
                             var v = $(col).find('select').find("option:selected").val();
-                            console.log(isNaN(v))
+                            console.log(v)
                             if (!isNaN(v)) {
                                 data.push({name: classname + "_" + count, value: v})
                             }

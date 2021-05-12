@@ -215,6 +215,8 @@ class Strategy(models.Model):
         help_text="Planned number of units"
     )
 
+    brief_description = models.TextField(null=True, blank=True)
+
     def get_label(self):
         return "strategy"
 
@@ -353,9 +355,9 @@ class FormTemplate(models.Model):
     )
 
     # 6. Evaluation
-    evaluation_planned_enrollment_organization = models.IntegerField(
+    evaluation_planned_enrollment_organization = models.CharField(max_length=255,
         help_text="How many organization planned for enrollment?", blank=True, null=True, )
-    evaluation_planned_enrollment_individual = models.IntegerField(
+    evaluation_planned_enrollment_individual = models.CharField(max_length=255,
         help_text="How many individual planned for enrollment?", blank=True, null=True, )
 
     evaluation_proximal_training_outcome = models.ManyToManyField(

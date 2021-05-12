@@ -1,53 +1,65 @@
 <h2>5. Implementation Strategy (HOW)</h2>{% if disabled %}{% else %}
-    <span class="help-test">The training and TA services you provide. For each strategy, choose the strategy from the list,* then describe the strategy briefly, and provide the format, # of units, and frequency details. Note if strategy was tailored for specific/cultural groups. Add or delete rows if needed):</span>
     <p>Implementation strategies are the training and technical assistance services that you provide as part of the
-        project. Determine which of the following categories best describe(s) the implementation strategies used in your
-        project. Then fill in the table below.</p>
+        project. The following list includes specific implementation strategies in 9 categories. Determine which
+        implementation strategies were used in your project, and then fill in the table below. For each strategy,
+        describe the strategy briefly (including if it was tailored for specific/cultural groups), and provide
+        information about the format, # of units, and frequency</p>
     <ul class="list-group">
         <li class="list-group-item"><strong>Use evaluative and iterative strategies</strong><br>
             Assess for readiness<br>
-            Identify barriers and facilitators <br>
-            Audit and feedback<br>
+            Identify barriers and facilitators<br>
+            Audit and provide feedback<br>
+            Implement quality monitoring tools/programs<br>
+            Develop a formal implementation blueprint/plan<br>
+            Conduct local needs assessment<br>
+            Conduct cyclical small tests of change<br>
+
         </li>
         <li class="list-group-item"><strong>Provide interactive assistance</strong><br>
-            Facilitation <br>
-            Technical assistance <br>
-            Coaching <br>
-            Clinical supervision <br>
-            Mentoring<br>
+            Provide facilitation (interactive problem-solving and support for implementation of an intervention)<br>
+            Technical assistance (negotiated series of activities designed to reach a valued outcome;)<br>
+            Coaching (person with specific training in coaching guides and provides feedback)<br>
+            Provide consultation (on clinician practice by external consultant)<br>
+            Mentoring (matching experienced person with less experienced person)<br>
+
         </li>
-        <li class="list-group-item"><strong>Adapt and tailor content</strong><br> Tailor content based on barriers or
-            facilitators, stage of readiness, characteristics of the intervention, or baseline performance
+        <li class="list-group-item"><strong>Adapt and tailor to context</strong><br>
+            Tailor strategies based on barriers or facilitators, stage of readiness, characteristics of the
+            intervention, or baseline performance
+            Use data experts
         </li>
         <li class="list-group-item"><strong>Develop stakeholder relationships</strong><br>
-            Identify and prepare champions <br>
-            Inform local opinion leaders <br>
-            Build coalitions<br>
-
+            Identify and prepare champions<br>
+            Inform local opinion leaders<br>
+            Build a coalition<br>
+            Recruit, designate, and train for leadership<br>
+            Obtain formal commitments<br>
+            Involve executive boards<br>
+            Involve patients/consumers and family members<br>
+            Visit other sites<br>
         </li>
         <li class="list-group-item"><strong>Train and educate stakeholders</strong><br>
-            Conduct ongoing training <br>
-            Develop educational materials <br>
-            Learning collaborative <br>
-            Practice improvement collaborative<br>
-
+            Develop educational materials (e.g., guidelines, manuals, toolkits) <br>
+            Distribute educational materials (e.g., in person, electronically, mail) <br>
+            Conduct educational meetings (with stakeholders to learn about the intervention)<br>
+            Conduct ongoing training<br>
+            Use train-the-trainer strategies<br>
+            Create a learning collaborative<br>
+            Conduct a practice improvement collaborative<br>
         </li>
         <li class="list-group-item"><strong>Support deliverers of the intervention/program/service</strong><br>
-            Reminders <br>
-            Resource sharing agreements <br>
+            Reminders<br>
+            Resource sharing agreements<br>
             Role revision<br>
-
         </li>
         <li class="list-group-item"><strong>Engage consumers</strong><br>
-            Involve consumers and family members <br>
+            Involve consumers and family members<br>
             Use mass media or public service announcements<br>
-
         </li>
         <li class="list-group-item"><strong>Use financial strategies</strong><br>
-            Access new funding [time-limited grant or 3rd party insurance] <br>
-            Provide incentives/allowance <br>
+            Access new funding [time-limited grant or 3rd party insurance]<br>
+            Provide incentives/allowance<br>
             Develop disincentives<br>
-
         </li>
         <li class="list-group-item"><strong>Change infrastructure</strong><br>
             Policy mandates <br>
@@ -55,7 +67,25 @@
 
         </li>
     </ul>
-    <p>(Use strategies from above; add or delete rows if needed):</p>{% endif %}
+    <small>Adapted from Waltz, T. J., Powell, B. J., Matthieu, M. M., Damschroder, L. J., Chinman, M. J., Smith, J. L.,
+        Proctor, E. K., & Kirchner, J. E. (2015). Use of concept mapping to characterize relationships among
+        implementation strategies and assess their feasibility and importance: results from the Expert Recommendations
+        for Implementing Change (ERIC) study. Implementation Science, 10, 109. <a
+                href="https://doi.org/10.1186/s13012-015-0295-0" target="_blank">https://doi.org/10.1186/s13012-015-0295-0</a></small>
+    <h4>For each strategy:</h4>
+    <ul>
+        <li>Choose strategy from dropdown (if it really does not fit any of the strategies listed, choose Other)</li>
+        <li>Describe the strategy briefly (including if it was tailored for specific/cultural groups)</li>
+        <li>Enter information about:
+            <ul>
+                <li>Format – choose from dropdown: email/mail, in person, phone, virtual/video, website</li>
+                <li># of units – how many times was strategy offered (number)</li>
+                <li>Frequency – how often was strategy offered</li>
+            </ul>
+        </li>
+        <li>Add or delete rows if needed:</li>
+    </ul>
+{% endif %}
 <div class="table-responsive" id="table">
     <div>
         {% if disabled %}{% else %}
@@ -64,12 +94,13 @@
         <table class="table align-items-center">
             <thead class="thead-light">
             <tr>
-                <th scope="col" class="sort" data-sort="type">Category</th>
-                <th scope="col" class="sort" data-sort="format">Format</th>
-                <th scope="col" class="sort" data-sort="units">Planned Number of Units</th>
-                <th scope="col" class="sort" data-sort="frequency">Frequency</th>
+                <th style="width: 20%" scope="col" class="sort" data-sort="type">Category</th>
+                <th style="width: 20%" scope="col" class="sort" data-sort="format">Format</th>
+                <th style="width: 10%" scope="col" class="sort" data-sort="units">Planned Number of Units</th>
+                <th style="width: 10%" scope="col" class="sort" data-sort="frequency">Frequency</th>
+                <th style="width: 20%" scope="col" class="sort" data-sort="brief-description">Brief Description</th>
                 {% if disabled %}{% else %}
-                    <th scope="col"></th>{% endif %}
+                    <th style="width: 20%" scope="col"></th>{% endif %}
             </tr>
             </thead>
             <tbody class="list">
@@ -84,11 +115,22 @@
                         {% endfor %}
                     </select>
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
+                <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
+                    <select class="form-control" id="id_strategy_format"
+                            {% if disabled %}disabled{% endif %}>
+                        <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>
+                        <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>
+                        <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>
+                        <option value="4" {% if strategy.strategy_format == 4 %}selected{% endif %}>Virtual/video</option>
+                        <option value="5" {% if strategy.strategy_format == 5 %}selected{% endif %}>Website</option>
+                    </select>
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number" step="1">
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
+                    step="1">
                 </td>
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency">
+                </td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description">
                 </td>
                 {% if disabled %}{% else %}
                     <td>
@@ -108,14 +150,29 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
-                        class="strategy_format">{{ strategy.strategy_format }}
+                    <td {% if disabled %}{% else %}contenteditable="false"{% endif %}
+                        class="strategy_format">
+                        <select class="form-control" id="id_strategy_format"
+                                {% if disabled %}disabled{% endif %}>
+                            <option value="1" {% if strategy.strategy_format == '1' %}selected{% endif %}>Email/mail
+                            </option>
+                            <option value="2" {% if strategy.strategy_format == '2' %}selected{% endif %}>In person
+                            </option>
+                            <option value="3" {% if strategy.strategy_format == '3' %}selected{% endif %}>Phone</option>
+                            <option value="4" {% if strategy.strategy_format == '4' %}selected{% endif %}>Virtual/video
+                            </option>
+                            <option value="5" {% if strategy.strategy_format == '5' %}selected{% endif %}>Website</option>
+                        </select>
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
+                        type="number"
                         step="1">{{ strategy.planned_number_units }}
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
                         class="strategy_frequency">{{ strategy.frequency }}
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                        class="strategy_brief_description">{{ strategy.brief_description }}
                     </td>
                     {% if disabled %}{% else %}
                         <td>
@@ -133,12 +190,26 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
+                    <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
+                        <select class="form-control" id="id_strategy_format"
+                                {% if disabled %}disabled{% endif %}>
+                            <option value="1">Email/mail
+                            </option>
+                            <option value="2">In person
+                            </option>
+                            <option value="3">Phone</option>
+                            <option value="4">Virtual/video
+                            </option>
+                            <option value="5">Website</option>
+                        </select>
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
+                        type="number"
                         step="1">
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency">
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description">
                     </td>
                     {% if disabled %}{% else %}
                         <td>
@@ -155,5 +226,5 @@
     <textarea name="implement_strategy_description" cols="40" rows="5" class="form-control"
               id="id_implement_strategy_description"
               {% if disabled %}disabled{% endif %}>{{ form.implement_strategy_description.value|default_if_none:"" }}</textarea>
-    <span class="helptext">Free Text Description (Provide a Description of the Planned Implementation Steps)</span>
+
 </div>
