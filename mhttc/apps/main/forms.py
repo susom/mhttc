@@ -126,46 +126,46 @@ class FormTemplateForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         # Required attributes for stage 2 and 3
-        if self.stage > 1:
-            print(cleaned_data)
-            for field in [
-                "results_reach",
-                "evaluation_enrolled_organization",
-                "evaluation_enrolled_individual",
-                "evaluation_percent_init_implementation_strategy_organization",
-                "evaluation_percent_init_implementation_strategy_individual",
-                "evaluation_percent_complete_50_strategy_organization",
-                "evaluation_percent_complete_50_strategy_individual",
-                "evaluation_percent_complete_80_strategy_organization",
-                "evaluation_percent_complete_80_strategy_individual",
-                "results_effectiveness",
-                "results_adoption",
-                "results_quality",
-                "results_cost",
-                "implementation_enrolled",
-            ]:
-                if field not in cleaned_data or cleaned_data.get(field) == None:
-                    raise forms.ValidationError(
-                        f"{field} is required for this stage of the template."
-                    )
-
-        # Required attributes for just stage 3
-        if self.stage > 2:
-            for field in [
-                "outcome_maintenance",
-                "consider_sustainment_strategy",
-                "evaluation_percent_complete_50_strategy_organization",
-                "evaluation_percent_complete_50_strategy_individual",
-                "evaluation_percent_complete_80_strategy_organization",
-                "evaluation_percent_complete_80_strategy_individual",
-                "results_maintenance",
-                "implementation_completing_half",
-                "implementation_completing_majority",
-            ]:
-                if field not in cleaned_data or cleaned_data.get(field) == None:
-                    raise forms.ValidationError(
-                        f"{field} is required for this stage of the template."
-                    )
+        # if self.stage > 1:
+        #     print(cleaned_data)
+        #     for field in [
+        #         "results_reach",
+        #         "evaluation_enrolled_organization",
+        #         "evaluation_enrolled_individual",
+        #         "evaluation_percent_init_implementation_strategy_organization",
+        #         "evaluation_percent_init_implementation_strategy_individual",
+        #         "evaluation_percent_complete_50_strategy_organization",
+        #         "evaluation_percent_complete_50_strategy_individual",
+        #         "evaluation_percent_complete_80_strategy_organization",
+        #         "evaluation_percent_complete_80_strategy_individual",
+        #         "results_effectiveness",
+        #         "results_adoption",
+        #         "results_quality",
+        #         "results_cost",
+        #         "implementation_enrolled",
+        #     ]:
+        #         if field not in cleaned_data or cleaned_data.get(field) == None:
+        #             raise forms.ValidationError(
+        #                 f"{field} is required for this stage of the template."
+        #             )
+        #
+        # # Required attributes for just stage 3
+        # if self.stage > 2:
+        #     for field in [
+        #         "outcome_maintenance",
+        #         "consider_sustainment_strategy",
+        #         "evaluation_percent_complete_50_strategy_organization",
+        #         "evaluation_percent_complete_50_strategy_individual",
+        #         "evaluation_percent_complete_80_strategy_organization",
+        #         "evaluation_percent_complete_80_strategy_individual",
+        #         "results_maintenance",
+        #         "implementation_completing_half",
+        #         "implementation_completing_majority",
+        #     ]:
+        #         if field not in cleaned_data or cleaned_data.get(field) == None:
+        #             raise forms.ValidationError(
+        #                 f"{field} is required for this stage of the template."
+        #             )
 
     def __init__(self, *args, **kwargs):
         super(FormTemplateForm, self).__init__(*args, **kwargs)
