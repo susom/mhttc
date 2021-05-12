@@ -112,6 +112,7 @@ TEMPLATES = [
 TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG
 WSGI_APPLICATION = "mhttc.wsgi.application"
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Sentry for Monitoring
 

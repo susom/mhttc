@@ -158,6 +158,9 @@ def edit_form_template(request, uuid, stage=1):
         form.stage = project.stage
 
         if form.is_valid():
+            if project.form is not None:
+                f = FormTemplate.objects.get(uuid=project.form_id)
+                f.delete()
             template = form.save(commit=False)
             template.save()
 
@@ -167,6 +170,8 @@ def edit_form_template(request, uuid, stage=1):
             indices = set()
             indices_training_outcome = set()
             for key in request.POST:
+                if request.POST[key] == '':
+                    break
                 if key.startswith("strategy_"):
                     strategy[key] = request.POST[key]
                     indices.add(key.split("_")[-1])

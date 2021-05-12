@@ -4,20 +4,20 @@
 <div class="form-group">
     <label for="id_consider_system_factors">a) System factors--external to the organization (e.g. {% if project.stage > 2 %}policy{% endif %}, financing; mandates,
         community, culture):</label>
-    <textarea name="consider_system_factors" cols="40" rows="5" class="form-control" required
+    <textarea name="consider_system_factors" cols="40" rows="5" class="form-control"
               id="id_consider_system_factors"
               {% if disabled %}disabled{% endif %}>{{ form.consider_system_factors.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
     <label for="id_consider_org_factors">b) Organizational factors—internal to the organization (e.g., leadership;
         readiness):</label>
-    <textarea name="consider_org_factors" cols="40" rows="5" class="form-control" required id="id_consider_org_factors"
+    <textarea name="consider_org_factors" cols="40" rows="5" class="form-control"  id="id_consider_org_factors"
               {% if disabled %}disabled{% endif %}>{{ form.consider_org_factors.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
     <label for="id_consider_clinical_factors">c) Individual clinician factors (e.g., alignment with existing practice;
         complexity):</label>
-    <textarea name="consider_clinical_factors" cols="40" rows="5" class="form-control" required
+    <textarea name="consider_clinical_factors" cols="40" rows="5" class="form-control"
               id="id_consider_clinical_factors"
               {% if disabled %}disabled{% endif %}>{{ form.consider_clinical_factors.value|default_if_none:"" }}</textarea>
 </div>
@@ -26,20 +26,20 @@
 <div class="form-group">
     <label for="id_consider_system_factors_barriers">a) System factors--external to the organization (e.g., financing; mandates,
         community, culture):</label>
-    <textarea name="consider_system_factors_barriers" cols="40" rows="5" class="form-control" required
+    <textarea name="consider_system_factors_barriers" cols="40" rows="5" class="form-control"
               id="id_consider_system_factors_barriers"
               {% if disabled %}disabled{% endif %}>{{ form.consider_system_factors_barriers.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
     <label for="id_consider_org_factors_barriers">b) Organizational factors—internal to the organization (e.g., leadership;
         readiness):</label>
-    <textarea name="consider_org_factors_barriers" cols="40" rows="5" class="form-control" required id="id_consider_org_factors_barriers"
+    <textarea name="consider_org_factors_barriers" cols="40" rows="5" class="form-control"  id="id_consider_org_factors_barriers"
               {% if disabled %}disabled{% endif %}>{{ form.consider_org_factors_barriers.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
     <label for="id_consider_clinical_factors_barriers">c) Individual clinician factors (e.g., alignment with existing practice;
         complexity):</label>
-    <textarea name="consider_clinical_factors_barriers" cols="40" rows="5" class="form-control" required
+    <textarea name="consider_clinical_factors_barriers" cols="40" rows="5" class="form-control"
               id="id_consider_clinical_factors_barriers"
               {% if disabled %}disabled{% endif %}>{{ form.consider_clinical_factors_barriers.value|default_if_none:"" }}</textarea>
 </div>

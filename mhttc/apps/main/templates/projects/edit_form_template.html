@@ -1,89 +1,100 @@
 {% extends "base/page.html" %}
 {% load static %}
 {% block css %}
-<style>
-.hide {
-  display: none
-}
-</style>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
+    <style>
+        .hide {
+            display: none
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"
+            integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
 
 
 {% endblock %}
 {% block content %}
     <h1>Form Template for {{ project.name }}</h1>
     <hr>
-    <p style="max-width:100%" class="alert alert-info">The template can track the progress of your project during the exploratory/planning (or pre-implementation), implementation, and sustainment phases. There is a version of the template for each phase, and they build on one another. Enter info into the exploratory/planning phase form, and it will then be transferred to the implementation phase form, where you can edit, add, and revise when you are in that phase; likewise for the sustainment phase form.</p>
-    {% if form.errors %}{% for field, error in form.errors.items %}<p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
-    {% if form.errors %}{% for field, error in form.errors.items %}<p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
+    <p style="max-width:100%" class="alert alert-info">The template can track the progress of your project during the
+        exploratory/planning (or pre-implementation), implementation, and sustainment phases. There is a version of the
+        template for each phase, and they build on one another. Enter info into the exploratory/planning phase form, and
+        it will then be transferred to the implementation phase form, where you can edit, add, and revise when you are
+        in that phase; likewise for the sustainment phase form.</p>
+    {% if form.errors %}{% for field, error in form.errors.items %}
+        <p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
+    {% if form.errors %}{% for field, error in form.errors.items %}
+        <p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
     {{ form.media }}
     <form id="templateform" method="POST" class="post-form">{% csrf_token %}
-     {% include "projects/form.html" %}
-     <p class="submit-message alert alert-warning" style="display:none"></p>
-    <button type="submit" class="save btn btn-default">Save</button>
+        {% include "projects/form.html" %}
+        <p class="submit-message alert alert-warning" style="display:none"></p>
+{#        <div class="form-check">#}
+{#            <input class="form-check-input" type="checkbox" value="1" name="next-stage" id="next-stage">#}
+{#            <label class="form-check-label" for="next-stage">#}
+{#                Move to Next Stage#}
+{#            </label>#}
+{#        </div>#}
+        <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}
 {% block scripts %}
-<script>
-var $TABLE = $('#table');
+    <script>
+        var $TABLE = $('#table');
 
-$("#templateform").submit(function(event){
-    event.preventDefault()
-    var form = $(this).closest('form');
-    form = form.serializeArray();
+        $("#templateform").submit(function (event) {
+            event.preventDefault()
+            var form = $(this).closest('form');
+            form = form.serializeArray();
 
-     var $rows = $("table").find('tr:not(:hidden)');
-     var data = [];
+            var $rows = $("table").find('tr:not(:hidden)');
+            var data = [];
 
-     // Turn all existing rows into a loopable array
-     count = 0
-     $rows.each(function () {
-        var $td = $(this).find('td');
-        console.log($td)
+            // Turn all existing rows into a loopable array
+            count = 0
+            $rows.each(function () {
+                var $td = $(this).find('td');
 
-        // Use the headers from earlier to name our hash keys
-        $td.each(function (i, col) {
-            var classname = $(col).attr("class")
-            console.log(classname)
+                // Use the headers from earlier to name our hash keys
+                $td.each(function (i, col) {
+                    var classname = $(col).attr("class")
 
-            if ((classname != "") && (classname != undefined)) {
-                if(classname === 'strategy_type'){
-                  var v = $(col).find('select').find("option:selected").val();
-                  data.push({name:  classname + "_" + count, value: v})
-                }else{
-                    data.push({name:  classname + "_" + count, value: $(col).text()})
+                    if ((classname != "") && (classname != undefined)) {
+                        if (classname === 'strategy_type') {
+                            var v = $(col).find('select').find("option:selected").val();
+                            console.log(isNaN(v))
+                            if (!isNaN(v)) {
+                                data.push({name: classname + "_" + count, value: v})
+                            }
+
+                        } else {
+                            data.push({name: classname + "_" + count, value: $(col).text()})
+                        }
+                    }
+
+                });
+                count += 1
+            });
+            form = form.concat(data)
+            $.post('', form, function (d) {
+                if (d.message != "") {
+                    $(".submit-message").html(d.message)
+                    $(".submit-message").show()
+                } else {
+                    $(".submit-message").hide()
                 }
-            }
+            });
+        })
 
+        $('.table-add').click(function () {
+            var $clone = $(this).next('table').find('tr.hide').clone(true).removeClass('hide');
+            $(this).next('table').append($clone);
         });
-        count+=1
-     });
-    console.log(data)
-    form = form.concat(data)
-    $.post('', form, function(d) {
-        if (d.message != "") {
-            $(".submit-message").html(d.message)
-            $(".submit-message").show()
-        } else {
-            $(".submit-message").hide()
-        }
-        console.log(d);
-    });
 
-    // Output the result
-    console.log(JSON.stringify(data));
-
-})
-
-$('.table-add').click(function () {
-  var $clone = $(this).next('table').find('tr.hide').clone(true).removeClass('hide');
-  $(this).next('table').append($clone);
-});
-
-$('.table-remove').click(function () {
-  $(this).parents('tr').detach();
-});
-</script>
+        $('.table-remove').click(function () {
+            $(this).parents('tr').detach();
+        });
+    </script>
 {% endblock %}

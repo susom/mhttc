@@ -3,26 +3,26 @@
 <div class="form-group">
     <label for="id_evaluation_planned_enrollment_organization">How many organization planned for enrollment?</label>
     <input value='{{ form.evaluation_planned_enrollment_organization.value|default_if_none:"0" }}' type="number"
-           name="evaluation_planned_enrollment_organization" min="0" class="form-control" step="1" required
+           name="evaluation_planned_enrollment_organization" min="0" class="form-control" step="1"
            id="id_evaluation_planned_enrollment_organization" {% if disabled %}disabled{% endif %}>
 </div>
 <div class="form-group">
     <label for="id_evaluation_planned_enrollment_individual">How many individual planned for enrollment?</label>
     <input value='{{ form.evaluation_planned_enrollment_individual.value|default_if_none:"0" }}' type="number"
-           name="evaluation_planned_enrollment_individual" min="0" class="form-control" step="1" required
+           name="evaluation_planned_enrollment_individual" min="0" class="form-control" step="1"
            id="id_evaluation_planned_enrollment_individual" {% if disabled %}disabled{% endif %}>
 </div>
 {% if project.stage > 1 %}
     <div class="form-group">
         <label for="id_evaluation_enrolled_organization">How many organizations enrolled?</label>
         <input value='{{ form.evaluation_enrolled_organization.value|default_if_none:"0" }}' type="number"
-               name="evaluation_enrolled_organization" min="0" class="form-control" step="1" required
+               name="evaluation_enrolled_organization" min="0" class="form-control" step="1"
                id="id_evaluation_enrolled_organization" {% if disabled %}disabled{% endif %}>
     </div>
     <div class="form-group">
         <label for="id_evaluation_enrolled_individual">How many individuals enrolled?</label>
         <input value='{{ form.evaluation_enrolled_individual.value|default_if_none:"0" }}' type="number"
-               name="evaluation_enrolled_individual" min="0" class="form-control" step="1" required
+               name="evaluation_enrolled_individual" min="0" class="form-control" step="1"
                id="id_evaluation_enrolled_individual" {% if disabled %}disabled{% endif %}>
     </div>
 
@@ -32,7 +32,7 @@
         <input value='{{ form.evaluation_percent_init_implementation_strategy_organization.value|default_if_none:"0" }}'
                type="number"
                name="evaluation_percent_init_implementation_strategy_organization" min="0" class="form-control" step="1"
-               required
+
                id="id_evaluation_percent_init_implementation_strategy_organization"
                {% if disabled %}disabled{% endif %}>
     </div>
@@ -43,7 +43,7 @@
         <input value='{{ form.evaluation_percent_init_implementation_strategy_individual.value|default_if_none:"0" }}'
                type="number"
                name="evaluation_percent_init_implementation_strategy_individual" min="0" class="form-control" step="1"
-               required
+
                id="id_evaluation_percent_init_implementation_strategy_individual" {% if disabled %}disabled{% endif %}>
     </div>
 {% endif %}
@@ -55,7 +55,7 @@
         <input value='{{ form.evaluation_percent_complete_50_strategy_organization.value|default_if_none:"0" }}'
                type="number"
                name="evaluation_percent_complete_50_strategy_organization" min="0" class="form-control" step="1"
-               required
+
                id="id_evaluation_percent_complete_50_strategy_organization"
                {% if disabled %}disabled{% endif %}>
     </div>
@@ -66,7 +66,7 @@
         <input value='{{ form.evaluation_percent_complete_50_strategy_individual.value|default_if_none:"0" }}'
                type="number"
                name="evaluation_percent_complete_50_strategy_individual" min="0" class="form-control" step="1"
-               required
+
                id="id_evaluation_percent_complete_50_strategy_individual"
                {% if disabled %}disabled{% endif %}>
     </div>
@@ -78,7 +78,7 @@
         <input value='{{ form.evaluation_percent_complete_80_strategy_organization.value|default_if_none:"0" }}'
                type="number"
                name="evaluation_percent_complete_80_strategy_organization" min="0" class="form-control" step="1"
-               required
+
                id="id_evaluation_percent_complete_80_strategy_organization"
                {% if disabled %}disabled{% endif %}>
     </div>
@@ -90,7 +90,7 @@
         <input value='{{ form.evaluation_percent_complete_80_strategy_individual.value|default_if_none:"0" }}'
                type="number"
                name="evaluation_percent_complete_80_strategy_individual" min="0" class="form-control" step="1"
-               required
+
                id="id_evaluation_percent_complete_80_strategy_individual"
                {% if disabled %}disabled{% endif %}>
     </div>
@@ -243,7 +243,7 @@
                 </td>
                 <td tabindex="-1" contenteditable="true" class="training_outcome_measure">
                     <div class="form-group">
-                        <textarea name="outcome_reach" cols="40" rows="5" class="form-control" required
+                        <textarea name="outcome_reach" cols="40" rows="5" class="form-control"
                                   id="id_outcome_reach"
                                   {% if disabled %}disabled{% endif %}>{{ form.outcome_reach.value|default_if_none:"" }}</textarea>
                     </div>
@@ -251,7 +251,7 @@
                 {% if project.stage > 1 %}
                     <td contenteditable="true" class="results" tabindex="-1">
                         <div class="form-group">
-                            <textarea name="results_reach" cols="40" rows="5" class="form-control" required
+                            <textarea name="results_reach" cols="40" rows="5" class="form-control"
                                       id="id_results_reach"
                                       {% if disabled %}disabled{% endif %}>{{ form.results_reach.value|default_if_none:"" }}</textarea>
                         </div>
@@ -262,7 +262,7 @@
                 <td  >b) Effectiveness of intervention/program/service (w/individuals)</td>
                 <td contenteditable="true"  tabindex="-1">
                     <div class="form-group">
-                        <textarea name="outcome_effectiveness" cols="40" rows="5" class="form-control" required
+                        <textarea name="outcome_effectiveness" cols="40" rows="5" class="form-control"
                                   id="id_outcome_effectiveness"
                                   {% if disabled %}disabled{% endif %}>{{ form.outcome_effectiveness.value|default_if_none:"" }}</textarea>
                     </div>
@@ -270,7 +270,7 @@
                 {% if project.stage > 1 %}
                     <td contenteditable="true" class="results" tabindex="-1">
                         <div class="form-group"><textarea name="results_effectiveness" cols="40" rows="5"
-                                                          class="form-control" required id="id_results_effectiveness"
+                                                          class="form-control"  id="id_results_effectiveness"
                                                           {% if disabled %}disabled{% endif %}>{{ form.results_effectiveness.value|default_if_none:"" }}</textarea>
                         </div>
                     </td>{% endif %}
@@ -281,7 +281,7 @@
                 </td>
                 <td contenteditable="true"  tabindex="-1">
                     <div class="form-group">
-                        <textarea name="outcome_adoption" cols="40" rows="5" class="form-control" required
+                        <textarea name="outcome_adoption" cols="40" rows="5" class="form-control"
                                   id="id_outcome_adoption"
                                   {% if disabled %}disabled{% endif %}>{{ form.outcome_adoption.value|default_if_none:"" }}</textarea>
                     </div>
@@ -289,7 +289,7 @@
                 {% if project.stage > 1 %}
                     <td contenteditable="true" class="results" tabindex="-1">
                         <div class="form-group"><textarea name="results_adoption" cols="40" rows="5"
-                                                          class="form-control" required id="id_results_adoption"
+                                                          class="form-control"  id="id_results_adoption"
                                                           {% if disabled %}disabled{% endif %}>{{ form.results_adoption.value|default_if_none:"" }}</textarea>
                         </div>
                     </td>{% endif %}
@@ -299,14 +299,14 @@
                 <td  >d) Implementation fidelity/adherence/quality, cost</td>
                 <td contenteditable="true"  tabindex="-1">
                     <div class="form-group"><textarea name="outcome_quality" cols="40" rows="5" class="form-control"
-                                                      required id="id_outcome_quality"
+                                                       id="id_outcome_quality"
                                                       {% if disabled %}disabled{% endif %}>{{ form.outcome_quality.value|default_if_none:"" }}</textarea>
                     </div>
                 </td>
                 {% if project.stage > 1 %}
                     <td contenteditable="true" class="results" tabindex="-1">
                         <div class="form-group"><textarea name="results_quality" cols="40" rows="5" class="form-control"
-                                                          required id="id_results_quality"
+                                                           id="id_results_quality"
                                                           {% if disabled %}disabled{% endif %}>{{ form.results_quality.value|default_if_none:"" }}</textarea>
                         </div>
                     </td>{% endif %}
@@ -318,14 +318,14 @@
                 </td>
                 <td contenteditable="true"  tabindex="-1">
                     <div class="form-group"><textarea name="outcome_maintenance" cols="40" rows="5"
-                                                      class="form-control" required id="id_outcome_maintenance"
+                                                      class="form-control"  id="id_outcome_maintenance"
                                                       {% if disabled %}disabled{% endif %}>{{ form.outcome_maintenance.value|default_if_none:"" }}</textarea>
                     </div>
                 </td>
                 {% if project.stage > 1 %}
                     <td contenteditable="true" class="results" tabindex="-1">
                         <div class="form-group"><textarea name="results_maintenance" cols="40" rows="5"
-                                                          class="form-control" required id="id_results_maintenance"
+                                                          class="form-control"  id="id_results_maintenance"
                                                           {% if disabled %}disabled{% endif %}>{{ form.results_maintenance.value|default_if_none:"" }}</textarea>
                         </div>
                     </td>{% endif %}
