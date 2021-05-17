@@ -128,6 +128,7 @@ class User(AbstractUser):
         return "users"
 
 
+
 class Center(models.Model):
     """A center is a group of users with shared affiliation. It can have
     one or more owners to manage it.
@@ -146,7 +147,6 @@ class Center(models.Model):
     full_access = models.BooleanField(
         default=False, help_text="The center has full access to the interweb."
     )
-
 
     created_at = models.DateTimeField("date of creation", auto_now_add=True)
     updated_at = models.DateTimeField("date of last update", auto_now=True)
@@ -187,4 +187,20 @@ class Center(models.Model):
 
     class Meta:
         app_label = "users"
+
+    @staticmethod
+    def is_user_part_of_center(center, user):
+        if center != None and center.id == user.center.id:
+            return True
+        return False
+
+    @staticmethod
+    def is_center_part_of_same_group(center_a, center_b):
+        if center_a is None or center_b is None or center_a.center_group is None or center_b.center_group is None:
+            return False
+
+        if center_a.center_group.id == center_b.center_group.id:
+            return True
+
+        return False
 

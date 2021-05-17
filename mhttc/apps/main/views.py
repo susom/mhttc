@@ -19,7 +19,7 @@ from django.forms.models import model_to_dict
 from mhttc.apps.users.decorators import user_agree_terms
 from django.db.models import CharField, TextField
 
-from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate
+from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, TrainingOutcome
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -87,6 +87,28 @@ def new_project(request):
         form = ProjectForm()
     return render(request, "projects/new_project.html", {"form": form})
 
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def delete_project(request, uuid):
+    """delete a training event"""
+    try:
+        project = Project.objects.get(uuid=uuid)
+    except Training.DoesNotExist:
+        raise Http404
+
+    # Only allowed to edit for their center
+    if request.user.center != project.center:
+        messages.warning(request, "You are not allowed to perform this action.")
+        return redirect("center_events")
+
+    # Delete the training
+    project.delete()
+    messages.info(request, "Project %s has been deleted." % project.name)
+    return redirect("user_projects")
+
+
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
@@ -144,43 +166,73 @@ def edit_form_template(request, uuid, stage=1):
     # If a post is done, a JSONresponse must be returned to update the user
     if request.method == "POST":
 
-        # If the form already belongs to another center
+        # If the form already belongs to another center.
 
-        if not Center.is_user_part_of_center(project.center, request.user) and not Center.is_center_part_of_same_group(project.center, request.user.center):
-            return JsonResponse(
-                {
-                    "message": "You are not allowed to edit a form not owned by your center."
-                }
-            )
 
         # Get standard form fields
         form = FormTemplateForm(request.POST)
         form.stage = project.stage
 
         if form.is_valid():
+            if project.form is not None:
+                f = FormTemplate.objects.get(uuid=project.form_id)
+                f.delete()
             template = form.save(commit=False)
             template.save()
 
-            # Also get strategy_ fields
+            # Also get strategy_ and training_outcome_ fields
             strategy = {}
+            training_outcome = {}
             indices = set()
+            indices_training_outcome = set()
             for key in request.POST:
                 if key.startswith("strategy_"):
                     strategy[key] = request.POST[key]
                     indices.add(key.split("_")[-1])
+                if key.startswith("training_outcome_"):
+                    training_outcome[key] = request.POST[key]
+                    indices_training_outcome.add(key.split("_")[-1])
+
+            new_training_outcomes = []
+            for index in indices_training_outcome:
+                for field in ["outcome", "measure"]:
+                    if "training_outcome_%s_%s" % (field, index) not in training_outcome:
+                        continue
+
+                training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
+                training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
+
+                if not training_outcome_outcome and not training_outcome_measure:
+                    continue
+
+                new_training_outcome = TrainingOutcome.objects.create(
+                    outcome=training_outcome_outcome,
+                    how_outcome_measured=training_outcome_measure
+                )
+
+                new_training_outcomes.append(new_training_outcome)
+
+                # If we have new strategies, remove all
+                if new_training_outcomes:
+                    [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
+                    [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
+                    template.save()
+
 
             # For each index, only add if all fields are defined
             new_strategies = []
             for index in indices:
-                for field in ["type", "format", "units", "frequency"]:
+                for field in ["type", "format", "units", "frequency", "brief_description"]:
                     if "strategy_%s_%s" % (field, index) not in strategy:
                         continue
 
+                strategy_brief_description = ''
                 # Clean all units
                 strategy_type = strategy["strategy_type_%s" % index].strip()
                 strategy_format = strategy["strategy_format_%s" % index].strip()
                 strategy_units = strategy["strategy_units_%s" % index].strip()
                 strategy_frequency = strategy["strategy_frequency_%s" % index].strip()
+                strategy_brief_description = strategy["strategy_brief_description_%s" % index].strip()
 
                 if (
                     not strategy_type
@@ -191,8 +243,9 @@ def edit_form_template(request, uuid, stage=1):
                     continue
 
                 new_strategy = Strategy.objects.create(
-                    strategy_type=strategy_type,
+                    strategy_type_id=strategy_type,
                     strategy_format=strategy_format,
+                    brief_description=strategy_brief_description,
                     planned_number_units=int(strategy_units)
                     if strategy_units
                     else None,
@@ -229,6 +282,13 @@ def edit_form_template(request, uuid, stage=1):
     if project.form is not None and project.form.implement_strategy is not None:
         strategies = project.form.implement_strategy.all()
 
+    strategies_types = StrategyType.objects.all()
+
+    training_outcomes = None
+    if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
+        training_outcomes = project.form.evaluation_proximal_training_outcome.all()
+
+
     return render(
         request,
         "projects/edit_form_template.html",
@@ -236,6 +296,8 @@ def edit_form_template(request, uuid, stage=1):
             "form": form,
             "project": project,
             "strategies": strategies,
+            "strategies_types": strategies_types,
+            "training_outcomes": training_outcomes,
         },
     )
 
@@ -288,7 +350,7 @@ def new_event(request):
     """Create a new event. A user that does not have full access to the site
     cannot see this view
     """
-    if not request.user.has_full_access:
+    if not request.user.center.full_access:
         messages.warning(request, "You are not allowed to perform this action.")
         return redirect("index")
 
@@ -316,7 +378,7 @@ def center_events(request):
     """Return a listing of events being held by the center. A user
     that does not have full access to the site cannot see this view.
     """
-    if not request.user.has_full_access:
+    if not request.user.center.full_access:
         messages.warning(request, "You are not allowed to perform this action.")
         return redirect("index")
 
@@ -338,7 +400,7 @@ def event_details(request, uuid):
     """Return the details of an event. A user that does not have full access
     to the site cannot see this view.
     """
-    if not request.user.has_full_access:
+    if not request.user.center.full_access:
         messages.warning(request, "You are not allowed to perform this action.")
         return redirect("index")
 
@@ -351,7 +413,7 @@ def event_details(request, uuid):
             # Only allowed to edit for their center
             if (
                 request.user.center != training.center
-                or not request.user.has_full_access
+                or not request.user.center.full_access
             ):
                 messages.warning(request, "You are not allowed to perform this action.")
                 return redirect("center_events")

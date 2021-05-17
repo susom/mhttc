@@ -14,6 +14,7 @@ from django.urls import reverse
 import base64
 import tempfile
 import uuid
+from mhttc.apps.users.models import User
 
 
 class Training(models.Model):
@@ -101,18 +102,18 @@ class TrainingParticipant(models.Model):
 
         # This is in html
         message = (
-            "Thank you for attending the event '%s' from the Mental Health Technology Transfer Center (MHTTC) Network!<br>"
-            "You can visit <a href='%s'>the certificate download page</a> to get your certificate.<br><br>"
-            "If this message was in error, please respond to this email and let us know.<br><br>"
-            "Be sure to look for more of our events at www.mhttcnetwork.org and find "
-            " your MHTTC Regional or National Focus Area Center at https://mhttcnetwork.org/centers/selection"
-            % (training.name, url)
+                "Thank you for attending the event '%s' from the Mental Health Technology Transfer Center (MHTTC) Network!<br>"
+                "You can visit <a href='%s'>the certificate download page</a> to get your certificate.<br><br>"
+                "If this message was in error, please respond to this email and let us know.<br><br>"
+                "Be sure to look for more of our events at www.mhttcnetwork.org and find "
+                " your MHTTC Regional or National Focus Area Center at https://mhttcnetwork.org/centers/selection"
+                % (training.name, url)
         )
         if send_email(
-            email_to=self.email,
-            email_from=self.training.center.email or SENDGRID_SENDER_EMAIL,
-            message=message,
-            subject="Your event certificate of completion is ready!",
+                email_to=self.email,
+                email_from=self.training.center.email or SENDGRID_SENDER_EMAIL,
+                message=message,
+                subject="Your event certificate of completion is ready!",
         ):
             self.save()
 
@@ -141,23 +142,16 @@ class Project(models.Model):
         (PUBLISHED, 'Published')
     )
 
-
-    VISIBILITY_CHOICES = (
-        (PUBLIC, 'Public'),
-        (PUBLISHED, 'Private')
-    )
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Why do these fields use time, and others use date (e.g., see ip_check*)
     time_created = models.DateTimeField("date created", auto_now_add=True)
     time_updated = models.DateTimeField("date modified", auto_now=True)
-    name = models.CharField(max_length=250, blank=False)
+    name = models.CharField(max_length=250, blank=False, verbose_name='Project Title')
     description = models.CharField(max_length=500, blank=True, null=True)
     stage = models.PositiveIntegerField(default=1)
 
     status = models.IntegerField(choices=STATUS_CHOICES, default=0, null=False, blank=True)
-
-    visibility = models.IntegerField(choices=VISIBILITY_CHOICES, default=0, null=False, blank=True)
 
     # Manage project forms
     form = models.ForeignKey(
@@ -178,6 +172,28 @@ class Project(models.Model):
         app_label = "main"
 
 
+class StrategyType(models.Model):
+    """An implementation strategy types to add to a Strategy"""
+
+    strategy = models.CharField(max_length=500, blank=True, null=True, help_text="Category")
+
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
+                                   related_name="strategy_type_created_by")
+    created_at = models.DateTimeField("date created", auto_now_add=True)
+    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
+                                   related_name="strategy_type_updated_by")
+    updated_at = models.DateTimeField("date modified", auto_now=True)
+
+    def get_label(self):
+        return "strategy_type"
+
+    def __str__(self):
+        return self.strategy
+
+    class Meta:
+        app_label = "main"
+
+
 class Strategy(models.Model):
     """An implementation strategy to add to a FormTemplate"""
 
@@ -189,12 +205,17 @@ class Strategy(models.Model):
     strategy_format = models.CharField(
         max_length=500, blank=True, null=True, help_text="Format"
     )
-    strategy_type = models.CharField(
-        max_length=500, blank=True, null=True, help_text="Type"
-    )
+    # strategy_type = models.CharField(
+    #     max_length=500, blank=True, null=True, help_text="Category"
+    # )
+    strategy_type = models.ForeignKey(StrategyType, on_delete=models.CASCADE, null=True, blank=True,
+                                      related_name="strategy_type")
+
     planned_number_units = models.PositiveIntegerField(
         help_text="Planned number of units"
     )
+
+    brief_description = models.TextField(null=True, blank=True)
 
     def get_label(self):
         return "strategy"
@@ -203,11 +224,25 @@ class Strategy(models.Model):
         app_label = "main"
 
 
+class TrainingOutcome(models.Model):
+    '''
+    capture evaluation training outcome
+    '''
+    outcome = models.TextField(null=True, blank=True)
+    how_outcome_measured = models.TextField(null=True, blank=True)
+
+
 class FormTemplate(models.Model):
     """A form template collects basic information about the project. We render
     different information and make it editable for the user depending on their
     role and the project stage.
     """
+
+    RELATIONSHIP_CHOICES = (
+        (1, 'Single individuals from multiple organizations'),
+        (2, 'Multiple individuals within one organization'),
+        (3, 'Multiple individuals or teams from multiple organizations'),
+    )
 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -218,8 +253,10 @@ class FormTemplate(models.Model):
     )
 
     # Project start / end date
-    start_date = models.DateTimeField("project start date")
-    end_date = models.DateTimeField("project end date")
+    start_date = models.DateTimeField(blank=False,
+                                      null=True, help_text="project start date")
+    end_date = models.TextField(blank=False,
+                                    null=True, help_text="project end date")
 
     # 1. Evidence based intervention (what)
     name = models.TextField(
@@ -227,29 +264,85 @@ class FormTemplate(models.Model):
         help_text="Evidence-Based Intervention/Program/Service Being Implemented (WHAT)",
     )
 
-    # 2. Target audience (WHO)
+    # 2. What is the need/rationale for this project?  Why/how did you decide to do this project?
+    need = models.TextField(
+        blank=False,
+        null=True,
+        help_text="What is the need/rationale for this project?  Why/how did you decide to do this project?",
+    )
+
+    # 3. Target audience/TA recipients (WHO and WHERE)
     target_audience_who = models.TextField(
-        blank=False, help_text="Who is the audience (including type of organizations)"
+        blank=False,
+        null=True, help_text="Who is the audience (including type of organizations)"
+    )
+
+    target_audience_settings = models.TextField(
+        blank=False,
+        null=True,
+        help_text="Specify the audience’s setting (e.g., emergency departments, schools, opioid treatment programs):"
     )
     target_audience_disciplines = models.TextField(
-        blank=False, help_text="Specify discipline(s)"
+        blank=False,
+        null=True, help_text="Specify discipline(s) of individuals: "
     )
-    target_audience_roles = models.TextField(blank=False, help_text="Specify role(s)")
+    target_audience_roles = models.TextField(blank=False,
+                                             null=True, help_text="Specify roles of individuals: ")
 
-    target_audience_across_orgs = models.BooleanField(
-        default=False, help_text="Multiple individuals across organizations"
-    )
-    target_audience_within_org = models.BooleanField(
-        default=False, help_text="Multiple individuals within an organization"
-    )
-    target_audience_teams_across_orgs = models.BooleanField(
-        default=False, help_text="Multiple individuals or teams across organizations"
-    )
+    target_audience_relations = models.IntegerField(choices=RELATIONSHIP_CHOICES, default=1, null=False, blank=True,
+                                                    help_text="Specify audience relationship to one another (Choose one):")
 
-    # 3. Implementation strategy
+    target_audience_ta_recipients = models.TextField(blank=False,
+                                                     null=True,
+                                                     help_text="How will your target audience/TA recipients be recruited?")
+
+    # **********************************************************************
+
+    # 4. Contextual/determinant Considerations
+    # ************************************************ Facilitators **************************************************
+    consider_system_factors = models.TextField(blank=False,
+                                               null=True,
+                                               help_text="System factors--external to the organization (e.g., financing; mandates, community, culture)"
+                                               )
+    consider_org_factors = models.TextField(blank=False,
+                                            null=True,
+                                            help_text="Organizational factors—internal to the organization (e.g., leadership; readiness)"
+                                            )
+    consider_clinical_factors = models.TextField(blank=False,
+                                                 null=True,
+                                                 help_text="Individual clinician factors (e.g., alignment with existing practice; complexity)"
+                                                 )
+    # ************************************************ END Facilitators **************************************************
+
+    # ************************************************ Barriers **************************************************
+    consider_system_factors_barriers = models.TextField(blank=False,
+                                                        null=True,
+                                                        help_text="System factors--external to the organization (e.g., financing; mandates, community, culture)"
+                                                        )
+    consider_org_factors_barriers = models.TextField(blank=False,
+                                                     null=True,
+                                                     help_text="Organizational factors—internal to the organization (e.g., leadership; readiness)"
+                                                     )
+    consider_clinical_factors_barriers = models.TextField(blank=False,
+                                                          null=True,
+                                                          help_text="Individual clinician factors (e.g., alignment with existing practice; complexity)"
+                                                          )
+    # ************************************************ END Barriers **************************************************
+
+    consider_ascertained = models.TextField(
+        help_text="How were these considerations ascertained (e.g., formal evaluation, needs/readiness assessment)?",
+        blank=True, null=True
+    )  # only form stage 3
+
+    consider_sustainment_strategy = models.TextField(
+        help_text="Sustainment strategies applied", blank=True, null=True
+    )  # only form stage 3
+
+    # 5. Implementation strategy
     implement_strategy = models.ManyToManyField(
         "main.Strategy",
-        blank=True,
+        blank=False,
+        null=True,
         default=None,
         related_name="form_template1",
         related_query_name="form_template1",
@@ -258,52 +351,71 @@ class FormTemplate(models.Model):
     implement_strategy_description = models.TextField(
         blank=False,
         null=False,
-        help_text="Free Text Description (Provide a Description of the Planned Implementation Steps)",
+        help_text="Describe the sequence of the planned Implementation Strategies, step by step:",
     )
 
-    # 4. Contextual/determinant Considerations
-    consider_system_factors = models.TextField(
-        help_text="System factors--external to the organization (e.g., financing; mandates, community, culture)"
-    )
-    consider_org_factors = models.TextField(
-        help_text="Organizational factors—internal to the organization (e.g., leadership; readiness)"
-    )
-    consider_clinical_factors = models.TextField(
-        help_text="Individual clinician factors (e.g., alignment with existing practice; complexity)"
-    )
-    consider_sustainment_strategy = models.TextField(
-        help_text="Sustainment strategies applied", blank=True, null=True
-    )  # only form stage 3
+    # 6. Evaluation
+    evaluation_planned_enrollment_organization = models.CharField(max_length=255,
+        help_text="How many organization planned for enrollment?", blank=True, null=True, )
+    evaluation_planned_enrollment_individual = models.CharField(max_length=255,
+        help_text="How many individual planned for enrollment?", blank=True, null=True, )
 
-    # 5. Implementation process
-    implementation_recruited = models.TextField(
-        help_text="How will participants be recruited?"
-    )
-    implementation_participants = models.PositiveIntegerField(
-        help_text="How many participants are enrolled?", blank=True, null=True
-    )
-    implementation_enrolled = models.PositiveIntegerField(
-        help_text="# (%) initiating implementation strategy (individuals, teams or organizations)",
-        blank=True,
+    evaluation_proximal_training_outcome = models.ManyToManyField(
+        "main.TrainingOutcome",
+        blank=False,
         null=True,
+        related_name="form_training_outcome",
+        related_query_name="form_training_outcome",
     )
+    # 6 Evaluation Stage 2
+    evaluation_enrolled_organization = models.IntegerField(help_text="How many organizations enrolled?", blank=True,
+                                                           null=True, )
+    evaluation_enrolled_individual = models.IntegerField(help_text="How many individuals enrolled?", blank=True,
+                                                         null=True, )
 
-    # 5. Measures being planned (stage 1)
-    outcome_reach = models.TextField(
-        help_text="Reach (# or percentage of population, what is the population, and how will you be measuring the outcome?"
-    )
-    outcome_effectiveness = models.TextField(
-        help_text="Effectiveness of Intervention/Program/Services (w/consumers), how will you measure it?"
-    )
-    outcome_adoption = models.TextField(
-        help_text="Number of providers? How will you be measuring it?"
-    )
-    outcome_quality = models.TextField(
-        help_text="Implementation Fidelity/Adherence/Quality. How will you be measuring it?"
-    )
-    outcome_cost = models.TextField(help_text="Cost. How will you keep track of it?")
-    outcome_maintenance = models.TextField(help_text="Maintenance/Sustainment.")
-    outcome_other = models.TextField(help_text="Any other measures being planned?")
+    evaluation_percent_init_implementation_strategy_organization = models.FloatField(
+        help_text="Percentage of organization initiating implementation strategy", blank=True, null=True, )
+    evaluation_percent_init_implementation_strategy_individual = models.FloatField(
+        help_text="Percentage of individual initiating implementation strategy", blank=True, null=True, )
+
+    # 6 Evaluation Stage 3
+    evaluation_percent_complete_50_strategy_organization = models.FloatField(
+        help_text="Percentage of Organization completing 50% of implementation strategy activities: ", blank=True,
+        null=True, )
+    evaluation_percent_complete_50_strategy_individual = models.FloatField(
+        help_text="Percentage of individual completing 50% of implementation strategy activities:", blank=True,
+        null=True, )
+
+    evaluation_percent_complete_80_strategy_organization = models.FloatField(
+        help_text="Percentage of Organization completing 80% or more of implementation strategy activities: ",
+        blank=True, null=True, )
+    evaluation_percent_complete_80_strategy_individual = models.FloatField(
+        help_text="Percentage of individual completing 80% or more of implementation strategy activities:", blank=True,
+        null=True, )
+
+    # 6. Measures being planned (stage 1)
+    outcome_reach = models.TextField(blank=False,
+                                     null=True,
+                                     help_text="Reach (# or percentage of population, what is the population, and how will you be measuring the outcome?"
+                                     )
+    outcome_effectiveness = models.TextField(blank=False,
+                                             null=True,
+                                             help_text="Effectiveness of Intervention/Program/Services (w/consumers), how will you measure it?"
+                                             )
+    outcome_adoption = models.TextField(blank=False,
+                                        null=True,
+                                        help_text="Number of providers? How will you be measuring it?"
+                                        )
+    outcome_quality = models.TextField(blank=False,
+                                       null=True,
+                                       help_text="Implementation Fidelity/Adherence/Quality. How will you be measuring it?"
+                                       )
+    outcome_cost = models.TextField(blank=False,
+                                    null=True, help_text="Cost. How will you keep track of it?")
+    outcome_maintenance = models.TextField(blank=False,
+                                           null=True, help_text="Maintenance/Sustainment.")
+    outcome_other = models.TextField(blank=False,
+                                     null=True, help_text="Any other measures being planned?")
 
     # the following are only for (stage 3)
     implementation_completing_half = models.PositiveIntegerField(
@@ -344,6 +456,11 @@ class FormTemplate(models.Model):
     )
     results_other = models.TextField(
         help_text="Results available for other?", blank=True, null=True
+    )
+
+    # 7 Other relevant issues
+    other_relevant_issues = models.TextField(
+        help_text="Other relevant issues?", blank=True, null=True
     )
 
     def get_absolute_url(self):

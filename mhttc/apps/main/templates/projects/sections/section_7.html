@@ -1,0 +1,6 @@
+<h2>7. Other relevant issues?</h2>
+<div class="form-group">
+    <textarea name="other_relevant_issues" cols="40" rows="1" class="form-control"
+              id="id_other_relevant_issues"
+              {% if disabled %}disabled{% endif %}>{{ form.other_relevant_issues.value|default_if_none:"" }}</textarea>
+</div>

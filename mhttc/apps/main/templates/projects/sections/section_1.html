@@ -1,0 +1,22 @@
+<h2>1. Evidence-Based Intervention/Program/Service Being Implemented (WHAT)</h2>
+<div class="form-group">
+    <textarea name="name" cols="40" rows="5" class="form-control" id="id_name"
+              {% if disabled %}disabled{% endif %}>{{ form.name.value|default_if_none:"" }}</textarea> <span
+        class="helptext">Describe your evidence-based intervention/program/service being implemented (WHAT)</span>
+</div>
+<div class="form-group">
+    <label for="id_start_date">Project start date:</label>
+    {{ form.start_date }}
+</div>
+<div class="form-group">
+    <label for="id_end_date">Project end date:</label>
+    {{ form.end_date }}
+</div>
+  <script>
+  $( function() {
+    $( "#id_start_date" ).datepicker();
+    $( "#id_end_date" ).datepicker({
+    constrainInput: false,
+});
+  } );
+  </script>
