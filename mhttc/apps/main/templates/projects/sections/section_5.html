@@ -118,6 +118,7 @@
                 <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
                     <select class="form-control" id="id_strategy_format"
                             {% if disabled %}disabled{% endif %}>
+                        <option>Select Format</option>
                         <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>
                         <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>
                         <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>
