@@ -95,12 +95,12 @@
             <thead class="thead-light">
             <tr>
                 <th style="width: 20%" scope="col" class="sort" data-sort="type">Category</th>
-                <th style="width: 20%" scope="col" class="sort" data-sort="format">Format</th>
-                <th style="width: 10%" scope="col" class="sort" data-sort="units">Planned Number of Units</th>
+                <th style="width: 10%" scope="col" class="sort" data-sort="format">Format</th>
+                <th style="width: 20%" scope="col" class="sort" data-sort="units">Planned Number of Units</th>
                 <th style="width: 10%" scope="col" class="sort" data-sort="frequency">Frequency</th>
                 <th style="width: 20%" scope="col" class="sort" data-sort="brief-description">Brief Description</th>
                 {% if disabled %}{% else %}
-                    <th style="width: 20%" scope="col"></th>{% endif %}
+                    <th style="width: 10%" scope="col"></th>{% endif %}
             </tr>
             </thead>
             <tbody class="list">
@@ -118,6 +118,7 @@
                 <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
                     <select class="form-control" id="id_strategy_format"
                             {% if disabled %}disabled{% endif %}>
+                        <option>Select Format</option>
                         <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>
                         <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>
                         <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>

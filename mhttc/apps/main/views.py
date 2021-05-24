@@ -360,10 +360,14 @@ def new_event(request):
         # Parse base64 string to save to database
         encoded_string = base64.b64encode(request.FILES["file"].read()).decode("utf-8")
 
+        title = request.POST['name'].encode("ascii", errors="ignore").decode()
+        description = request.POST['description'].encode("ascii", errors="ignore").decode()
         if form.is_valid():
             training = form.save(commit=False)
             training.center = request.user.center
             training.image_data = encoded_string
+            training.name = title
+            training.description = description
             training.save()
             return redirect("event_details", uuid=training.uuid)
     else:
