@@ -1,5 +1,5 @@
 {% load custom_tags %}
-<table class="table table-bordered" id="projects_table" cellspacing="0">
+<table class="table table-bordered table-responsive" id="projects_table" cellspacing="0">
     <thead>
     <tr>
         <th>Name</th>
@@ -17,17 +17,17 @@
         <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>
         {% if project|can_view:request %}
             <td><a href="{% url 'edit_form_template' project.uuid project.stage %}">
-                <button type="button" class="btn btn-warning" {% if project.stage != 1 %}disabled{% endif %}>
+                <button style="white-space: normal" type="button" class="btn btn-warning" {% if project.stage != 1 %}disabled{% endif %}>
                     Exploratory/Planning Phase
                 </button>
             </a></td>
             <td><a href="{% url 'edit_form_template' project.uuid project.stage %}">
-                <button type="button" class="btn btn-warning" {% if project.stage != 2 %}disabled{% endif %}>
+                <button style="white-space: normal" type="button" class="btn btn-warning" {% if project.stage != 2 %}disabled{% endif %}>
                     Implementation Phase
                 </button>
             </a></td>
             <td><a href="{% url 'edit_form_template' project.uuid project.stage %}">
-                <button type="button" class="btn btn-warning" {% if project.stage != 3 %}disabled{% endif %}>Sustainment
+                <button style="white-space: normal" type="button" class="btn btn-warning" {% if project.stage != 3 %}disabled{% endif %}>Sustainment
                     Phase
                 </button>
             </a></td>{% endif %}
