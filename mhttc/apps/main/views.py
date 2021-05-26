@@ -130,7 +130,7 @@ def search_project(request):
         #projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
     else:
         projects = Project.objects.filter(status=Project.PUBLISHED)
-    return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term})
+    return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term, 'hide_edit': True})
 
 
 
@@ -212,11 +212,11 @@ def edit_form_template(request, uuid, stage=1):
 
                 new_training_outcomes.append(new_training_outcome)
 
-                # If we have new strategies, remove all
-                if new_training_outcomes:
-                    [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
-                    [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
-                    template.save()
+            # If we have new strategies, remove all
+            if new_training_outcomes:
+                [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
+                [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
+                template.save()
 
 
             # For each index, only add if all fields are defined
@@ -260,9 +260,10 @@ def edit_form_template(request, uuid, stage=1):
                 template.save()
 
             # Unless we are at stage 3, add 1 to stage
-            if project.stage != 3:
-                project.stage += 1
-                form.stage = project.stage
+            if 'next-stage' in request.POST and request.POST['next-stage'] == 'on':
+                if project.stage != 3:
+                    project.stage += 1
+                    form.stage = project.stage
             project.form = template
             project.save()
             return JsonResponse({"message": "Your project was saved successfully."})

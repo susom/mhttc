@@ -5,7 +5,8 @@ register = template.Library()
 
 def can_edit(project, request):
     # check if user if part of center
-
+    if request.path == '/projects/search/':
+        return False
     return True
 
 def can_view(project, request):

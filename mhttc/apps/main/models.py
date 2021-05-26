@@ -162,6 +162,17 @@ class Project(models.Model):
     center = models.ForeignKey("users.Center", on_delete=models.PROTECT, blank=False)
     contact = models.ForeignKey("users.User", on_delete=models.PROTECT, blank=False)
 
+    @property
+    def stage_label(self):
+        if self.stage == 1:
+            return 'Exploratory/Planning Phase'
+        elif self.stage == 2:
+            return 'Implementation Phase'
+        elif self.stage == 3:
+            return 'Sustainment Phase'
+        else:
+            raise Exception('Unknown Stage')
+
     def get_absolute_url(self):
         return reverse("project_details", args=[self.uuid])
 

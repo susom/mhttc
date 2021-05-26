@@ -30,19 +30,19 @@
 <br><br>
 
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="1" {% if form.target_audience_relations.value and form.target_audience_relations.value == "1" %}checked{% endif %}>
+  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="1" {% if form.target_audience_relations.value and form.target_audience_relations.value == 1 %}checked{% endif %}>
   <label class="form-check-label" for="exampleRadios1">
     Single individuals from multiple organizations
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="2" {% if form.target_audience_relations.value and form.target_audience_relations.value == "2" %}checked{% endif %}>
+  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="2" {% if form.target_audience_relations.value and form.target_audience_relations.value == 2 %}checked{% endif %}>
   <label class="form-check-label" for="exampleRadios2">
     Multiple individuals within one organization
   </label>
 </div>
 <div class="form-check disabled">
-  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="3" {% if form.target_audience_relations.value and form.target_audience_relations.value == "3" %}checked{% endif %}>
+  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="3" {% if form.target_audience_relations.value and form.target_audience_relations.value == 3 %}checked{% endif %}>
   <label class="form-check-label" for="exampleRadios3">
     Multiple individuals or teams from multiple organizations
   </label>
@@ -50,7 +50,7 @@
 <br>
 {% if project.stage > 1 %}
 <div class="form-group">
-    <label for="id_target_audience_roles">f) How will your target audience/TA recipients be recruited?</label>
+    <label for="id_target_audience_roles">f) How were your target audience/TA recipients recruited?</label>
     <textarea name="target_audience_ta_recipients" cols="40" rows="1" class="form-control"
               id="id_target_audience_ta_recipients"
               {% if disabled %}disabled{% endif %}>{{ form.target_audience_ta_recipients.value|default_if_none:"" }}</textarea>

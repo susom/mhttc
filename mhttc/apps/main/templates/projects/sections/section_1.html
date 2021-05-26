@@ -12,11 +12,15 @@
     <label for="id_end_date">Project end date:</label>
     {{ form.end_date }}
 </div>
-  <script>
-  $( function() {
-    $( "#id_start_date" ).datepicker();
-    $( "#id_end_date" ).datepicker({
-    constrainInput: false,
-});
-  } );
-  </script>
+<script>
+    $(function () {
+        $("#id_start_date").datepicker();
+        $("#id_end_date").datepicker({
+            constrainInput: false,
+        });
+
+        $(".input-group-text").on('click', function (){
+           $(this).parent().prevAll("input[type=text]").datepicker("show");
+        });
+    });
+</script>
