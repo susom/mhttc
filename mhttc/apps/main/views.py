@@ -194,64 +194,74 @@ def edit_form_template(request, uuid, stage=1):
                     indices_training_outcome.add(key.split("_")[-1])
 
             new_training_outcomes = []
-            for index in indices_training_outcome:
-                for field in ["outcome", "measure"]:
-                    if "training_outcome_%s_%s" % (field, index) not in training_outcome:
+            try:
+                for index in indices_training_outcome:
+                    for field in ["outcome", "measure"]:
+                        if "training_outcome_%s_%s" % (field, index) not in training_outcome:
+                            continue
+
+                    training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
+                    training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
+
+                    if not training_outcome_outcome and not training_outcome_measure:
                         continue
 
-                training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
-                training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
+                    new_training_outcome = TrainingOutcome.objects.create(
+                        outcome=training_outcome_outcome,
+                        how_outcome_measured=training_outcome_measure
+                    )
 
-                if not training_outcome_outcome and not training_outcome_measure:
-                    continue
+                    new_training_outcomes.append(new_training_outcome)
 
-                new_training_outcome = TrainingOutcome.objects.create(
-                    outcome=training_outcome_outcome,
-                    how_outcome_measured=training_outcome_measure
-                )
-
-                new_training_outcomes.append(new_training_outcome)
-
-            # If we have new strategies, remove all
-            if new_training_outcomes:
-                [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
-                [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
-                template.save()
+                # If we have new strategies, remove all
+                if new_training_outcomes:
+                    [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
+                    [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
+                    template.save()
+            except Exception :
+                project.form = template
+                project.save()
+                return JsonResponse({"message": "Could not save Training"})
 
 
             # For each index, only add if all fields are defined
             new_strategies = []
-            for index in indices:
-                for field in ["type", "format", "units", "frequency", "brief_description"]:
-                    if "strategy_%s_%s" % (field, index) not in strategy:
+            try:
+                for index in indices:
+                    for field in ["type", "format", "units", "frequency", "brief_description"]:
+                        if "strategy_%s_%s" % (field, index) not in strategy:
+                            continue
+
+                    strategy_brief_description = ''
+                    # Clean all units
+                    strategy_type = strategy["strategy_type_%s" % index].strip()
+                    strategy_format = strategy["strategy_format_%s" % index].strip()
+                    strategy_units = strategy["strategy_units_%s" % index].strip()
+                    strategy_frequency = strategy["strategy_frequency_%s" % index].strip()
+                    strategy_brief_description = strategy["strategy_brief_description_%s" % index].strip()
+
+                    if (
+                            not strategy_type
+                            and not strategy_format
+                            and not strategy_units
+                            and not strategy_frequency
+                    ):
                         continue
 
-                strategy_brief_description = ''
-                # Clean all units
-                strategy_type = strategy["strategy_type_%s" % index].strip()
-                strategy_format = strategy["strategy_format_%s" % index].strip()
-                strategy_units = strategy["strategy_units_%s" % index].strip()
-                strategy_frequency = strategy["strategy_frequency_%s" % index].strip()
-                strategy_brief_description = strategy["strategy_brief_description_%s" % index].strip()
-
-                if (
-                    not strategy_type
-                    and not strategy_format
-                    and not strategy_units
-                    and not strategy_frequency
-                ):
-                    continue
-
-                new_strategy = Strategy.objects.create(
-                    strategy_type_id=strategy_type,
-                    strategy_format=strategy_format,
-                    brief_description=strategy_brief_description,
-                    planned_number_units=int(strategy_units)
-                    if strategy_units
-                    else None,
-                    frequency=strategy_frequency,
-                )
-                new_strategies.append(new_strategy)
+                    new_strategy = Strategy.objects.create(
+                        strategy_type_id=strategy_type,
+                        strategy_format=strategy_format,
+                        brief_description=strategy_brief_description,
+                        planned_number_units=int(strategy_units)
+                        if strategy_units
+                        else None,
+                        frequency=strategy_frequency,
+                    )
+                    new_strategies.append(new_strategy)
+            except Exception as e:
+                project.form = template
+                project.save()
+                return JsonResponse({"message": "Could not save Strategy"})
 
             # If we have new strategies, remove all
             if new_strategies:

@@ -79,8 +79,7 @@
                     var classname = $(col).attr("class")
 
                     if ((classname != "") && (classname != undefined)) {
-                        console.log(classname)
-                        console.log(count)
+
                         if (classname === 'strategy_type' || classname === 'strategy_format') {
                             var v = $(col).find('select').find("option:selected").val();
                             if (!isNaN(v)) {

@@ -222,7 +222,7 @@ class Strategy(models.Model):
     strategy_type = models.ForeignKey(StrategyType, on_delete=models.CASCADE, null=True, blank=True,
                                       related_name="strategy_type")
 
-    planned_number_units = models.PositiveIntegerField(
+    planned_number_units = models.PositiveIntegerField( blank=True, null=True,
         help_text="Planned number of units"
     )
 

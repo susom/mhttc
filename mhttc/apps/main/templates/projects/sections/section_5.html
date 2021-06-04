@@ -111,7 +111,7 @@
                 <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_type">
                     <select class="form-control" id="id_strategy_type"
                             {% if disabled %}disabled{% endif %}>
-                        <option>Select Strategy</option>
+                        <option value="">Select Strategy</option>
                         {% for type in strategies_types %}
                             <option value="{{ type.pk }}"
                                     {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
@@ -121,7 +121,7 @@
                 <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
                     <select class="form-control" id="id_strategy_format"
                             {% if disabled %}disabled{% endif %}>
-                        <option>Select Format</option>
+                        <option value="">Select Format</option>
                         <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>
                         <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>
                         <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>
@@ -147,7 +147,7 @@
                         class="strategy_type">
                         <select class="form-control" id="id_strategy_type"
                                 {% if disabled %}disabled{% endif %}>
-                            <option>Select Strategy</option>
+                            <option value="">Select Strategy</option>
                             {% for type in strategies_types %}
                                 <option value="{{ type.pk }}"
                                         {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
@@ -158,6 +158,7 @@
                         class="strategy_format">
                         <select class="form-control" id="id_strategy_format"
                                 {% if disabled %}disabled{% endif %}>
+                            <option value="">Select Format</option>
                             <option value="1" {% if strategy.strategy_format == '1' %}selected{% endif %}>Email/mail
                             </option>
                             <option value="2" {% if strategy.strategy_format == '2' %}selected{% endif %}>In person
@@ -188,7 +189,7 @@
                     <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_type">
                         <select class="form-control" id="strategy_type"
                                 {% if disabled %}disabled{% endif %}>
-                            <option>Select Strategy</option>
+                            <option value="">Select Strategy</option>
                             {% for type in strategies_types %}
                                 <option value="{{ type.pk }}">{{ type.strategy }}</option>
                             {% endfor %}
@@ -197,6 +198,7 @@
                     <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
                         <select class="form-control" id="id_strategy_format"
                                 {% if disabled %}disabled{% endif %}>
+                            <option value="">Select Format</option>
                             <option value="1">Email/mail
                             </option>
                             <option value="2">In person
