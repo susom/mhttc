@@ -252,7 +252,7 @@ def edit_form_template(request, uuid, stage=1):
                         strategy_type_id=strategy_type,
                         strategy_format=strategy_format,
                         brief_description=strategy_brief_description,
-                        planned_number_units=int(strategy_units)
+                        planned_number_units=strategy_units
                         if strategy_units
                         else None,
                         frequency=strategy_frequency,
