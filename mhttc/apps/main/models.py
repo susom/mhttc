@@ -241,6 +241,7 @@ class TrainingOutcome(models.Model):
     '''
     outcome = models.TextField(null=True, blank=True)
     how_outcome_measured = models.TextField(null=True, blank=True)
+    outcome_results = models.TextField(null=True, blank=True)
 
 
 class FormTemplate(models.Model):
@@ -253,6 +254,7 @@ class FormTemplate(models.Model):
         (1, 'Single individuals from multiple organizations'),
         (2, 'Multiple individuals within one organization'),
         (3, 'Multiple individuals or teams from multiple organizations'),
+        (99, 'Other'),
     )
 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -302,6 +304,10 @@ class FormTemplate(models.Model):
 
     target_audience_relations = models.IntegerField(choices=RELATIONSHIP_CHOICES, default=1, null=False, blank=True,
                                                     help_text="Specify audience relationship to one another (Choose one):")
+
+    target_audience_relations_other = models.TextField(blank=False,
+                                                     null=False,
+                                                     help_text="If Other, please specify?", default="")
 
     target_audience_ta_recipients = models.TextField(blank=False,
                                                      null=True,
@@ -367,9 +373,9 @@ class FormTemplate(models.Model):
 
     # 6. Evaluation
     evaluation_planned_enrollment_organization = models.CharField(max_length=255,
-        help_text="How many organization planned for enrollment?", blank=True, null=True, )
+        help_text="How many organization planned for enrollment? (number only)", blank=True, null=True, )
     evaluation_planned_enrollment_individual = models.CharField(max_length=255,
-        help_text="How many individual planned for enrollment?", blank=True, null=True, )
+        help_text="How many individual planned for enrollment? (number only)", blank=True, null=True, )
 
     evaluation_proximal_training_outcome = models.ManyToManyField(
         "main.TrainingOutcome",

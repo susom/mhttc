@@ -17,6 +17,9 @@
         .form-control:hover, [contenteditable="true"]:hover {
             background-color: rgba(217, 245, 255, 0.5);
         }
+        .audience-relation-other-hidden{
+            display: none;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"
             integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
@@ -115,6 +118,14 @@
             $(this).parents('tr').detach();
         });
 
+        //  if audience_relations is other display field to specify more
+        $("input[name=target_audience_relations]").on("change", function (){
+            if($(this).val() == 99){
+                $("#audience-relation-other").removeClass("audience-relation-other-hidden")
+            }else{
+                $("#audience-relation-other").addClass("audience-relation-other-hidden")
+            }
+        })
 
     </script>
 {% endblock %}

@@ -3,7 +3,7 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th>Description</th>
+{#        <th>Description</th>#}
         {% if project|can_view:request %}
             <th>Form Stage 1</th>
             <th>Form Stage 2</th>
@@ -14,7 +14,7 @@
     <tbody>
     <tr>
         <td><a href="{% url 'view_project_form' project.uuid %}">{{ project.name }}</a></td>
-        <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>
+{#        <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>#}
         {% if project|can_view:request %}
             <td><a href="{% url 'edit_form_template' project.uuid project.stage %}">
                 <button style="white-space: normal" type="button" class="btn btn-warning" {% if project.stage != 1 %}disabled{% endif %}>

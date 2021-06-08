@@ -47,15 +47,27 @@
     Multiple individuals or teams from multiple organizations
   </label>
 </div>
+<div class="form-check ">
+  <input class="form-check-input" type="radio" name="target_audience_relations" id="id_target_audience_relations" value="99" {% if form.target_audience_relations.value and form.target_audience_relations.value == 99 %}checked{% endif %}>
+  <label class="form-check-label" for="exampleRadios99">
+    Other
+  </label>
+</div>
+<div class="form-group {% if form.target_audience_relations.value == NULL or form.target_audience_relations.value != 99 %}audience-relation-other-hidden{% endif %}" id="audience-relation-other">
+    <label for="id_target_audience_roles">If Other, please specify:</label>
+    <textarea name="target_audience_relations_other" cols="40" rows="1" class="form-control"
+              id="id_target_audience_relations_other"
+              {% if disabled %}disabled{% endif %}>{{ form.target_audience_relations_other.value|default_if_none:"" }}</textarea>
+</div>
 <br>
-{% if project.stage > 1 %}
+{#{% if project.stage > 1 %}#}
 <div class="form-group">
     <label for="id_target_audience_roles">f) How were your target audience/TA recipients recruited?</label>
     <textarea name="target_audience_ta_recipients" cols="40" rows="1" class="form-control"
               id="id_target_audience_ta_recipients"
               {% if disabled %}disabled{% endif %}>{{ form.target_audience_ta_recipients.value|default_if_none:"" }}</textarea>
 </div>
-{% endif %}
+{#{% endif %}#}
 {#<div class="form-group">#}
 {#    <span style="padding-right:20px" class="helptext">Multiple individuals across organizations:</span>#}
 {#    <label style="float:right" class="custom-toggle" for="id_target_audience_across_orgs">#}

@@ -228,7 +228,7 @@
 </div>
 <div class="form-group">
     <label for="id_implement_strategy_description">Describe the sequence of the planned Implementation Strategies, step
-        by step {% if project.stage > 1 %}edit from previous if the plan changed{% endif %}:</label>
+        by step. {% if project.stage > 1 %}Edit from previous if the plan changed{% endif %}:</label>
     <textarea name="implement_strategy_description" cols="40" rows="5" class="form-control"
               id="id_implement_strategy_description"
               {% if disabled %}disabled{% endif %}>{{ form.implement_strategy_description.value|default_if_none:"" }}</textarea>

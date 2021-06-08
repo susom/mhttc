@@ -5,17 +5,39 @@
 <link rel="stylesheet" href="{% static 'css/all.min.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static 'css/argon.min.css' %}" type="text/css">
 <style>
-body {
-    background-color: white;
-    padding-top: 20px;
-}
-.form-control:disabled, .form-control[readonly] {
-    opacity: 1;
-    background-color: white !important;
-}
+    body {
+        background-color: white;
+        padding-top: 20px;
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+        opacity: 1;
+        background-color: white !important;
+    }
+
+    .hide {
+        display: none
+    }
+
+    .strategy-table td, .outcome-table td {
+        border: 1px solid #d6dadf;
+    }
+
+    .outcome-table, .strategy-table {
+        width: 99%;
+    }
+
+    .form-control:hover, [contenteditable="true"]:hover {
+        background-color: rgba(217, 245, 255, 0.5);
+    }
+
+    .audience-relation-other-hidden {
+        display: none;
+    }
 </style>
 {{ form.media }}
 <div id="project-export" class="container">
+    <h1>{{ project.center.name }}</h1>
     <h1>{{ project.name }}</h1>
     <hr>
     {% include "projects/form.html" %}

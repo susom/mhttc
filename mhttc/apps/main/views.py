@@ -19,7 +19,8 @@ from django.forms.models import model_to_dict
 from mhttc.apps.users.decorators import user_agree_terms
 from django.db.models import CharField, TextField
 
-from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, TrainingOutcome
+from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, \
+    TrainingOutcome
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -34,6 +35,8 @@ import base64
 from django.db.models import Q
 from functools import reduce
 import operator
+
+
 ## Projects
 
 
@@ -116,7 +119,6 @@ def search_project(request):
     projects = None
     term = ""
 
-
     if request.method == "POST":
         term = request.POST['term']
         words = term.split(" ")
@@ -127,11 +129,11 @@ def search_project(request):
             qs = qs | query
         forms_list = FormTemplate.objects.filter(qs).values_list('uuid')
         projects = Project.objects.filter(form_id__in=forms_list, status=Project.PUBLISHED)
-        #projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
+        # projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
     else:
         projects = Project.objects.filter(status=Project.PUBLISHED)
-    return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term, 'hide_edit': True})
-
+    return render(request, "projects/search_projects.html",
+                  {"projects": projects, 'term': term, 'hide_edit': True, 'center_column': True})
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -147,7 +149,6 @@ def publish_project(request, uuid):
     project.save()
     messages.info(request, "This project is published.")
     return redirect("user_projects")
-
 
 
 ## Form Templates
@@ -167,7 +168,6 @@ def edit_form_template(request, uuid, stage=1):
     if request.method == "POST":
 
         # If the form already belongs to another center.
-
 
         # Get standard form fields
         form = FormTemplateForm(request.POST)
@@ -196,19 +196,21 @@ def edit_form_template(request, uuid, stage=1):
             new_training_outcomes = []
             try:
                 for index in indices_training_outcome:
-                    for field in ["outcome", "measure"]:
+                    for field in ["outcome", "measure", "results"]:
                         if "training_outcome_%s_%s" % (field, index) not in training_outcome:
                             continue
 
                     training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
                     training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
+                    training_outcome_results = training_outcome["training_outcome_results_%s" % index].strip()
 
-                    if not training_outcome_outcome and not training_outcome_measure:
+                    if not training_outcome_outcome and not training_outcome_measure and not training_outcome_results:
                         continue
 
                     new_training_outcome = TrainingOutcome.objects.create(
                         outcome=training_outcome_outcome,
-                        how_outcome_measured=training_outcome_measure
+                        how_outcome_measured=training_outcome_measure,
+                        outcome_results=training_outcome_results
                     )
 
                     new_training_outcomes.append(new_training_outcome)
@@ -218,11 +220,10 @@ def edit_form_template(request, uuid, stage=1):
                     [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
                     [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
                     template.save()
-            except Exception :
+            except Exception:
                 project.form = template
                 project.save()
                 return JsonResponse({"message": "Could not save Training"})
-
 
             # For each index, only add if all fields are defined
             new_strategies = []
@@ -299,7 +300,6 @@ def edit_form_template(request, uuid, stage=1):
     if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
         training_outcomes = project.form.evaluation_proximal_training_outcome.all()
 
-
     return render(
         request,
         "projects/edit_form_template.html",
@@ -337,6 +337,10 @@ def view_project_form(request, uuid):
             messages.info(request, "This project does not have a form started yet.")
             return redirect("project_details", project.uuid)
 
+        training_outcomes = None
+        if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
+            training_outcomes = project.form.evaluation_proximal_training_outcome.all()
+
         return render(
             request,
             "projects/view_project_form.html",
@@ -344,6 +348,7 @@ def view_project_form(request, uuid):
                 "project": project,
                 "form": form,
                 "disabled": True,
+                "training_outcomes": training_outcomes,
                 "strategies": project.form.implement_strategy.all(),
             },
         )
@@ -427,8 +432,8 @@ def event_details(request, uuid):
 
             # Only allowed to edit for their center
             if (
-                request.user.center != training.center
-                or not request.user.center.full_access
+                    request.user.center != training.center
+                    or not request.user.center.full_access
             ):
                 messages.warning(request, "You are not allowed to perform this action.")
                 return redirect("center_events")

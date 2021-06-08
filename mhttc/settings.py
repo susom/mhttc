@@ -43,7 +43,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Update the secret key to a value of your own before deploying the app.
-SECRET_KEY=os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -52,7 +52,6 @@ if os.environ.get("GAE_APPLICATION") is not None:
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
-
 
 # SECURITY WARNING: App Engine's security features ensure that it is safe to
 # have ALLOWED_HOSTS = ['*'] when the app is deployed. If you deploy a Django
@@ -129,7 +128,6 @@ if SENTRY_ID is not None:
         send_default_pii=True,
     )
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -188,7 +186,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -202,13 +199,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_ROOT = "static"
 STATIC_URL = "/static/"
-
 
 # Rate Limiting
 
@@ -220,23 +215,25 @@ VIEW_RATE_LIMIT_BLOCK = (
 # On any admin or plugin login redirect to standard social-auth entry point for agreement to terms
 LOGIN_REDIRECT_URL = "/login"
 
-
 # CSP config
 CSP_DEFAULT_SRC = ["'self'"]
-CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "https://med.stanford.edu/", "https://code.jquery.com/", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/", "https://maxcdn.bootstrapcdn.com/", "https://cdn.jsdelivr.net/"]
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/", "https://maxcdn.bootstrapcdn.com/", "http://code.jquery.com/", "https://cdn.jsdelivr.net/")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com", "https://maxcdn.bootstrapcdn.com/", "http://maxcdn.bootstrapcdn.com/")
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "https://unpkg.com", "https://html2canvas.hertzen.com/",
+                  "https://med.stanford.edu/", "https://code.jquery.com/", "https://cdn.datatables.net/",
+                  "https://cdnjs.cloudflare.com/", "https://maxcdn.bootstrapcdn.com/", "https://cdn.jsdelivr.net/"]
+CSP_STYLE_SRC = (
+"'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/",
+"https://maxcdn.bootstrapcdn.com/", "http://code.jquery.com/", "https://cdn.jsdelivr.net/")
+CSP_FONT_SRC = (
+"'self'", "https://fonts.gstatic.com", "https://maxcdn.bootstrapcdn.com/", "http://maxcdn.bootstrapcdn.com/")
 CSP_IMG_SRC = ("* 'self' data: https:")
 
 CSP_CONNECT_SRC = ("'self'",)
 CSP_MANIFEST_SRC = ("'self'",)
-CSP_INCLUDE_NONCE_IN=['script-src', 'style-src']
+CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
 
 SECURE_BROWSER_XSS_FILTER = True
 
 SESSION_COOKIE_SECURE = True
-
-
 
 # HSTS
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True

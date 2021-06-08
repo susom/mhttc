@@ -1,34 +1,34 @@
 <h2>6. Evaluation</h2>
 <h4>a) Target audience/TA participants </h4>
 <div class="form-group">
-    <label for="id_evaluation_planned_enrollment_organization">How many organizations were planned for enrollment?</label>
-    <input value='{{ form.evaluation_planned_enrollment_organization.value|default_if_none:"0" }}'
+    <label for="id_evaluation_planned_enrollment_organization">How many organizations were planned for enrollment? (number only)</label>
+    <input value='{{ form.evaluation_planned_enrollment_organization.value|default_if_none:'' }}'
            name="evaluation_planned_enrollment_organization" class="form-control"
            id="id_evaluation_planned_enrollment_organization" {% if disabled %}disabled{% endif %}>
 </div>
 <div class="form-group">
-    <label for="id_evaluation_planned_enrollment_individual">How many individuals were planned for enrollment?</label>
-    <input value='{{ form.evaluation_planned_enrollment_individual.value|default_if_none:"0" }}'
+    <label for="id_evaluation_planned_enrollment_individual">How many individuals were planned for enrollment? (number only)</label>
+    <input value='{{ form.evaluation_planned_enrollment_individual.value|default_if_none:'' }}'
            name="evaluation_planned_enrollment_individual" class="form-control"
            id="id_evaluation_planned_enrollment_individual" {% if disabled %}disabled{% endif %}>
 </div>
 {% if project.stage > 1 %}
     <div class="form-group">
         <label for="id_evaluation_enrolled_organization">How many organizations were enrolled?</label>
-        <input value='{{ form.evaluation_enrolled_organization.value|default_if_none:"0" }}' type="number"
+        <input value='{{ form.evaluation_enrolled_organization.value|default_if_none:'' }}' type="number"
                name="evaluation_enrolled_organization" min="0" class="form-control" step="1"
                id="id_evaluation_enrolled_organization" {% if disabled %}disabled{% endif %}>
     </div>
     <div class="form-group">
         <label for="id_evaluation_enrolled_individual">How many individuals were enrolled?</label>
-        <input value='{{ form.evaluation_enrolled_individual.value|default_if_none:"0" }}' type="number"
+        <input value='{{ form.evaluation_enrolled_individual.value|default_if_none:'' }}' type="number"
                name="evaluation_enrolled_individual" min="0" class="form-control" step="1"
                id="id_evaluation_enrolled_individual" {% if disabled %}disabled{% endif %}>
     </div>
 
     <div class="form-group">
         <label for="id_evaluation_percent_init_implementation_strategy_organization">Percent of organizations initiating at least one implementation strategy?</label>
-        <input value='{{ form.evaluation_percent_init_implementation_strategy_organization.value|default_if_none:"0" }}'
+        <input value='{{ form.evaluation_percent_init_implementation_strategy_organization.value|default_if_none:'' }}'
                type="number"
                name="evaluation_percent_init_implementation_strategy_organization" min="0" class="form-control" step="1"
 
@@ -38,7 +38,7 @@
 
     <div class="form-group">
         <label for="id_evaluation_percent_init_implementation_strategy_individual">Percent of individuals initiating at least one implementation strategy?</label>
-        <input value='{{ form.evaluation_percent_init_implementation_strategy_individual.value|default_if_none:"0" }}'
+        <input value='{{ form.evaluation_percent_init_implementation_strategy_individual.value|default_if_none:"" }}'
                type="number"
                name="evaluation_percent_init_implementation_strategy_individual" min="0" class="form-control" step="1"
 
@@ -50,7 +50,7 @@
     <div class="form-group">
         <label for="id_evaluation_percent_complete_50_strategy_organization">Percentage of Organizations completing 50%
             of implementation strategy activities:?</label>
-        <input value='{{ form.evaluation_percent_complete_50_strategy_organization.value|default_if_none:"0" }}'
+        <input value='{{ form.evaluation_percent_complete_50_strategy_organization.value|default_if_none:"" }}'
                type="number"
                name="evaluation_percent_complete_50_strategy_organization" min="0" class="form-control" step="1"
 
@@ -61,7 +61,7 @@
     <div class="form-group">
         <label for="id_evaluation_percent_complete_50_strategy_individual">Percentage of individuals completing 50% of
             implementation strategy activities:?</label>
-        <input value='{{ form.evaluation_percent_complete_50_strategy_individual.value|default_if_none:"0" }}'
+        <input value='{{ form.evaluation_percent_complete_50_strategy_individual.value|default_if_none:"" }}'
                type="number"
                name="evaluation_percent_complete_50_strategy_individual" min="0" class="form-control" step="1"
 
@@ -73,7 +73,7 @@
         <label for="id_evaluation_percent_complete_80_strategy_organization">Percentage of Organizations completing 80%
             or more
             of implementation strategy activities:?</label>
-        <input value='{{ form.evaluation_percent_complete_80_strategy_organization.value|default_if_none:"0" }}'
+        <input value='{{ form.evaluation_percent_complete_80_strategy_organization.value|default_if_none:"" }}'
                type="number"
                name="evaluation_percent_complete_80_strategy_organization" min="0" class="form-control" step="1"
 
@@ -85,7 +85,7 @@
         <label for="id_evaluation_percent_complete_80_strategy_individual">Percentage of individuals completing 80% or
             more of
             implementation strategy activities:?</label>
-        <input value='{{ form.evaluation_percent_complete_80_strategy_individual.value|default_if_none:"0" }}'
+        <input value='{{ form.evaluation_percent_complete_80_strategy_individual.value|default_if_none:"" }}'
                type="number"
                name="evaluation_percent_complete_80_strategy_individual" min="0" class="form-control" step="1"
 
@@ -104,6 +104,7 @@
             <tr>
                 <th scope="col" class="sort" data-sort="outcome">Outcome</th>
                 <th scope="col" class="sort" data-sort="measure">How will the outcome be measured?</th>
+                <th scope="col" class="sort" data-sort="measure">Results, If Available</th>
                 {% if disabled %}{% else %}
                     <th scope="col"></th>{% endif %}
             </tr>
@@ -113,6 +114,8 @@
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_outcome">
                 </td>
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_measure">
+                </td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_results">
                 </td>
                 {% if disabled %}{% else %}
                     <td>
@@ -128,6 +131,9 @@
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
                         class="training_outcome_measure">{{ outcome.how_outcome_measured }}
                     </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                        class="training_outcome_results">{{ outcome.outcome_results|default_if_none:"" }}
+                    </td>
                     {% if disabled %}{% else %}
                         <td>
                             <span class="table-remove"><button type="button"
@@ -138,6 +144,8 @@
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_outcome">
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_measure">
+                    </td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_results">
                     </td>
                     {% if disabled %}{% else %}
                         <td>

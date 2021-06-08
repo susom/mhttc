@@ -88,6 +88,7 @@ class FormTemplateForm(forms.ModelForm):
             "target_audience_disciplines",
             "target_audience_roles",
             "target_audience_relations",
+            "target_audience_relations_other",
             "target_audience_ta_recipients",
             # "target_audience_across_orgs",
             # "target_audience_within_org",
