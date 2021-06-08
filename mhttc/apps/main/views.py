@@ -35,7 +35,8 @@ import base64
 from django.db.models import Q
 from functools import reduce
 import operator
-
+from io import BytesIO, StringIO
+from xhtml2pdf import pisa
 
 ## Projects
 
@@ -311,6 +312,45 @@ def edit_form_template(request, uuid, stage=1):
             "training_outcomes": training_outcomes,
         },
     )
+
+from django.http import FileResponse, HttpResponse
+import os
+from django.conf import settings
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def download_form_pdf(request, file_name):
+    with open(os.path.join(settings.STATIC_ROOT, file_name), 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type="application/pdf")
+        response['Content-Disposition'] = 'attachment; filename=' + file_name
+        return response
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def generate_form_pdf(request, uuid):
+    try:
+        project = Project.objects.get(uuid=uuid)
+        if request.method == "POST":
+            if 'content' not in request.POST:
+                raise Exception("Content is missing")
+            html = str(request.POST['content'])
+            result_file = open('/static/' + str(uuid) + '.pdf', "w+b")
+            pisa_status = pisa.pisaDocument(BytesIO(html.encode("UTF-8"))
+                ,  # the HTML to convert
+                dest=result_file)  # file handle to recieve result
+            return JsonResponse(
+                {"status": "success",  "path": str(uuid) + '.pdf'}
+            )
+        else:
+            raise Exception("Method is wrong")
+    except Project.DoesNotExist:
+        raise Http404
+    except Exception as e:
+        return JsonResponse(
+            {"message": str(e)}
+        )
+
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)

@@ -29,6 +29,12 @@ urlpatterns = [
         "project/forms/<uuid:uuid>/", views.view_project_form, name="view_project_form"
     ),
     path(
+        "project/forms/<uuid:uuid>/generate/", views.generate_form_pdf, name="generate_project_form"
+    ),
+    path(
+        "project/forms/download/<str:file_name>/", views.download_form_pdf, name="download_project_form"
+    ),
+    path(
         "project/<uuid:uuid>/publish", views.publish_project, name="publish_project"
     ),
     # Events

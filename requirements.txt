@@ -11,3 +11,4 @@ requests
 sentry-sdk
 django-csp
 sentry-sdk
+xhtml2pdf

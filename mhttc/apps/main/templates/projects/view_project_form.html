@@ -1,4 +1,10 @@
 {% load static %}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"
+            integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
 <link rel="stylesheet" href="{% static 'css/nucleo.css' %}" type="text/css">
@@ -37,8 +43,40 @@
 </style>
 {{ form.media }}
 <div id="project-export" class="container">
+{#    <div class="row float-right  mt-2 mb-2">#}
+{#        <!-- Button trigger modal -->#}
+{#         <button type="button" data-csrf="{{ csrf_token }}" data-project-uuid="{{ project.uuid }}" class="download-pdf btn btn-primary"  >#}
+{#            Download PDF#}
+{#        </button>#}
+{#    </div>#}
     <h1>{{ project.center.name }}</h1>
     <h1>{{ project.name }}</h1>
     <hr>
     {% include "projects/form.html" %}
 </div>
+<script>
+           var getUrl = window.location;
+        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+
+        $(document).ready(function () {
+             $(".download-pdf").click(function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var uuid = $(this).data('project-uuid')
+                 $.ajax({
+                    type: 'POST',
+                    url: baseUrl + 'project/forms/'+uuid+'/generate/',
+                    data: {'content' : $("#project-export").html(), 'csrfmiddlewaretoken': $(this).data('csrf')},
+                    success: function (response) {
+                        window.open(baseUrl + 'project/forms/download/' + response.path + '/');
+                    },
+                    error: function (response, error) {
+                        var re = JSON.parse(response.responseText)
+                        alert(re.message)
+                    }
+                })
+
+            })
+        });
+</script>
