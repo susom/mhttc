@@ -83,7 +83,8 @@
 
                     if ((classname != "") && (classname != undefined)) {
 
-                        if (classname === 'strategy_type' || classname === 'strategy_format') {
+                        //if (classname === 'strategy_type' || classname === 'strategy_format') {
+                        if (classname === 'strategy_type') {
                             var v = $(col).find('select').find("option:selected").val();
                             if (!isNaN(v)) {
                                 data.push({name: classname + "_" + count, value: v})

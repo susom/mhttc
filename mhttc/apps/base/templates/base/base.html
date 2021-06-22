@@ -45,13 +45,18 @@
     <link rel="stylesheet" href="{% static 'css/all.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/argon.min.css' %}" type="text/css">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     {% block css %}{% endblock %}
     {% block head %}{% endblock %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     </head>
-
+    <style>
+        .select2-selection{
+            height: calc(1.5em + 1.25rem + 5px) !important;
+        }
+    </style>
     {% block body %}
         <body class="docs">
 
@@ -64,6 +69,7 @@
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         </body>
     {% endblock %}
 </html>

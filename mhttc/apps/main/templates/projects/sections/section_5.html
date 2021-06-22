@@ -118,16 +118,16 @@
                         {% endfor %}
                     </select>
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
-                    <select class="form-control" id="id_strategy_format"
-                            {% if disabled %}disabled{% endif %}>
-                        <option value="">Select Format</option>
-                        <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>
-                        <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>
-                        <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>
-                        <option value="4" {% if strategy.strategy_format == 4 %}selected{% endif %}>Virtual/video</option>
-                        <option value="5" {% if strategy.strategy_format == 5 %}selected{% endif %}>Website</option>
-                    </select>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
+{#                    <select class="form-control" id="id_strategy_format"#}
+{#                            {% if disabled %}disabled{% endif %}>#}
+{#                        <option value="">Select Format</option>#}
+{#                        <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>#}
+{#                        <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>#}
+{#                        <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>#}
+{#                        <option value="4" {% if strategy.strategy_format == 4 %}selected{% endif %}>Virtual/video</option>#}
+{#                        <option value="5" {% if strategy.strategy_format == 5 %}selected{% endif %}>Website</option>#}
+{#                    </select>#}
                 </td>
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
                     step="1">
@@ -154,20 +154,21 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="false"{% endif %}
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
                         class="strategy_format">
-                        <select class="form-control" id="id_strategy_format"
-                                {% if disabled %}disabled{% endif %}>
-                            <option value="">Select Format</option>
-                            <option value="1" {% if strategy.strategy_format == '1' %}selected{% endif %}>Email/mail
-                            </option>
-                            <option value="2" {% if strategy.strategy_format == '2' %}selected{% endif %}>In person
-                            </option>
-                            <option value="3" {% if strategy.strategy_format == '3' %}selected{% endif %}>Phone</option>
-                            <option value="4" {% if strategy.strategy_format == '4' %}selected{% endif %}>Virtual/video
-                            </option>
-                            <option value="5" {% if strategy.strategy_format == '5' %}selected{% endif %}>Website</option>
-                        </select>
+{#                        <select class="form-control" id="id_strategy_format"#}
+{#                                {% if disabled %}disabled{% endif %}>#}
+{#                            <option value="">Select Format</option>#}
+{#                            <option value="1" {% if strategy.strategy_format == '1' %}selected{% endif %}>Email/mail#}
+{#                            </option>#}
+{#                            <option value="2" {% if strategy.strategy_format == '2' %}selected{% endif %}>In person#}
+{#                            </option>#}
+{#                            <option value="3" {% if strategy.strategy_format == '3' %}selected{% endif %}>Phone</option>#}
+{#                            <option value="4" {% if strategy.strategy_format == '4' %}selected{% endif %}>Virtual/video#}
+{#                            </option>#}
+{#                            <option value="5" {% if strategy.strategy_format == '5' %}selected{% endif %}>Website</option>#}
+{#                        </select>#}
+                    {{ strategy.strategy_format }}
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
                         type="number"
@@ -195,19 +196,19 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td {% if disabled %}{% else %}contenteditable="false"{% endif %} class="strategy_format">
-                        <select class="form-control" id="id_strategy_format"
-                                {% if disabled %}disabled{% endif %}>
-                            <option value="">Select Format</option>
-                            <option value="1">Email/mail
-                            </option>
-                            <option value="2">In person
-                            </option>
-                            <option value="3">Phone</option>
-                            <option value="4">Virtual/video
-                            </option>
-                            <option value="5">Website</option>
-                        </select>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
+{#                        <select class="form-control" id="id_strategy_format"#}
+{#                                {% if disabled %}disabled{% endif %}>#}
+{#                            <option value="">Select Format</option>#}
+{#                            <option value="1">Email/mail#}
+{#                            </option>#}
+{#                            <option value="2">In person#}
+{#                            </option>#}
+{#                            <option value="3">Phone</option>#}
+{#                            <option value="4">Virtual/video#}
+{#                            </option>#}
+{#                            <option value="5">Website</option>#}
+{#                        </select>#}
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
                         type="number"

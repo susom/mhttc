@@ -15,7 +15,7 @@
               {% if disabled %}disabled{% endif %}>{{ form.consider_org_factors.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
-    <label for="id_consider_clinical_factors">c) Individual clinician factors (e.g., alignment with existing practice;
+    <label for="id_consider_clinical_factors">c) Individual clinician/staff factors (e.g., alignment with existing practice;
         complexity):</label>
     <textarea name="consider_clinical_factors" cols="40" rows="5" class="form-control"
               id="id_consider_clinical_factors"
@@ -37,7 +37,7 @@
               {% if disabled %}disabled{% endif %}>{{ form.consider_org_factors_barriers.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
-    <label for="id_consider_clinical_factors_barriers">c) Individual clinician factors (e.g., alignment with existing practice;
+    <label for="id_consider_clinical_factors_barriers">c) Individual clinician/staff factors (e.g., alignment with existing practice;
         complexity):</label>
     <textarea name="consider_clinical_factors_barriers" cols="40" rows="5" class="form-control"
               id="id_consider_clinical_factors_barriers"
