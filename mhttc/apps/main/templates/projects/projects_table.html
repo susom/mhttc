@@ -1,17 +1,29 @@
 {% load custom_tags %}
+
 <table class="table table-bordered" id="projects_table" cellspacing="0">
     <thead>
     <tr>
         <th>Name</th>
-        <th>Description</th>
+{#        <th>Description</th>#}
+        {% if center_column == True %}
+        <th>Center</th>
+        {% endif %}
         <th>Status</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>{% for project in projects %}
         <tr>
-            <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
-            <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>
+            {% if hide_edit == True %}
+            <td>{{ project.name }}</td>
+            {% else %}
+                <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
+            {% endif %}
+
+{#            <td style="white-space: break-spaces">{{ project.description | truncatechars:100 }}</td>#}
+            {% if center_column == True %}
+            <td>{{ project.center.name }}</td>
+            {% endif %}
             <td>{{ project.get_status_display }}</td>
             <td>
                 {% if project|can_edit:request %}
@@ -20,8 +32,7 @@
                     </a>
                 {% endif %}
                 <a target="_blank" href="{% url 'view_project_form' project.uuid %}">
-                    <button type="button" class="btn btn-primary btn-sm"
-                            {% if project.form %}{% else %}disabled{% endif %}>View
+                    <button type="button" class="btn btn-primary btn-sm" >View
                     </button>
                 </a>
                 {% if project|can_edit:request %}

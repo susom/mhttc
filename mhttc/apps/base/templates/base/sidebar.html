@@ -1,55 +1,59 @@
-{% if request.user.is_authenticated %}<div class="col-12 col-md-3 col-xl-2 ct-sidebar">
+{% if request.user.is_authenticated %}
+    <div class="col-12 col-md-3 col-xl-2 ct-sidebar">
         <nav class="collapse ct-links" id="ct-docs-nav">
-          <!--Center-->
-          {% if request.user.is_authenticated and request.user.center %}
-          <div class="ct-toc-item active">
-            <a class="ct-toc-link" href="{% url 'all_centers' %}">Centers</a>
-            <ul class="nav ct-sidenav">
-              <li class="{% if request.path == '/u/center/'%}active{% endif %}">
-                <a href="{% url 'user_center' %}">My Center</a></li>
-            </ul>
-          </div>{% endif %}
-          <!--Projects-->
-{#          {% if request.user.is_authenticated %}<div class="ct-toc-item active">#}
-{#            <a class="ct-toc-link" href="{% url 'all_projects' %}">Implementation Projects</a>#}
-{#            <ul class="nav ct-sidenav">#}
-{#              <li class="{% if request.path == '/u/projects/'%}active{% endif %}">#}
-{#                <a href="{% url 'user_projects' %}">My Projects</a></li>#}
-{#              <li class="{% if request.path == '/projects/new/'%}active{% endif %}">#}
-{#                <a href="{% url 'new_project' %}">New Project</a></li>#}
-{#              <li class="{% if request.path == '/projects/search/'%}active{% endif %}">#}
-{#                <a href="{% url 'search_project' %}">Search Projects</a></li>#}
-{#            </ul>#}
-{#          </div>{% endif %}#}
-          <!--Events-->
-          {% if request.user.has_full_access %}<div class="ct-toc-item active">
-            <a class="ct-toc-link" href="">Event Certificates</a>
-            <ul class="nav ct-sidenav">
-              <li class="{% if request.path == '/u/center/'%}active{% endif %}">
-                <a href="{% url 'center_events' %}">Events</a></li>
-              <li class="{% if request.path == '/event/'%}active{% endif %}">
-                <a href="{% url 'new_event' %}">New Event</a></li>
-            </ul>
-          </div>{% endif %}
-          <div class="ct-toc-item active">
-            <a class="ct-toc-link" href="">MHTTC Info</a>
-            <ul class="nav ct-sidenav">
-              <li class="{% if request.path == '/quick-links/'%}active{% endif %}">
-                <a href="{% url 'quick_links' %}">Shared Folder and Quick Links</a></li>
-              <li class="{% if request.path == '/groups/'%}active{% endif %}">
-                <a href="{% url 'groups' %}">MHTTC and TTC Groups</a></li>
-              <li class="{% if request.path == '/zoom-request/'%}active{% endif %}">
-                <a href="{% url 'zoom_request' %}">NCO Zoom Room Request Form</a></li>
-            </ul>
-          </div>
-          <div class="ct-toc-item active">
-            <a class="ct-toc-link" href="">Support</a>
-            <ul class="nav ct-sidenav">
-              <li class="{% if request.path == '/contact/'%}active{% endif %}">
-                <a href="{% url 'contact' %}">Contact</a></li>
-            </ul>
-          </div>
+            <!--Center-->
+            {% if request.user.is_authenticated and request.user.center %}
+                <div class="ct-toc-item active">
+                    <a class="ct-toc-link" href="{% url 'all_centers' %}">Centers</a>
+                    <ul class="nav ct-sidenav">
+                        <li class="{% if request.path == '/u/center/' %}active{% endif %}">
+                            <a href="{% url 'user_center' %}">My Center</a></li>
+                    </ul>
+                </div>{% endif %}
+            <!--Projects-->
+            {% if request.user.is_authenticated %}
+                <div class="ct-toc-item active">
+                    <a class="ct-toc-link" href="{% url 'all_projects' %}">Implementation Projects</a>
+                    <ul class="nav ct-sidenav">
+                        <li class="{% if request.path == '/u/projects/' %}active{% endif %}">
+                            <a href="{% url 'user_projects' %}">My Projects</a></li>
+                        <li class="{% if request.path == '/projects/new/' %}active{% endif %}">
+                            <a href="{% url 'new_project' %}">New Project</a></li>
+                        <li class="{% if request.path == '/projects/search/' %}active{% endif %}">
+                            <a href="{% url 'search_project' %}">Search Projects</a></li>
+                    </ul>
+                </div>{% endif %}
+            <!--Events-->
+            {% if request.user.has_full_access %}
+                <div class="ct-toc-item active">
+                    <a class="ct-toc-link" href="">Event Certificates</a>
+                    <ul class="nav ct-sidenav">
+                        <li class="{% if request.path == '/u/center/' %}active{% endif %}">
+                            <a href="{% url 'center_events' %}">Events</a></li>
+                        <li class="{% if request.path == '/event/' %}active{% endif %}">
+                            <a href="{% url 'new_event' %}">New Event</a></li>
+                    </ul>
+                </div>
+                <div class="ct-toc-item active">
+                    <a class="ct-toc-link" href="">MHTTC Info</a>
+                    <ul class="nav ct-sidenav">
+                        <li class="{% if request.path == '/quick-links/' %}active{% endif %}">
+                            <a href="{% url 'quick_links' %}">Shared Folder and Quick Links</a></li>
+                        <li class="{% if request.path == '/groups/' %}active{% endif %}">
+                            <a href="{% url 'groups' %}">MHTTC and TTC Groups</a></li>
+                        <li class="{% if request.path == '/zoom-request/' %}active{% endif %}">
+                            <a href="{% url 'zoom_request' %}">NCO Zoom Room Request Form</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="ct-toc-item active">
+                <a class="ct-toc-link" href="">Support</a>
+                <ul class="nav ct-sidenav">
+                    <li class="{% if request.path == '/contact/' %}active{% endif %}">
+                        <a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
         </nav>
-      </div>{% else %}
-<div class="col-12 col-md-3 col-xl-2"></div>
+    </div>{% else %}
+    <div class="col-12 col-md-3 col-xl-2"></div>
 {% endif %}

@@ -6,7 +6,20 @@
             display: none
         }
 
-        [contenteditable="true"]:hover  { background-color: rgba(217, 245, 255,0.5);}
+        .strategy-table td, .outcome-table td {
+            border: 1px solid #d6dadf;
+        }
+
+        .outcome-table, .strategy-table {
+            width: 99%;
+        }
+
+        .form-control:hover, [contenteditable="true"]:hover {
+            background-color: rgba(217, 245, 255, 0.5);
+        }
+        .audience-relation-other-hidden{
+            display: none;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"
             integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
@@ -18,7 +31,8 @@
 
 {% endblock %}
 {% block content %}
-    <h1>Form Template for {{ project.name }}</h1>
+    <h1>Form Template for {{ project.name }} ({{ project.stage_label }})</h1>
+    <h4>{{ request.user.center.name }}</h4>
     <hr>
     <p style="max-width:100%" class="alert alert-info">The template can track the progress of your project during the
         exploratory/planning (or pre-implementation), implementation, and sustainment phases. There is a version of the
@@ -39,7 +53,11 @@
         {#                Move to Next Stage#}
         {#            </label>#}
         {#        </div>#}
-        <button type="submit" class="save btn btn-default">Save</button>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="next-stage" name="next-stage">
+            <label class="form-check-label" for="next-stage">Move Project to Next Stage</label>
+        </div>
+        <button type="submit" class="mt-2 save btn btn-default">Save</button>
     </form>
 {% endblock %}
 {% block scripts %}
@@ -64,9 +82,10 @@
                     var classname = $(col).attr("class")
 
                     if ((classname != "") && (classname != undefined)) {
-                        if (classname === 'strategy_type' || classname === 'strategy_format') {
+
+                        //if (classname === 'strategy_type' || classname === 'strategy_format') {
+                        if (classname === 'strategy_type') {
                             var v = $(col).find('select').find("option:selected").val();
-                            console.log(v)
                             if (!isNaN(v)) {
                                 data.push({name: classname + "_" + count, value: v})
                             }
@@ -82,6 +101,7 @@
             form = form.concat(data)
             $.post('', form, function (d) {
                 if (d.message != "") {
+                    $("#next-stage").prop('checked', false)
                     $(".submit-message").html(d.message)
                     $(".submit-message").show()
                 } else {
@@ -90,13 +110,23 @@
             });
         })
 
-        $('.table-add').click(function () {
+        $(document).on('click', '.table-add', function () {
             var $clone = $(this).next('table').find('tr.hide').clone(true).removeClass('hide');
             $(this).next('table').append($clone);
         });
 
-        $('.table-remove').click(function () {
+        $(document).on('click', '.table-remove', function () {
             $(this).parents('tr').detach();
         });
+
+        //  if audience_relations is other display field to specify more
+        $("input[name=target_audience_relations]").on("change", function (){
+            if($(this).val() == 99){
+                $("#audience-relation-other").removeClass("audience-relation-other-hidden")
+            }else{
+                $("#audience-relation-other").addClass("audience-relation-other-hidden")
+            }
+        })
+
     </script>
 {% endblock %}

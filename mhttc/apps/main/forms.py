@@ -18,7 +18,8 @@ class ProjectForm(forms.ModelForm):
         model = Project
 
         # Center is associated to the user creating the project
-        fields = ("name", "description", "contact" )
+        #fields = ("name", "description", "contact" )
+        fields = ("name", "contact")
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -87,6 +88,7 @@ class FormTemplateForm(forms.ModelForm):
             "target_audience_disciplines",
             "target_audience_roles",
             "target_audience_relations",
+            "target_audience_relations_other",
             "target_audience_ta_recipients",
             # "target_audience_across_orgs",
             # "target_audience_within_org",
@@ -189,6 +191,7 @@ class FormTemplateForm(forms.ModelForm):
             "target_audience_roles",
             "target_audience_relations",
             "target_audience_ta_recipients",
+            "target_audience_relations_other",
             # "target_audience_across_orgs",
             # "target_audience_within_org",
             # "target_audience_teams_across_orgs",

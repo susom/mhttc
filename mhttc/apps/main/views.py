@@ -19,7 +19,8 @@ from django.forms.models import model_to_dict
 from mhttc.apps.users.decorators import user_agree_terms
 from django.db.models import CharField, TextField
 
-from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, TrainingOutcome
+from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, \
+    TrainingOutcome
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -34,6 +35,9 @@ import base64
 from django.db.models import Q
 from functools import reduce
 import operator
+from io import BytesIO, StringIO
+from xhtml2pdf import pisa
+
 ## Projects
 
 
@@ -116,7 +120,6 @@ def search_project(request):
     projects = None
     term = ""
 
-
     if request.method == "POST":
         term = request.POST['term']
         words = term.split(" ")
@@ -127,11 +130,11 @@ def search_project(request):
             qs = qs | query
         forms_list = FormTemplate.objects.filter(qs).values_list('uuid')
         projects = Project.objects.filter(form_id__in=forms_list, status=Project.PUBLISHED)
-        #projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
+        # projects = Project.objects.filter(reduce(operator.or_, (Q(name__contains=x) for x in words))| reduce(operator.or_, (Q(description__contains=x) for x in words)), status=Project.PUBLISHED)
     else:
         projects = Project.objects.filter(status=Project.PUBLISHED)
-    return render(request, "projects/search_projects.html", {"projects": projects, 'term' : term})
-
+    return render(request, "projects/search_projects.html",
+                  {"projects": projects, 'term': term, 'hide_edit': True, 'center_column': True})
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -147,7 +150,6 @@ def publish_project(request, uuid):
     project.save()
     messages.info(request, "This project is published.")
     return redirect("user_projects")
-
 
 
 ## Form Templates
@@ -168,15 +170,18 @@ def edit_form_template(request, uuid, stage=1):
 
         # If the form already belongs to another center.
 
-
         # Get standard form fields
         form = FormTemplateForm(request.POST)
         form.stage = project.stage
-
+        old_strategies = []
+        old_training_outcome = []
+        old_form = []
         if form.is_valid():
             if project.form is not None:
-                f = FormTemplate.objects.get(uuid=project.form_id)
-                f.delete()
+                old_form = FormTemplate.objects.get(uuid=project.form_id)
+                old_strategies = old_form.implement_strategy.all()
+                old_training_outcome = old_form.evaluation_proximal_training_outcome.all()
+
             template = form.save(commit=False)
             template.save()
 
@@ -194,77 +199,93 @@ def edit_form_template(request, uuid, stage=1):
                     indices_training_outcome.add(key.split("_")[-1])
 
             new_training_outcomes = []
-            for index in indices_training_outcome:
-                for field in ["outcome", "measure"]:
-                    if "training_outcome_%s_%s" % (field, index) not in training_outcome:
+            try:
+                for index in indices_training_outcome:
+                    for field in ["outcome", "measure", "results"]:
+                        if "training_outcome_%s_%s" % (field, index) not in training_outcome:
+                            continue
+
+                    training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
+                    training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
+                    training_outcome_results = training_outcome["training_outcome_results_%s" % index].strip()
+
+                    if not training_outcome_outcome and not training_outcome_measure and not training_outcome_results:
                         continue
 
-                training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
-                training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
+                    new_training_outcome = TrainingOutcome.objects.create(
+                        outcome=training_outcome_outcome,
+                        how_outcome_measured=training_outcome_measure,
+                        outcome_results=training_outcome_results
+                    )
 
-                if not training_outcome_outcome and not training_outcome_measure:
-                    continue
-
-                new_training_outcome = TrainingOutcome.objects.create(
-                    outcome=training_outcome_outcome,
-                    how_outcome_measured=training_outcome_measure
-                )
-
-                new_training_outcomes.append(new_training_outcome)
+                    new_training_outcomes.append(new_training_outcome)
 
                 # If we have new strategies, remove all
                 if new_training_outcomes:
-                    [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
+                    [x.delete() for x in old_training_outcome]
                     [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
                     template.save()
-
+            except Exception:
+                project.form = template
+                project.save()
+                return JsonResponse({"message": "Could not save Training"})
 
             # For each index, only add if all fields are defined
             new_strategies = []
-            for index in indices:
-                for field in ["type", "format", "units", "frequency", "brief_description"]:
-                    if "strategy_%s_%s" % (field, index) not in strategy:
+            try:
+                for index in indices:
+                    for field in ["type", "format", "units", "frequency", "brief_description"]:
+                        if "strategy_%s_%s" % (field, index) not in strategy:
+                            continue
+
+                    strategy_brief_description = ''
+                    # Clean all units
+                    strategy_type = strategy["strategy_type_%s" % index].strip()
+                    strategy_format = strategy["strategy_format_%s" % index].strip()
+                    strategy_units = strategy["strategy_units_%s" % index].strip()
+                    strategy_frequency = strategy["strategy_frequency_%s" % index].strip()
+                    strategy_brief_description = strategy["strategy_brief_description_%s" % index].strip()
+
+                    if (
+                            not strategy_type
+                            and not strategy_format
+                            and not strategy_units
+                            and not strategy_frequency
+                    ):
                         continue
 
-                strategy_brief_description = ''
-                # Clean all units
-                strategy_type = strategy["strategy_type_%s" % index].strip()
-                strategy_format = strategy["strategy_format_%s" % index].strip()
-                strategy_units = strategy["strategy_units_%s" % index].strip()
-                strategy_frequency = strategy["strategy_frequency_%s" % index].strip()
-                strategy_brief_description = strategy["strategy_brief_description_%s" % index].strip()
+                    new_strategy = Strategy.objects.create(
+                        strategy_type_id=strategy_type,
+                        strategy_format=strategy_format,
+                        brief_description=strategy_brief_description,
+                        planned_number_units=strategy_units
+                        if strategy_units
+                        else None,
+                        frequency=strategy_frequency,
+                    )
+                    new_strategies.append(new_strategy)
 
-                if (
-                    not strategy_type
-                    and not strategy_format
-                    and not strategy_units
-                    and not strategy_frequency
-                ):
-                    continue
+                # If we have new strategies, remove all
+                if new_strategies:
+                    for test in old_strategies:
+                        yy = test.delete()
+                    # [x.delete() for x in old_strategies]
+                    [template.implement_strategy.add(x) for x in new_strategies]
+                    template.save()
+            except Exception as e:
+                project.form = template
+                project.save()
+                return JsonResponse({"message": "Could not save Strategy"})
 
-                new_strategy = Strategy.objects.create(
-                    strategy_type_id=strategy_type,
-                    strategy_format=strategy_format,
-                    brief_description=strategy_brief_description,
-                    planned_number_units=int(strategy_units)
-                    if strategy_units
-                    else None,
-                    frequency=strategy_frequency,
-                )
-                new_strategies.append(new_strategy)
-
-            # If we have new strategies, remove all
-            if new_strategies:
-                [x.delete() for x in template.implement_strategy.all()]
-                [template.implement_strategy.add(x) for x in new_strategies]
-                template.save()
 
             # Unless we are at stage 3, add 1 to stage
-            if project.stage != 3:
-                project.stage += 1
-                form.stage = project.stage
+            if 'next-stage' in request.POST and request.POST['next-stage'] == 'on':
+                if project.stage != 3 and project.stage <= 3:
+                    project.stage += 1
+                    form.stage = project.stage
             project.form = template
             project.save()
+            old_form.delete()
             return JsonResponse({"message": "Your project was saved successfully."})
 
         # Not valid - return to page to populate
@@ -288,7 +309,6 @@ def edit_form_template(request, uuid, stage=1):
     if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
         training_outcomes = project.form.evaluation_proximal_training_outcome.all()
 
-
     return render(
         request,
         "projects/edit_form_template.html",
@@ -300,6 +320,45 @@ def edit_form_template(request, uuid, stage=1):
             "training_outcomes": training_outcomes,
         },
     )
+
+from django.http import FileResponse, HttpResponse
+import os
+from django.conf import settings
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def download_form_pdf(request, file_name):
+    with open(os.path.join(settings.STATIC_ROOT, file_name), 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type="application/pdf")
+        response['Content-Disposition'] = 'attachment; filename=' + file_name
+        return response
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+@user_agree_terms
+def generate_form_pdf(request, uuid):
+    try:
+        project = Project.objects.get(uuid=uuid)
+        if request.method == "POST":
+            if 'content' not in request.POST:
+                raise Exception("Content is missing")
+            html = str(request.POST['content'])
+            result_file = open('/static/' + str(uuid) + '.pdf', "w+b")
+            pisa_status = pisa.pisaDocument(BytesIO(html.encode("UTF-8"))
+                ,  # the HTML to convert
+                dest=result_file)  # file handle to recieve result
+            return JsonResponse(
+                {"status": "success",  "path": str(uuid) + '.pdf'}
+            )
+        else:
+            raise Exception("Method is wrong")
+    except Project.DoesNotExist:
+        raise Http404
+    except Exception as e:
+        return JsonResponse(
+            {"message": str(e)}
+        )
+
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -326,6 +385,10 @@ def view_project_form(request, uuid):
             messages.info(request, "This project does not have a form started yet.")
             return redirect("project_details", project.uuid)
 
+        training_outcomes = None
+        if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
+            training_outcomes = project.form.evaluation_proximal_training_outcome.all()
+
         return render(
             request,
             "projects/view_project_form.html",
@@ -333,6 +396,7 @@ def view_project_form(request, uuid):
                 "project": project,
                 "form": form,
                 "disabled": True,
+                "training_outcomes": training_outcomes,
                 "strategies": project.form.implement_strategy.all(),
             },
         )
@@ -416,8 +480,8 @@ def event_details(request, uuid):
 
             # Only allowed to edit for their center
             if (
-                request.user.center != training.center
-                or not request.user.center.full_access
+                    request.user.center != training.center
+                    or not request.user.center.full_access
             ):
                 messages.warning(request, "You are not allowed to perform this action.")
                 return redirect("center_events")
