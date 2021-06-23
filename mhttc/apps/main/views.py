@@ -173,11 +173,15 @@ def edit_form_template(request, uuid, stage=1):
         # Get standard form fields
         form = FormTemplateForm(request.POST)
         form.stage = project.stage
-
+        old_strategies = []
+        old_training_outcome = []
+        old_form = []
         if form.is_valid():
             if project.form is not None:
-                f = FormTemplate.objects.get(uuid=project.form_id)
-                f.delete()
+                old_form = FormTemplate.objects.get(uuid=project.form_id)
+                old_strategies = old_form.implement_strategy.all()
+                old_training_outcome = old_form.evaluation_proximal_training_outcome.all()
+
             template = form.save(commit=False)
             template.save()
 
@@ -218,7 +222,7 @@ def edit_form_template(request, uuid, stage=1):
 
                 # If we have new strategies, remove all
                 if new_training_outcomes:
-                    [x.delete() for x in template.evaluation_proximal_training_outcome.all()]
+                    [x.delete() for x in old_training_outcome]
                     [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
                     template.save()
             except Exception:
@@ -260,24 +264,28 @@ def edit_form_template(request, uuid, stage=1):
                         frequency=strategy_frequency,
                     )
                     new_strategies.append(new_strategy)
+
+                # If we have new strategies, remove all
+                if new_strategies:
+                    for test in old_strategies:
+                        yy = test.delete()
+                    # [x.delete() for x in old_strategies]
+                    [template.implement_strategy.add(x) for x in new_strategies]
+                    template.save()
             except Exception as e:
                 project.form = template
                 project.save()
                 return JsonResponse({"message": "Could not save Strategy"})
 
-            # If we have new strategies, remove all
-            if new_strategies:
-                [x.delete() for x in template.implement_strategy.all()]
-                [template.implement_strategy.add(x) for x in new_strategies]
-                template.save()
 
             # Unless we are at stage 3, add 1 to stage
             if 'next-stage' in request.POST and request.POST['next-stage'] == 'on':
-                if project.stage != 3:
+                if project.stage != 3 and project.stage <= 3:
                     project.stage += 1
                     form.stage = project.stage
             project.form = template
             project.save()
+            old_form.delete()
             return JsonResponse({"message": "Your project was saved successfully."})
 
         # Not valid - return to page to populate
