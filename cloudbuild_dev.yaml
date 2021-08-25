@@ -1,0 +1,23 @@
+steps:
+- id: "render-app-yaml"
+  # envsubst is package you need to install from https://github.com/GoogleCloudPlatform/cloud-builders-community into your container Repositories for your project.
+  name: "gcr.io/${PROJECT_ID}/envsubst"
+  # below variables are defined as Substitution variables inside the cloud build trigger that will run this file.
+  env:
+    - 'DJANGO_SECRET_KEY=${_DJANGO_SECRET_KEY}'
+    - 'TWITTER_USERNAME=${_TWITTER_USERNAME}'
+    - 'MYSQL_HOST=${_MYSQL_HOST}'
+    - 'MYSQL_USER=${_MYSQL_USER}'
+    - 'MYSQL_PASSWORD=${_MYSQL_PASSWORD}'
+    - 'MYSQL_DATABASE=${_MYSQL_DATABASE}'
+    - 'SENDGRID_API_KEY=${_SENDGRID_API_KEY}'
+    - 'SENDGRID_SENDER_EMAIL=${_SENDGRID_SENDER_EMAIL}'
+    - 'HELP_CONTACT_EMAIL=${_HELP_CONTACT_EMAIL}'
+    - 'SENTRY_ID=${_SENTRY_ID}'
+    - 'DOMAIN_NAME=${_DOMAIN_NAME}'
+    - 'RUNNING_APP_ENGINE=${_RUNNING_APP_ENGINE}'
+    - 'DEBUG=${_DEBUG}'
+  args: ["app-development.yaml"]
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy", "app-development.yaml", "--version=staging"]
+timeout: "1600s"
