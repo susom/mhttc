@@ -20,5 +20,5 @@ steps:
     - 'SERVICE_NAME=${_SERVICE_NAME}'
   args: ["app-development.yaml"]
 - name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy", "app.yaml", "--version=staging"]
+  args: ["app", "deploy", "app-development.yaml", "--version=staging"]
 timeout: "1600s"
