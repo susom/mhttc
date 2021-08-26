@@ -1,7 +1,7 @@
 .env
 db.sqlite3
 env
-/static
+#/static
 __pycache__
 Gemfile.lock
 app_original.yaml
