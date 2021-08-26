@@ -4,7 +4,7 @@ env
 /static
 __pycache__
 Gemfile.lock
-app.yaml
+app_original.yaml
 #app-development.yaml
 bin
 lib
