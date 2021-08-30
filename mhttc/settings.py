@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "mhttc.apps.main",
     "mhttc.apps.users",
     "django.contrib.admin",
+    "import_export",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

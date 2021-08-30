@@ -268,7 +268,7 @@ class FormTemplate(models.Model):
     # Project start / end date
     start_date = models.DateTimeField(blank=False,
                                       null=True, help_text="project start date")
-    end_date = models.TextField(blank=False,
+    end_date = models.DateField(blank=False,
                                     null=True, help_text="project end date")
 
     # 1. Evidence based intervention (what)

@@ -285,7 +285,10 @@ def edit_form_template(request, uuid, stage=1):
                     form.stage = project.stage
             project.form = template
             project.save()
-            old_form.delete()
+            try:
+                old_form.delete()
+            except:
+                return JsonResponse({"message": "Your project was saved successfully."})
             return JsonResponse({"message": "Your project was saved successfully."})
 
         # Not valid - return to page to populate
