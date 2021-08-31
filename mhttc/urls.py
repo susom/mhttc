@@ -13,6 +13,7 @@ from django.urls import include, path
 from mhttc.apps.main import urls as main_urls
 from mhttc.apps.base import urls as base_urls
 from mhttc.apps.users import urls as user_urls
+from django.contrib.auth import views as auth_views
 
 # Customize admin title, headers
 admin.site.site_header = "MHTTC administration"
@@ -33,4 +34,5 @@ urlpatterns = [
     path("", include(user_urls)),
     path("admin/", admin.site.urls),
     path("sentry-debug/", trigger_error),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
