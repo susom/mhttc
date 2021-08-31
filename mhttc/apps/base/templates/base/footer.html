@@ -1,23 +1,32 @@
 {% load static %}
 <footer class="container" style="margin-top:100px">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-          <ul class="list-inline mb-2">
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a style="color:#00467f" href="{% url 'contact' %}">Contact</a>
-            </li>
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a style="color:#00467f" href="{% url 'terms' %}" target="_blank">Terms of Use / Privacy Policy</a>
-            </li>
-          </ul>
-          <p class="text-muted small mb-4 mb-lg-0">&copy; MHTTC 2020. All Rights Reserved.</p>
+        <div class="row">
+            <div class="col-lg-8 h-100 text-center text-lg-left my-auto">
+                <ul class="list-inline mb-2">
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item">
+                        <a style="color:#00467f" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item">
+                        <a style="color:#00467f" href="{% url 'terms' %}" target="_blank">Terms of Use / Privacy
+                            Policy</a>
+                    </li>
+                    {% if not user.is_authenticated %}
+
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a style="color:#00467f" href="/accounts/password_reset/" target="_blank">Reset Your
+                                Password</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <p class="text-muted small mb-4 mb-lg-0">&copy; MHTTC 2020. All Rights Reserved.</p>
+            </div>
+            <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+                <img src="{% static 'img/samhsa-dark.png' %}" style="width:150px; margin-bottom:10px">
+            </div>
         </div>
-        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-          <img src="{% static 'img/samhsa-dark.png' %}" style="width:150px; margin-bottom:10px">
-        </div>
-      </div>
     </div>
-  </footer>
+</footer>
