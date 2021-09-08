@@ -28,7 +28,7 @@
 		 {% csrf_token %}
 		  <label for="emails">Send certificates to participants by email:</label>
 		  <textarea name="emails" cols="40" rows="10" class="form-control" required id="emails"></textarea> 
-		  <span class="helptext">Please copy paste emalis (one per line) for participants to add.</span></p>
+		  <span class="helptext">Please copy and paste emails (one per line) for certificate recipients.</span></p>
 		  <button style="margin-top:30px" type="submit" class="save btn btn-default">Send</button>
 		</form>{% else %}
                 <p class="alert alert-secondary">You must upload a certificate template first via the Certificate tab</p>
