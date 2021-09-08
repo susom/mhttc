@@ -660,8 +660,15 @@ def download_certificate(request, uuid):
             )
         else:
             messages.warning(request, "Your form submission is not valid.")
+
+    u = request.user
+    if u.id == None:
+        hide_login = True
+    else:
+        hide_login = False
+
     return render(
         request,
         "events/download_certificate.html",
-        {"form": form, "training": training, "hide_login": True},
+        {"form": form, "training": training, "hide_login": hide_login},
     )
