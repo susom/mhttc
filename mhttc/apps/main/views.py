@@ -646,7 +646,9 @@ def download_certificate(request, uuid):
             # Ensure that the participant is completed for the training
             email = form.cleaned_data["email"]
             try:
-                TrainingParticipant.objects.get(email=email, training=training)
+                participant = TrainingParticipant.objects.get(email=email, training=training)
+                participant.name = request.POST['name']
+                participant.save()
             except:
                 messages.warning(
                     request, "We cannot find a record of your participation."
