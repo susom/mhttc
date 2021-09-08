@@ -11,7 +11,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from django.shortcuts import render, redirect
 from django.http import Http404, JsonResponse
 from ratelimit.decorators import ratelimit
-
+from mhttc.settings import DOMAIN_NAME
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -529,10 +530,15 @@ def event_details(request, uuid):
                 request, "You have requested %s certificate emails to be sent." % count
             )
 
+        generation_url =   "%s%s" % (
+            DOMAIN_NAME,
+            reverse("download_certificate", args=[training.uuid]),
+        )
+
         return render(
             request,
             "events/event_details.html",
-            context={"training": training, "edit_permission": edit_permission},
+            context={"training": training, "edit_permission": edit_permission, "generation_url": generation_url},
         )
     except Training.DoesNotExist:
         raise Http404

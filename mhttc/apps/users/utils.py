@@ -88,8 +88,9 @@ def send_email(
             filetype=filetype,
             filename=filename,
         )
+        response = sg.client.mail.send.post(request_body=mail.get())
         print(e)
-        return False
+        return True
     except Exception as e:
         print(e.message)
         return False

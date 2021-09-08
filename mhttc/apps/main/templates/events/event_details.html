@@ -2,110 +2,132 @@
 {% load static %}
 {% block content %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-12" style="padding-bottom:20px">
-      <h1>{{ training.name }}</h1>
-      <h4>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12" style="padding-bottom:20px">
+            <h1>{{ training.name }}</h1>
+            <h4>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-        <nav>
-            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-participants-tab" data-toggle="tab" href="#nav-participants" role="tab" aria-controls="nav-participants" aria-selected="true">Participants</a>
-                <a class="nav-item nav-link" id="nav-certificate-tab" data-toggle="tab" href="#nav-certificate" role="tab" aria-controls="nav-certificate" aria-selected="true">Certificate</a>
-                <a class="nav-item nav-link" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab" aria-controls="nav-details" aria-selected="false">Details</a>
-                {% if training.trainingparticipant_set.count > 0 %}<a class="nav-item nav-link" id="nav-names-tab" data-toggle="tab" href="#nav-names" role="tab" aria-controls="nav-names" aria-selected="false">Participants</a>{% endif %}
-            </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane show active" id="nav-participants" role="tabpanel" aria-labelledby="nav-projects-tab" style="padding-top:20px">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-participants-tab" data-toggle="tab"
+                       href="#nav-participants" role="tab" aria-controls="nav-participants" aria-selected="true">Participants</a>
+                    <a class="nav-item nav-link" id="nav-certificate-tab" data-toggle="tab" href="#nav-certificate"
+                       role="tab" aria-controls="nav-certificate" aria-selected="true">Certificate</a>
+                    <a class="nav-item nav-link" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab"
+                       aria-controls="nav-details" aria-selected="false">Details</a>
+                    {% if training.trainingparticipant_set.count > 0 %}
+                        <a class="nav-item nav-link" id="nav-names-tab" data-toggle="tab" href="#nav-names" role="tab"
+                           aria-controls="nav-names" aria-selected="false">Participants</a>{% endif %}
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane show active" id="nav-participants" role="tabpanel"
+                     aria-labelledby="nav-projects-tab" style="padding-top:20px">
 
-                {% if edit_permission %}{% if training.image_data %}
-                <h2>Send Certificates</h2>
-		<form method="POST" class="post-form">
-		 {% csrf_token %}
-		  <label for="emails">Send certificates to participants by email:</label>
-		  <textarea name="emails" cols="40" rows="10" class="form-control" required id="emails"></textarea> 
-		  <span class="helptext">Please copy and paste emails (one per line) for certificate recipients.</span></p>
-		  <button style="margin-top:30px" type="submit" class="save btn btn-default">Send</button>
-		</form>{% else %}
-                <p class="alert alert-secondary">You must upload a certificate template first via the Certificate tab</p>
-                 {% endif %}{% endif %}
-            </div>
-            <div class="tab-pane show" id="nav-certificate" role="tabpanel" aria-labelledby="nav-certificate-tab" style="padding-top:20px">
-               {% if training.image_data %}<img src="data:image/png;base64, {{ training.image_data }}">{% endif %}
-               
-               <form method="POST" class="post-form" enctype="multipart/form-data" action="{% url 'update_event_image' training.uuid %}">{% csrf_token %}
-                 <p><label for="id_file">Update Image File (png saved from template):</label><input accept="image/x-png" type="file" name="file" class="form-control" required="" id="id_file"></p>
-                 <button type="submit" class="save btn btn-default">Save</button>
-               </form>
-            </div>
-            {% if training.trainingparticipant_set.count > 0 %}
-            <div class="tab-pane show" id="nav-names" role="tabpanel" aria-labelledby="nav-names-tab" style="padding-top:20px">
-                <h2 style="padding-top:40px">Current Participants</h2>
-	    <table class="table table-bordered" id="center-table" width="100%" cellspacing="0"><thead>
-	      <tr>
-	       <th>Email</th>
-	      </tr>
-	    </thead>
-	      <tbody>
-              {% for person in training.trainingparticipant_set.all %}<tr>
-                 <td>{{ person.email }}</td>
-              </tr>{% endfor %}
-	    </tbody>
-            </table>
-            </div>
-            {% endif %}
+                    {% if edit_permission %}{% if training.image_data %}
+                        <h2>Send Certificates</h2>
+                        <form method="POST" class="post-form">
+                            {% csrf_token %}
+                            <label for="emails">Send certificates to participants by email:</label>
+                            <textarea name="emails" cols="40" rows="10" class="form-control" required
+                                      id="emails"></textarea>
+                            <span class="helptext">Please copy and paste emails (one per line) for certificate recipients.</span></p>
+                            <button style="margin-top:30px" type="submit" class="save btn btn-default">Send</button>
+                        </form>{% else %}
+                        <p class="alert alert-secondary">You must upload a certificate template first via the
+                            Certificate tab</p>
+                    {% endif %}{% endif %}
+                </div>
+                <div class="tab-pane show" id="nav-certificate" role="tabpanel" aria-labelledby="nav-certificate-tab"
+                     style="padding-top:20px">
+                    {% if training.image_data %}<img src="data:image/png;base64, {{ training.image_data }}">{% endif %}
 
-            <div class="tab-pane fade " id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab">
-	    <table class="table table-bordered" id="center-table" width="100%" cellspacing="0"><thead>
-	      <tr>
-	       <th>Key</th>
-	       <th>Value</th>
-	      </tr>
-	    </thead>
-	      <tbody>
-              <tr>
-                 <td>Title of Event</td>
-                 <td>{{ training.name }}</td>
-              </tr>
-              <tr>
-                 <td>Center</td>
-                 <td>{{ training.center.name }}</td>
-              </tr>
-              {% if training.dates %}<tr>
-                 <td>Date of Event</td>
-                 <td>{{ training.dates }}</td>
-              </tr>{% endif %}
-              {% if training.duration %}<tr>
-                 <td>Duration of Event</td>
-                 <td>{{ training.duration }} hours</td>
-              </tr>{% endif %}
-              <tr>
-                 <td>Participants</td>
-                 <td>{{ training.trainingparticipant_set.count }}</td>
-              </tr>
-	    </tbody>
-	   </table>
+                    <form method="POST" class="post-form" enctype="multipart/form-data"
+                          action="{% url 'update_event_image' training.uuid %}">{% csrf_token %}
+                        <p><label for="id_file">Update Image File (png saved from template):</label><input
+                                accept="image/x-png" type="file" name="file" class="form-control" required=""
+                                id="id_file"></p>
+                        <button type="submit" class="save btn btn-default">Save</button>
+                    </form>
+                </div>
+                {% if training.trainingparticipant_set.count > 0 %}
+                    <div class="tab-pane show" id="nav-names" role="tabpanel" aria-labelledby="nav-names-tab"
+                         style="padding-top:20px">
+                        <h2 style="padding-top:40px">Current Participants</h2>
+                        <table class="table table-bordered" id="center-table" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Email</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for person in training.trainingparticipant_set.all %}
+                                <tr>
+                                    <td>{{ person.email }}</td>
+                                </tr>{% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+
+                <div class="tab-pane fade " id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab">
+                    <table class="table table-bordered" id="center-table" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Title of Event</td>
+                            <td>{{ training.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Center</td>
+                            <td>{{ training.center.name }}</td>
+                        </tr>
+                        {% if training.dates %}
+                            <tr>
+                                <td>Date of Event</td>
+                                <td>{{ training.dates }}</td>
+                            </tr>{% endif %}
+                        {% if training.duration %}
+                            <tr>
+                                <td>Duration of Event</td>
+                                <td>{{ training.duration }} hours</td>
+                            </tr>{% endif %}
+                        <tr>
+                            <td>Participants</td>
+                            <td>{{ training.trainingparticipant_set.count }}</td>
+                        </tr>
+                        <tr>
+                            <td>Generation Certificate Link</td>
+                            <td><a href="{{ generation_url }}" target="_blank">{{ generation_url }}</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 {% block scripts %}
-<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-<script>
-$(document).ready(function() {
-  $("#checkAll").click(function(){
-    $('input:checkbox').not(this).prop('checked', true);
-  });
-  $("#uncheckAll").click(function(){
-    $('input:checkbox').not(this).prop('checked', false);
-  });
-});
-</script>
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#checkAll").click(function () {
+                $('input:checkbox').not(this).prop('checked', true);
+            });
+            $("#uncheckAll").click(function () {
+                $('input:checkbox').not(this).prop('checked', false);
+            });
+        });
+    </script>
 {% endblock %}
