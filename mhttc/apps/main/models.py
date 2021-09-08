@@ -111,7 +111,7 @@ class TrainingParticipant(models.Model):
         )
         if send_email(
                 email_to=self.email,
-                email_from=self.training.center.email or SENDGRID_SENDER_EMAIL,
+                email_from=SENDGRID_SENDER_EMAIL,
                 message=message,
                 subject="Your event certificate of completion is ready!",
         ):
