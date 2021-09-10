@@ -14,11 +14,11 @@
             <nav>
                 <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-participants-tab" data-toggle="tab"
-                       href="#nav-participants" role="tab" aria-controls="nav-participants" aria-selected="true">Participants</a>
+                       href="#nav-participants" role="tab" aria-controls="nav-participants" aria-selected="true">Send Certificates</a>
                     <a class="nav-item nav-link" id="nav-certificate-tab" data-toggle="tab" href="#nav-certificate"
-                       role="tab" aria-controls="nav-certificate" aria-selected="true">Certificate</a>
+                       role="tab" aria-controls="nav-certificate" aria-selected="true">Certificate Template</a>
                     <a class="nav-item nav-link" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab"
-                       aria-controls="nav-details" aria-selected="false">Details</a>
+                       aria-controls="nav-details" aria-selected="false">Event Details</a>
                     {% if training.trainingparticipant_set.count > 0 %}
                         <a class="nav-item nav-link" id="nav-names-tab" data-toggle="tab" href="#nav-names" role="tab"
                            aria-controls="nav-names" aria-selected="false">Participants</a>{% endif %}
@@ -29,7 +29,6 @@
                      aria-labelledby="nav-projects-tab" style="padding-top:20px">
 
                     {% if edit_permission %}{% if training.image_data %}
-                        <h2>Send Certificates</h2>
                         <form method="POST" class="post-form">
                             {% csrf_token %}
                             <label for="emails">Send certificates to participants by email:</label>
@@ -62,13 +61,20 @@
                             <thead>
                             <tr>
                                 <th>Email</th>
+                                <th>Certificate Claimed</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for person in training.trainingparticipant_set.all %}
                                 <tr>
                                     <td>{{ person.email }}</td>
-                                </tr>{% endfor %}
+                                    {%if person.name%}
+                                        <td>Yes</td>
+                                    {%else%}
+                                        <td>No</td>
+                                    {%endif%}
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
