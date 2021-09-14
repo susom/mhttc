@@ -597,6 +597,7 @@ def edit_event(request, uuid):
         if form.is_valid():
             training = form.save(commit=False)
             training.center = request.user.center
+            training.contact = request.user
             training.image_data = encoded_string
             training.save()
             return redirect("event_details", uuid=training.uuid)
@@ -605,8 +606,9 @@ def edit_event(request, uuid):
         else:
             return render(request, "events/new_event.html", {"form": form})
     else:
-        form = TrainingForm(initial=model_to_dict(training))
-    return render(request, "events/new_event.html", {"form": form})
+        form = TrainingForm(initial=model_to_dict(training), use_required_attribute=False)
+        
+    return render(request, "events/edit_event.html", {"form": form})
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)

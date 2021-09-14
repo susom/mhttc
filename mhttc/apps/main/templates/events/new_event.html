@@ -1,20 +1,6 @@
 {% extends "base/page.html" %}
 {% load static %}
 {% block content %}
-    <style>
-        .thumbnail {
-        border: 1px solid #ddd; /* Gray border */
-        border-radius: 4px;  /* Rounded border */
-        padding: 5px; /* Some padding */
-        width: 350px; /* Set a small width */
-        }
-        
-        /* Add a hover effect (blue shadow) */
-        .thumbnail:hover {
-        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-        }
-    </style>
-
     <h2>{% if form.name.value %}Edit{% else %}New{% endif %} Event</h2>
     <hr>
     {% if form.errors %}{% for error in form.errors %}<p class="alert alert-danger">{{ error }}</p>{% endfor %}{% endif %}
@@ -30,20 +16,7 @@
             <option value="" {% if form.contact.value %}{% else %}selected{% endif %}>---------</option>{% for user in request.user.center.user_set.all %}
             <option value="{{ user.id }}" {% if form.contact.value == user.id %}selected{% endif %}>{{ user.username }}</option>{% endfor %}
         </select></p>
-        {%if form.initial.image_data%}
-            <p>Current image:</p>
-            <a target="_blank" href="data:image/png;base64, {{form.initial.image_data}}">
-                <img class='thumbnail' src="data:image/png;base64, {{form.initial.image_data}}" alt="uploaded">
-            </a>
-            <br>
-            <p><label for="id_file">Replacement File (png saved from template will overwrite current image):</label><input accept="image/x-png" type="file" name="file" class="form-control" {% if form.contact.name %}{% else %}required=""{% endif %} id="id_file"></p>
-        {%else%}
-
         <p><label for="id_file">Image File (png saved from template):</label><input accept="image/x-png" type="file" name="file" class="form-control" {% if form.contact.name %}{% else %}required=""{% endif %} id="id_file"></p>
-        {%endif%}
-        
-        
-        
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}
