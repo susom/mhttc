@@ -30,7 +30,7 @@ class ProjectForm(forms.ModelForm):
 class TrainingForm(forms.ModelForm):
 
     # Upload file only temporarily
-    file = forms.FileField()
+    file = forms.FileField(required=False) #set to required=null
 
     class Meta:
         model = Training
