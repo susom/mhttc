@@ -22,6 +22,7 @@ from django.db.models import CharField, TextField
 
 from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, \
     TrainingOutcome
+from mhttc.apps.users.models import User
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -597,7 +598,7 @@ def edit_event(request, uuid):
         if form.is_valid():
             training = form.save(commit=False)
             training.center = request.user.center
-            training.contact = request.user
+            training.contact = User.objects.get(id=(int(request.POST['contact']))) if request.POST['contact'] else ''
             training.image_data = encoded_string
             training.save()
             return redirect("event_details", uuid=training.uuid)
@@ -606,7 +607,7 @@ def edit_event(request, uuid):
         else:
             return render(request, "events/new_event.html", {"form": form})
     else:
-        form = TrainingForm(initial=model_to_dict(training), use_required_attribute=False)
+        form = TrainingForm(initial=model_to_dict(training, fields=[field.name for field in training._meta.fields]))
         
     return render(request, "events/edit_event.html", {"form": form})
 
