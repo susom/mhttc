@@ -11,3 +11,5 @@ lib
 pyvenv.cfg
 .idea/
 .DS_Store
+*code-workspace
+launch.json

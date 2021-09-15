@@ -433,6 +433,8 @@ def new_event(request):
         description = request.POST['description'].encode("ascii", errors="ignore").decode()
         if form.is_valid():
             training = form.save(commit=False)
+            training.contact = User.objects.get(id=int(request.POST['contact'])) if request.POST['contact'] else None
+            training.lead = User.objects.get(id=int(request.POST['lead'])) if request.POST['lead'] else None
             training.center = request.user.center
             training.image_data = encoded_string
             training.name = title
@@ -598,7 +600,8 @@ def edit_event(request, uuid):
         if form.is_valid():
             training = form.save(commit=False)
             training.center = request.user.center
-            training.contact = User.objects.get(id=(int(request.POST['contact']))) if request.POST['contact'] else ''
+            training.contact = User.objects.get(id=(int(request.POST['contact']))) if request.POST['contact'] else None
+            training.lead = User.objects.get(id=int(request.POST['lead'])) if request.POST['lead'] else None
             training.image_data = encoded_string
             training.save()
             return redirect("event_details", uuid=training.uuid)

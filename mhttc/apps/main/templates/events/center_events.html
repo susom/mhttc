@@ -1,5 +1,5 @@
 {% extends "base/page.html" %}
-{% load static %}
+
 {% block content %}
 <h1>Events for {{ center.name }}</h1>
 <hr>
@@ -15,10 +15,11 @@
   padding-top: 5px;
   padding-bottom: 5px;
 }
+
 </style>
 
 {% if events.count > 0 %}
-<table width="800px" class="table-bordered" id="center-training" width="90%" cellspacing="0">
+<table width="100%" class="table-bordered" id="center-training" cellspacing="0">
     <thead>
         <tr>
             <th width="25%">Title of Event</th>
@@ -39,4 +40,16 @@
 </table>
 {% else %}
 <p class="alert alert-primary">The {{ request.user.center.name }} does not have any events! <a style="float:right" href="{% url 'new_event' %}"><button class="btn btn-primary btn-sm" type="button">make a new event</button></a>.</p>{% endif %}
+{% endblock %}
+{%block page%}
+<script>
+    $(document).ready(function () {
+        $('#center-training').DataTable({
+            "scrollX": true,
+            "autoWidth": false,
+            "responsive":true
+        });
+    });
+    
+</script>
 {% endblock %}

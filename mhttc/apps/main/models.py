@@ -53,6 +53,8 @@ class Training(models.Model):
         "users.User", on_delete=models.PROTECT, blank=True, null=True
     )
 
+    lead = models.ForeignKey("users.User", on_delete=models.PROTECT, related_name='lead', blank=True, null=True)
+
     @property
     def slug(self):
         return self.name.replace(" ", "-").lower()
