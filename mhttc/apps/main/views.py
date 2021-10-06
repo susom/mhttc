@@ -307,8 +307,7 @@ def edit_form_template(request, uuid, stage=1):
     strategies = None
     if project.form is not None and project.form.implement_strategy is not None:
         strategies = project.form.implement_strategy.all()
-
-    strategies_types = StrategyType.objects.all()
+ 
 
     training_outcomes = None
     if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
@@ -321,7 +320,7 @@ def edit_form_template(request, uuid, stage=1):
             "form": form,
             "project": project,
             "strategies": strategies,
-            "strategies_types": strategies_types,
+            "strategies_types": StrategyType.objects.all().order_by('strategy'),
             "training_outcomes": training_outcomes,
         },
     )
@@ -402,6 +401,7 @@ def view_project_form(request, uuid):
                 "form": form,
                 "disabled": True,
                 "training_outcomes": training_outcomes,
+                "strategies_types": StrategyType.objects.all().order_by('strategy'),
                 "strategies": project.form.implement_strategy.all(),
             },
         )
