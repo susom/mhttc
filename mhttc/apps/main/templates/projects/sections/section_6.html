@@ -104,7 +104,9 @@
             <tr>
                 <th scope="col" class="sort" data-sort="outcome">Outcome</th>
                 <th scope="col" class="sort" data-sort="measure">How will the outcome be measured?</th>
+            {% if project.stage > 1 %}
                 <th scope="col" class="sort" data-sort="measure">Results, If Available</th>
+            {% endif %}
                 {% if disabled %}{% else %}
                     <th scope="col"></th>{% endif %}
             </tr>
@@ -115,8 +117,10 @@
                 </td>
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_measure">
                 </td>
+            {% if project.stage > 1 %}
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_results">
                 </td>
+            {% endif %}
                 {% if disabled %}{% else %}
                     <td>
                         <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
@@ -131,9 +135,11 @@
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
                         class="training_outcome_measure">{{ outcome.how_outcome_measured }}
                     </td>
+                {% if project.stage > 1 %}
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
                         class="training_outcome_results">{{ outcome.outcome_results|default_if_none:"" }}
                     </td>
+                {% endif %}
                     {% if disabled %}{% else %}
                         <td>
                             <span class="table-remove"><button type="button"
@@ -145,8 +151,10 @@
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_measure">
                     </td>
+                {% if project.stage > 1 %}
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="training_outcome_results">
                     </td>
+                {% endif %}
                     {% if disabled %}{% else %}
                         <td>
                             <span class="table-remove"><button type="button"
