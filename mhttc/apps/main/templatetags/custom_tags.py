@@ -21,7 +21,7 @@ def can_publish(project, request):
     return True
 
 def convert_to_timestampt(date, request):
-    return time.mktime(datetime.datetime.strptime(date, "%d/%m/%Y").timetuple())
+    return time.mktime(datetime.datetime.strptime(date, "%B %j, %Y").timetuple())
 
 register.filter('convert_to_timestampt', convert_to_timestampt)
 register.filter('can_edit', can_edit)
