@@ -7,9 +7,12 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
-
+from django.db.models import Q
 from django.contrib import admin
 from mhttc.apps.main.models import Project, FormTemplate, Training, TrainingParticipant, StrategyType, Strategy
+from import_export import fields, resources
+from import_export.widgets import ForeignKeyWidget
+from import_export.admin import ExportActionMixin
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -72,7 +75,39 @@ class StrategyTypeAdmin(admin.ModelAdmin):
         'strategy'
     ]
 
-class FormTemplateAdmin(admin.ModelAdmin):
+class InputFilter(admin.SimpleListFilter):
+    template = 'admin/input_filter.html'
+
+    def lookups(self, request, model_admin):
+        # Dummy, required to show the filter.
+        return ((),)
+
+    def choices(self, changelist):
+        # Grab only the "all" option.
+        all_choice = next(super().choices(changelist))
+        all_choice['query_parts'] = (
+            (k, v)
+            for k, v in changelist.get_filters_params().items()
+            if k != self.parameter_name
+        )
+        yield all_choice
+
+class NameFilter(InputFilter):
+    parameter_name = 'name'
+    title = 'Name'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            name = self.value()
+
+            return queryset.filter(
+                name__contains=name
+            )
+
+class FormTemplateAdmin(ExportActionMixin, admin.ModelAdmin):
+    pass
+    list_filter = (NameFilter,)
+
     list_display = (
         "name",
         "start_date",
@@ -107,6 +142,7 @@ class FormTemplateAdmin(admin.ModelAdmin):
         "results_cost",
         "results_other",
     )
+
 
 
 admin.site.register(Strategy, StrategyAdmin)

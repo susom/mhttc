@@ -11,7 +11,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from django.shortcuts import render, redirect
 from django.http import Http404, JsonResponse
 from ratelimit.decorators import ratelimit
-
+from mhttc.settings import DOMAIN_NAME
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -21,6 +22,7 @@ from django.db.models import CharField, TextField
 
 from mhttc.apps.main.models import Project, Training, TrainingParticipant, Strategy, FormTemplate, StrategyType, \
     TrainingOutcome
+from mhttc.apps.users.models import User
 from mhttc.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from mhttc.apps.main.forms import (
     ProjectForm,
@@ -285,7 +287,10 @@ def edit_form_template(request, uuid, stage=1):
                     form.stage = project.stage
             project.form = template
             project.save()
-            old_form.delete()
+            try:
+                old_form.delete()
+            except:
+                return JsonResponse({"message": "Your project was saved successfully."})
             return JsonResponse({"message": "Your project was saved successfully."})
 
         # Not valid - return to page to populate
@@ -302,8 +307,7 @@ def edit_form_template(request, uuid, stage=1):
     strategies = None
     if project.form is not None and project.form.implement_strategy is not None:
         strategies = project.form.implement_strategy.all()
-
-    strategies_types = StrategyType.objects.all()
+ 
 
     training_outcomes = None
     if project.form is not None and project.form.evaluation_proximal_training_outcome is not None:
@@ -316,7 +320,7 @@ def edit_form_template(request, uuid, stage=1):
             "form": form,
             "project": project,
             "strategies": strategies,
-            "strategies_types": strategies_types,
+            "strategies_types": StrategyType.objects.all().order_by('strategy'),
             "training_outcomes": training_outcomes,
         },
     )
@@ -397,6 +401,7 @@ def view_project_form(request, uuid):
                 "form": form,
                 "disabled": True,
                 "training_outcomes": training_outcomes,
+                "strategies_types": StrategyType.objects.all().order_by('strategy'),
                 "strategies": project.form.implement_strategy.all(),
             },
         )
@@ -428,6 +433,8 @@ def new_event(request):
         description = request.POST['description'].encode("ascii", errors="ignore").decode()
         if form.is_valid():
             training = form.save(commit=False)
+            training.contact = User.objects.get(id=int(request.POST['contact'])) if request.POST['contact'] else None
+            training.lead = User.objects.get(id=int(request.POST['lead'])) if request.POST['lead'] else None
             training.center = request.user.center
             training.image_data = encoded_string
             training.name = title
@@ -526,10 +533,15 @@ def event_details(request, uuid):
                 request, "You have requested %s certificate emails to be sent." % count
             )
 
+        generation_url =   "%s%s" % (
+            DOMAIN_NAME,
+            reverse("download_certificate", args=[training.uuid]),
+        )
+
         return render(
             request,
             "events/event_details.html",
-            context={"training": training, "edit_permission": edit_permission},
+            context={"training": training, "edit_permission": edit_permission, "generation_url": generation_url},
         )
     except Training.DoesNotExist:
         raise Http404
@@ -588,6 +600,8 @@ def edit_event(request, uuid):
         if form.is_valid():
             training = form.save(commit=False)
             training.center = request.user.center
+            training.contact = User.objects.get(id=(int(request.POST['contact']))) if request.POST['contact'] else None
+            training.lead = User.objects.get(id=int(request.POST['lead'])) if request.POST['lead'] else None
             training.image_data = encoded_string
             training.save()
             return redirect("event_details", uuid=training.uuid)
@@ -596,8 +610,9 @@ def edit_event(request, uuid):
         else:
             return render(request, "events/new_event.html", {"form": form})
     else:
-        form = TrainingForm(initial=model_to_dict(training))
-    return render(request, "events/new_event.html", {"form": form})
+        form = TrainingForm(initial=model_to_dict(training, fields=[field.name for field in training._meta.fields]))
+        
+    return render(request, "events/edit_event.html", {"form": form})
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -637,7 +652,9 @@ def download_certificate(request, uuid):
             # Ensure that the participant is completed for the training
             email = form.cleaned_data["email"]
             try:
-                TrainingParticipant.objects.get(email=email, training=training)
+                participant = TrainingParticipant.objects.get(email=email, training=training)
+                participant.name = request.POST['name']
+                participant.save()
             except:
                 messages.warning(
                     request, "We cannot find a record of your participation."
@@ -658,8 +675,14 @@ def download_certificate(request, uuid):
         else:
             messages.warning(request, "Your form submission is not valid.")
 
+    u = request.user
+    if u.id == None:
+        hide_login = True
+    else:
+        hide_login = False
+
     return render(
         request,
         "events/download_certificate.html",
-        {"form": form, "training": training},
+        {"form": form, "training": training, "hide_login": hide_login},
     )

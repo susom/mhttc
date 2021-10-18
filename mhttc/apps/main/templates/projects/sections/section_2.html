@@ -1,4 +1,4 @@
-<h2>2. What is the need/rationale for this project?. Why/how did you decide to do this project?. {% if project.stage > 1 %}Did anything change from the previous phase to impact the project?.{% endif %}</h2>
+<h2>2. What is the need/rationale for this project? Why/how did you decide to do this project? {% if project.stage > 1 %}Did anything change from the previous phase to impact the project?.{% endif %}</h2>
 <div class="form-group">
     <textarea name="need" cols="40" rows="5" class="form-control"  id="id_need"
               {% if disabled %}disabled{% endif %}>{{ form.need.value|default_if_none:"" }}</textarea>

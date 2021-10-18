@@ -1,0 +1,89 @@
+{% extends "base/page.html" %}
+{% load static %}
+{% block content %}
+    <style>
+        .thumbnail {
+        border: 1px solid #ddd; /* Gray border */
+        border-radius: 4px;  /* Rounded border */
+        padding: 5px; /* Some padding */
+        width: 350px; /* Set a small width */
+        }
+        
+        /* Add a hover effect (blue shadow) */
+        .thumbnail:hover {
+        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+
+        #thumb {
+            margin-bottom: 10px;
+        }
+    </style>
+    <h2>{% if form.name.value %}Edit{% else %}New{% endif %} Event</h2>
+    <hr>
+    {% if form.errors %}{% for error in form.errors %}<p class="alert alert-danger">{{ error }}</p>{% endfor %}{% endif %}
+    <p class="alert alert-info" style="max-width:100%">This event {% if form.name.value %}is{% else %}will be{% endif %} associated with your center, {{ request.user.center.name }}. By default, the certificate will use <a target="_blank" href="https://docs.google.com/presentation/d/1V7YYtwcwfhSd1WJ9C0XGWOLwXjPU6zcdFxjeGYeXJJE/edit?usp=sharing">this template</a>. To customize this template for your event, open the template in Google Slides for editing (<strong>do not download the presentation to edit on your computer)</strong>, and make a copy so you have edit permission. Then, update the logo(s) and the signature(s), and delete the orange boxes. Do not move or edit the information that is covered by any orange box, because the title of the event, date, and duration will automatically populate with information you enter in the form below. Then in Google Slides select File -> Download -> PNG Image (current slide) to save a PNG image to your computer. Then upload the image in the "Image File" box below.  After completing this screen, you will be prompted to enter email addresses of the attendees. It's a good idea to start by sending a test certificate to yourself to make sure it looks the way you want it to. You can then go into Events, Edit, and add the list of attendees.</p>
+    <br><a href="{% url 'center_events' %}"><< back</a>
+    <hr>
+    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+        <p><label for="id_name">Title of Event:</label> <input type="text" name="name" maxlength="250" class="form-control"  id="id_name" {% if form.name.value %}value="{{ form.name.value }}"{% endif %}></p>
+        <p><label for="id_description">Description:</label> <input type="text" name="description" maxlength="500" class="form-control" id="id_description" {% if form.description.value %}value="{{ form.description.value }}"{% endif %} ></p>
+        <p><label for="id_dates">Date of Event: The date(s) of your event will be printed on the certificate, format appropriately.</label><input type="text" name="dates" maxlength="250" class="form-control" id="id_dates" {% if form.dates.value %}value="{{ form.dates.value }}"{% endif %} ></p>
+        <p><label for="id_duration"> Duration:  The duration of your event, typically hours, and include the unit (e.g., 4 hours).</label><input type="text" name="duration" maxlength="100" class="form-control" id="id_duration" {% if form.duration.value %}value="{{ form.duration.value }}"{% endif %} ></p>
+        <p><label for="id_contact">Contact:</label> <select name="contact" class="form-control"  id="id_contact">
+            <option value="" {% if form.contact.value is None  %}selected{%endif%}>---------</option>
+            {% for user in request.user.center.user_set.all %}
+                <option value="{{ user.id }}" {% if form.contact.value == user.id %}selected{% endif %}>{{ user.username }}</option>
+            {% endfor %}
+        </select></p>
+        <p>
+            <label for="id_lead">Training Lead: (optional)</label> 
+            <select name="lead" class="form-control" id="id_lead">
+                <option value="" {% if form.lead.value is None  %}selected{% endif %}>---------</option>
+                {% for user in request.user.center.user_set.all %}
+                <option value="{{ user.id }}" {% if form.lead.value == user.id %}selected{% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        {%if form.initial.image_data%}
+            <p>Current image:</p>
+            <a id='thumb_ref'>
+                <img id='thumb' class='thumbnail' src="data:image/png;base64, {{form.initial.image_data}}" alt="uploaded">
+            </a>
+            <br>
+            
+            <p><label for="id_file">Replacement File (png saved from template will overwrite current image):</label><input accept="image/x-png" type="file" name="file" class="form-control" {% if form.contact.name %}{% else %}{% endif %} id="id_file"></p>
+        {%else%}
+        <p><label for="id_file">Image File (png saved from template):</label><input accept="image/x-png" type="file" name="file" class="form-control" {% if form.contact.name %}{% else %}{% endif %} id="id_file"></p>        
+        {%endif%}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% endblock %}
+{%block page%}
+<script>
+    $(document).ready(function () {
+        $('#thumb_ref').on('click', function(){
+            const base64ImageData = $('#thumb').attr('src');
+            const contentType = 'image/png';
+            const byteCharacters = atob(base64ImageData.substr(`data:${contentType};base64,`.length));
+            const byteArrays = [];
+            
+            for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+                const slice = byteCharacters.slice(offset, offset + 1024);
+            
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+            
+                const byteArray = new Uint8Array(byteNumbers);
+            
+                byteArrays.push(byteArray);
+            }
+            const blob = new Blob(byteArrays, {type: contentType});
+            const blobUrl = URL.createObjectURL(blob);
+            
+            window.open(blobUrl, '_blank');
+          });
+    });
+</script>
+{%endblock%}
