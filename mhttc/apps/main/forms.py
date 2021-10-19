@@ -75,10 +75,10 @@ class FormTemplateForm(forms.ModelForm):
     class Meta:
         model = FormTemplate
 
-        widgets = {
-            "start_date": DatePickerInput(),
-            "end_date": DatePickerInput(),
-        }
+        # widgets = {
+        #     "start_date": DatePickerInput(),
+        #     "end_date": DatePickerInput(),
+        # }
 
         fields = (
             "name",
