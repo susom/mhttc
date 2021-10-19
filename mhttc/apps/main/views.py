@@ -209,16 +209,23 @@ def edit_form_template(request, uuid, stage=1):
 
                     training_outcome_outcome = training_outcome["training_outcome_outcome_%s" % index].strip()
                     training_outcome_measure = training_outcome["training_outcome_measure_%s" % index].strip()
-                    training_outcome_results = training_outcome["training_outcome_results_%s" % index].strip()
 
-                    if not training_outcome_outcome and not training_outcome_measure and not training_outcome_results:
+
+                    if not training_outcome_outcome and not training_outcome_measure:
                         continue
 
-                    new_training_outcome = TrainingOutcome.objects.create(
-                        outcome=training_outcome_outcome,
-                        how_outcome_measured=training_outcome_measure,
-                        outcome_results=training_outcome_results
-                    )
+                    if "training_outcome_results_%s" % index in training_outcome:
+                        training_outcome_results = training_outcome["training_outcome_results_%s" % index].strip()
+                        new_training_outcome = TrainingOutcome.objects.create(
+                            outcome=training_outcome_outcome,
+                            how_outcome_measured=training_outcome_measure,
+                            outcome_results=training_outcome_results
+                        )
+                    else:
+                        new_training_outcome = TrainingOutcome.objects.create(
+                            outcome=training_outcome_outcome,
+                            how_outcome_measured=training_outcome_measure
+                        )
 
                     new_training_outcomes.append(new_training_outcome)
 
@@ -227,10 +234,10 @@ def edit_form_template(request, uuid, stage=1):
                     [x.delete() for x in old_training_outcome]
                     [template.evaluation_proximal_training_outcome.add(x) for x in new_training_outcomes]
                     template.save()
-            except Exception:
+            except Exception as e:
                 project.form = template
                 project.save()
-                return JsonResponse({"message": "Could not save Training"})
+                return JsonResponse({"message": "Could not save Training" + str(e)})
 
             # For each index, only add if all fields are defined
             new_strategies = []
@@ -277,7 +284,7 @@ def edit_form_template(request, uuid, stage=1):
             except Exception as e:
                 project.form = template
                 project.save()
-                return JsonResponse({"message": "Could not save Strategy"})
+                return JsonResponse({"message": "Could not save Strategy" + str(e)})
 
 
             # Unless we are at stage 3, add 1 to stage
