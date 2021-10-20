@@ -11,7 +11,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from mhttc.apps.main.models import Project, FormTemplate, Training, TrainingParticipant
 from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
-
+from django.conf import settings
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -70,8 +70,8 @@ class FormTemplateForm(forms.ModelForm):
     """
 
     stage = 1
-    # start_date = forms.DateField(widget=forms.DateInput(format='%m/%d/%Y'))
-    # end_date = forms.CharField()
+    start_date = forms.DateField()
+    end_date = forms.DateField()
     class Meta:
         model = FormTemplate
 
