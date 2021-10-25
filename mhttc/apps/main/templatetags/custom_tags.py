@@ -1,8 +1,6 @@
 from django import template
-from mhttc.apps.main.models import Project
-from mhttc.apps.users.models import Center
 register = template.Library()
-
+import time, datetime
 def can_edit(project, request):
     # check if user if part of center
     if request.path == '/projects/search/':
@@ -22,7 +20,10 @@ def can_publish(project, request):
         return False
     return True
 
+def convert_to_timestampt(date, request):
+    return time.mktime(datetime.datetime.strptime(date, "%B %j, %Y").timetuple())
 
+register.filter('convert_to_timestampt', convert_to_timestampt)
 register.filter('can_edit', can_edit)
 register.filter('can_view', can_view)
 register.filter('can_publish', can_publish)

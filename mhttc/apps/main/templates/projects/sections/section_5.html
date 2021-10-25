@@ -129,13 +129,9 @@
 {#                        <option value="5" {% if strategy.strategy_format == 5 %}selected{% endif %}>Website</option>#}
 {#                    </select>#}
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
-                    step="1">
-                </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency">
-                </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description">
-                </td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number" step="1"></td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency"></td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description"></td>
                 {% if disabled %}{% else %}
                     <td>
                         <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
@@ -168,18 +164,14 @@
 {#                            </option>#}
 {#                            <option value="5" {% if strategy.strategy_format == '5' %}selected{% endif %}>Website</option>#}
 {#                        </select>#}
-                    {{ strategy.strategy_format }}
-                    </td>
+                    {{ strategy.strategy_format }}</td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
                         type="number"
-                        step="1">{{ strategy.planned_number_units }}
-                    </td>
+                        step="1">{{ strategy.planned_number_units }}</td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
-                        class="strategy_frequency">{{ strategy.frequency }}
-                    </td>
+                        class="strategy_frequency">{{ strategy.frequency }}</td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
-                        class="strategy_brief_description">{{ strategy.brief_description }}
-                    </td>
+                        class="strategy_brief_description">{{ strategy.brief_description }}</td>
                     {% if disabled %}{% else %}
                         <td>
                             <span class="table-remove"><button type="button"
@@ -208,16 +200,10 @@
 {#                            <option value="4">Virtual/video#}
 {#                            </option>#}
 {#                            <option value="5">Website</option>#}
-{#                        </select>#}
-                    </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
-                        type="number"
-                        step="1">
-                    </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency">
-                    </td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description">
-                    </td>
+{#                        </select>#}</td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number" step="1"></td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency"></td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description"></td>
                     {% if disabled %}{% else %}
                         <td>
                             <span class="table-remove"><button type="button"
