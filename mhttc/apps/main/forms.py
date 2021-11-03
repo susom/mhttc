@@ -42,7 +42,7 @@ class TrainingForm(forms.ModelForm):
             "file",
             "dates",
             "duration",
-            "contact",
+            # "contact",
             "lead"
         )
 
