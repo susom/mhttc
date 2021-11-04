@@ -15682,7 +15682,7 @@ textarea[resize="horizontal"] {
 .nav-pills-circle .nav-link-icon svg {
     font-size: 1rem;
 }
-.page-item.active .page-link {
+/* .page-item.active .page-link {
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 .page-item .page-link,
@@ -15708,7 +15708,7 @@ textarea[resize="horizontal"] {
     line-height: 30px;
     width: 30px;
     height: 30px;
-}
+} */
 .popover {
     border: 0;
 }
