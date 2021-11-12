@@ -112,26 +112,32 @@
                     <select class="form-control" id="id_strategy_type"
                             {% if disabled %}disabled{% endif %}>
                         <option value="">Select Strategy</option>
-                        {% for type in strategies_types %}
-                            <option value="{{ type.pk }}"
-                                    {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
+                        {% for category, types in strategies_types.items %}
+                            <optgroup label="{{ category }}">
+                                {% for type in types %}
+                                        <option value="{{ type.id }}" {% if type.active == 0 %}disabled{% endif %}
+                                                {% if strategy.strategy_type_id == type.id %}selected{% endif %}>{{ type.strategy }}</option>
+                                {% endfor %}
+                            </optgroup>
                         {% endfor %}
                     </select>
                 </td>
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
-{#                    <select class="form-control" id="id_strategy_format"#}
-{#                            {% if disabled %}disabled{% endif %}>#}
-{#                        <option value="">Select Format</option>#}
-{#                        <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>#}
-{#                        <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>#}
-{#                        <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>#}
-{#                        <option value="4" {% if strategy.strategy_format == 4 %}selected{% endif %}>Virtual/video</option>#}
-{#                        <option value="5" {% if strategy.strategy_format == 5 %}selected{% endif %}>Website</option>#}
-{#                    </select>#}
+                    {#                    <select class="form-control" id="id_strategy_format"#}
+                    {#                            {% if disabled %}disabled{% endif %}>#}
+                    {#                        <option value="">Select Format</option>#}
+                    {#                        <option value="1" {% if strategy.strategy_format == 1 %}selected{% endif %}>Email/mail</option>#}
+                    {#                        <option value="2" {% if strategy.strategy_format == 2 %}selected{% endif %}>In person</option>#}
+                    {#                        <option value="3" {% if strategy.strategy_format == 3 %}selected{% endif %}>Phone</option>#}
+                    {#                        <option value="4" {% if strategy.strategy_format == 4 %}selected{% endif %}>Virtual/video</option>#}
+                    {#                        <option value="5" {% if strategy.strategy_format == 5 %}selected{% endif %}>Website</option>#}
+                    {#                    </select>#}
                 </td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number" step="1"></td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number"
+                    step="1"></td>
                 <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency"></td>
-                <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description"></td>
+                <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                    class="strategy_brief_description"></td>
                 {% if disabled %}{% else %}
                     <td>
                         <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
@@ -144,27 +150,31 @@
                         <select class="form-control" id="id_strategy_type"
                                 {% if disabled %}disabled{% endif %}>
                             <option value="">Select Strategy</option>
-                            {% for type in strategies_types %}
-                                <option value="{{ type.pk }}"
-                                        {% if strategy.strategy_type_id == type.pk %}selected{% endif %}>{{ type.strategy }}</option>
+                            {% for category, types in strategies_types.items %}
+                                <optgroup label="{{ category }}">
+                                    {% for type in types %}
+                                        <option value="{{ type.id }}" {% if type.active == 0 %}disabled{% endif %}
+                                                {% if strategy.strategy_type_id == type.id %}selected{% endif %}>{{ type.strategy }}</option>
+                                    {% endfor %}
+                                </optgroup>
                             {% endfor %}
                         </select>
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
                         class="strategy_format">
-{#                        <select class="form-control" id="id_strategy_format"#}
-{#                                {% if disabled %}disabled{% endif %}>#}
-{#                            <option value="">Select Format</option>#}
-{#                            <option value="1" {% if strategy.strategy_format == '1' %}selected{% endif %}>Email/mail#}
-{#                            </option>#}
-{#                            <option value="2" {% if strategy.strategy_format == '2' %}selected{% endif %}>In person#}
-{#                            </option>#}
-{#                            <option value="3" {% if strategy.strategy_format == '3' %}selected{% endif %}>Phone</option>#}
-{#                            <option value="4" {% if strategy.strategy_format == '4' %}selected{% endif %}>Virtual/video#}
-{#                            </option>#}
-{#                            <option value="5" {% if strategy.strategy_format == '5' %}selected{% endif %}>Website</option>#}
-{#                        </select>#}
-                    {{ strategy.strategy_format }}</td>
+                        {#                        <select class="form-control" id="id_strategy_format"#}
+                        {#                                {% if disabled %}disabled{% endif %}>#}
+                        {#                            <option value="">Select Format</option>#}
+                        {#                            <option value="1" {% if strategy.strategy_format == '1' %}selected{% endif %}>Email/mail#}
+                        {#                            </option>#}
+                        {#                            <option value="2" {% if strategy.strategy_format == '2' %}selected{% endif %}>In person#}
+                        {#                            </option>#}
+                        {#                            <option value="3" {% if strategy.strategy_format == '3' %}selected{% endif %}>Phone</option>#}
+                        {#                            <option value="4" {% if strategy.strategy_format == '4' %}selected{% endif %}>Virtual/video#}
+                        {#                            </option>#}
+                        {#                            <option value="5" {% if strategy.strategy_format == '5' %}selected{% endif %}>Website</option>#}
+                        {#                        </select>#}
+                        {{ strategy.strategy_format }}</td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
                         type="number"
                         step="1">{{ strategy.planned_number_units }}</td>
@@ -183,27 +193,34 @@
                         <select class="form-control" id="strategy_type"
                                 {% if disabled %}disabled{% endif %}>
                             <option value="">Select Strategy</option>
-                            {% for type in strategies_types %}
-                                <option value="{{ type.pk }}">{{ type.strategy }}</option>
+                            {% for category, types in strategies_types.items %}
+                                <optgroup label="{{ category }}">
+                                    {% for type in types %}
+                                        <option value="{{ type.id }}" {% if type.active == 0 %}disabled{% endif %}
+                                                {% if strategy.strategy_type_id == type.id %}selected{% endif %}>{{ type.strategy }}</option>
+                                    {% endfor %}
+                                </optgroup>
                             {% endfor %}
                         </select>
                     </td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_format">
-{#                        <select class="form-control" id="id_strategy_format"#}
-{#                                {% if disabled %}disabled{% endif %}>#}
-{#                            <option value="">Select Format</option>#}
-{#                            <option value="1">Email/mail#}
-{#                            </option>#}
-{#                            <option value="2">In person#}
-{#                            </option>#}
-{#                            <option value="3">Phone</option>#}
-{#                            <option value="4">Virtual/video#}
-{#                            </option>#}
-{#                            <option value="5">Website</option>#}
-{#                        </select>#}</td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units" type="number" step="1"></td>
+                        {#                        <select class="form-control" id="id_strategy_format"#}
+                        {#                                {% if disabled %}disabled{% endif %}>#}
+                        {#                            <option value="">Select Format</option>#}
+                        {#                            <option value="1">Email/mail#}
+                        {#                            </option>#}
+                        {#                            <option value="2">In person#}
+                        {#                            </option>#}
+                        {#                            <option value="3">Phone</option>#}
+                        {#                            <option value="4">Virtual/video#}
+                        {#                            </option>#}
+                        {#                            <option value="5">Website</option>#}
+                        {#                        </select>#}</td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_units"
+                        type="number" step="1"></td>
                     <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_frequency"></td>
-                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %} class="strategy_brief_description"></td>
+                    <td {% if disabled %}{% else %}contenteditable="true"{% endif %}
+                        class="strategy_brief_description"></td>
                     {% if disabled %}{% else %}
                         <td>
                             <span class="table-remove"><button type="button"

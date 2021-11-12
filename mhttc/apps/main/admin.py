@@ -68,11 +68,15 @@ class StrategyAdmin(admin.ModelAdmin):
 
 class StrategyTypeAdmin(admin.ModelAdmin):
     fields = [
-        'strategy'
+        'categories',
+        'strategy',
+        'active'
     ]
 
     list_display = [
-        'strategy'
+        'categories',
+        'strategy',
+        'active'
     ]
 
 class InputFilter(admin.SimpleListFilter):
