@@ -47,8 +47,8 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-if os.environ.get("GAE_APPLICATION") is not None:
-    DEBUG = True if str(os.environ['DEBUG'])  == '1' else False
+# if os.environ.get("GAE_APPLICATION") is not None:
+#     DEBUG = True if str(os.environ['DEBUG'])  == '1' else False
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
