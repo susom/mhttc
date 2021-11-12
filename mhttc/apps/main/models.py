@@ -188,8 +188,24 @@ class Project(models.Model):
 class StrategyType(models.Model):
     """An implementation strategy types to add to a Strategy"""
 
+    TYPES_CATEGORIES = (
+        (1, 'Change infrastructure'),
+        (2, 'Use financial strategies'),
+        (3, 'Engage consumers'),
+        (4, 'Support deliverers of the intervention/program/service'),
+        (5, 'Train and educate stakeholders'),
+        (6, 'Develop stakeholder relationships'),
+        (7, 'Adapt and tailor content'),
+        (8, 'Provide interactive assistance'),
+        (9, 'Use evaluative and iterative strategies'),
+        (0, 'Other'),
+    )
+
+    categories = models.PositiveIntegerField(choices=TYPES_CATEGORIES, default=0, null=False, blank=False)
+
     strategy = models.CharField(max_length=500, blank=True, null=True, help_text="Category")
 
+    active = models.BooleanField(default=True, null=False, blank=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
                                    related_name="strategy_type_created_by")
     created_at = models.DateTimeField("date created", auto_now_add=True)
@@ -205,6 +221,15 @@ class StrategyType(models.Model):
 
     class Meta:
         app_label = "main"
+
+    @staticmethod
+    def get_types_grouped_by_categories():
+        result = {}
+        for category in StrategyType.TYPES_CATEGORIES:
+
+            result[category[1]] = list(StrategyType.objects.filter(categories=category[0]).values())
+
+        return result
 
 
 class Strategy(models.Model):
