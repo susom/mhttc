@@ -191,7 +191,7 @@ class StrategyType(models.Model):
     TYPES_CATEGORIES = (
         (1, 'Change infrastructure'),
         (2, 'Use financial strategies'),
-        (3, 'Engage consumers'),
+        # (3, 'Engage consumers'),
         (4, 'Support deliverers of the intervention/program/service'),
         (5, 'Train and educate stakeholders'),
         (6, 'Develop stakeholder relationships'),
