@@ -255,6 +255,9 @@ class Strategy(models.Model):
 
     brief_description = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return str(self.brief_description)
+
     def get_label(self):
         return "strategy"
 
@@ -506,6 +509,10 @@ class FormTemplate(models.Model):
     other_relevant_issues = models.TextField(
         help_text="Other relevant issues?", blank=True, null=True
     )
+
+    def __str__(self):
+        return str(self.name)
+
 
     def get_absolute_url(self):
         return reverse("formtemplate_details", args=[self.uuid])
