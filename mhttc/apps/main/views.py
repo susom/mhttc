@@ -295,6 +295,8 @@ def edit_form_template(request, uuid, stage=1):
             project.form = template
             project.save()
             try:
+                project.form.time_created = old_form.time_created
+                project.form.save()
                 old_form.delete()
             except:
                 return JsonResponse({"message": "Your project was saved successfully."})
