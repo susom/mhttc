@@ -226,6 +226,7 @@ class FormTemplateAdmin(ExportActionMixin, admin.ModelAdmin):
 
     resource_class = FormTemplateResource
     list_display = (
+        "project_name",
         "name",
         "start_date",
         "end_date",
@@ -259,6 +260,13 @@ class FormTemplateAdmin(ExportActionMixin, admin.ModelAdmin):
         "results_cost",
         "results_other",
     )
+
+    def project_name(self, form):
+        try:
+            project = Project.objects.get(form_id=form.uuid)
+            return '%s' % (project.name)
+        except Project.DoesNotExist:
+            return 'No Project Found'
 
 
 admin.site.register(Strategy, StrategyAdmin)
