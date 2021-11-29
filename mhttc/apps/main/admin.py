@@ -21,63 +21,31 @@ class FormTemplateResource(resources.ModelResource):
     project_stage = Field()
     project_status = Field()
     project_center = Field()
-    implement_strategy = Field(column_name='implement_strategy')
+    implement_strategy_1 = Field(column_name='implement_strategy_1')
+    implement_strategy_2 = Field(column_name='implement_strategy_2')
+    implement_strategy_3 = Field(column_name='implement_strategy_3')
+    implement_strategy_4 = Field(column_name='implement_strategy_4')
+    implement_strategy_5 = Field(column_name='implement_strategy_5')
+    implement_strategy_6 = Field(column_name='implement_strategy_6')
+    implement_strategy_7 = Field(column_name='implement_strategy_7')
+    implement_strategy_8 = Field(column_name='implement_strategy_8')
+    implement_strategy_9 = Field(column_name='implement_strategy_9')
+    implement_strategy_10 = Field(column_name='implement_strategy_10')
+
+    training_outcome_1 = Field(column_name='training_outcome_1')
+    training_outcome_2 = Field(column_name='training_outcome_2')
+    training_outcome_3 = Field(column_name='training_outcome_3')
+    training_outcome_4 = Field(column_name='training_outcome_4')
+    training_outcome_5 = Field(column_name='training_outcome_5')
+    training_outcome_6 = Field(column_name='training_outcome_6')
+    training_outcome_7 = Field(column_name='training_outcome_7')
+    training_outcome_8 = Field(column_name='training_outcome_8')
+    training_outcome_9 = Field(column_name='training_outcome_9')
+    training_outcome_10 = Field(column_name='training_outcome_10')
+
 
     class Meta:
         model = FormTemplate
-        fields = ('uuid',
-                  'project_name',
-                  'project_stage',
-                  'project_status',
-                  'project_center',
-                  'implement_strategy',
-                  'time_created',
-                  'time_updated',
-                  'start_date	',
-                  'end_date',
-                  'name',
-                  'need',
-                  'target_audience_wh',
-                  'target_audience_settings',
-                  'target_audience_disciplines',
-                  'target_audience_roles',
-                  'target_audience_relations',
-                  'target_audience_relations_other',
-                  'target_audience_ta_recipients',
-                  'consider_system_factors', 'consider_org_factors',
-                  'consider_clinical_factors',
-                  'consider_system_factors_barriers',
-                  'consider_org_factors_barriers',
-                  'consider_clinical_factors_barriers',
-                  'consider_ascertained',
-                  'consider_sustainment_strategy',
-                  'implement_strategy_description',
-                  'evaluation_planned_enrollment_organization',
-                  'evaluation_planned_enrollment_individual',
-                  'evaluation_proximal_training_outcome',
-                  'evaluation_enrolled_organization',
-                  'evaluation_enrolled_individual',
-                  'evaluation_percent_init_implementation_strategy_organization',
-                  'evaluation_percent_init_implementation_strategy_individual',
-                  'evaluation_percent_complete_50_strategy_organization',
-                  'evaluation_percent_complete_50_strategy_individual',
-                  'evaluation_percent_complete_80_strategy_organization',
-                  'evaluation_percent_complete_80_strategy_individual',
-                  'outcome_reach',
-                  'outcome_effectiveness',
-                  'outcome_adoption',
-                  'outcome_quality',
-                  'outcome_cost',
-                  'outcome_maintenance',
-                  'outcome_other',
-                  'results_reach',
-                  'results_effectiveness',
-                  'results_adoption',
-                  'results_quality',
-                  'results_cost',
-                  'results_maintenance',
-                  'results_other',
-                  'other_relevant_issues')
         exclude = ('implementation_completing_half', 'implementation_completing_majority')
 
     def dehydrate_project_name(self, form):
@@ -111,16 +79,94 @@ class FormTemplateResource(resources.ModelResource):
         except Project.DoesNotExist:
             return ''
 
-    def dehydrate_implement_strategy(self, form):
+    def dehydrate_implement_strategy_1(self, form):
+        return self.get_form_strategy_via_index(form, 0, 1)
+
+    def dehydrate_implement_strategy_2(self, form):
+        return self.get_form_strategy_via_index(form, 1, 2)
+
+    def dehydrate_implement_strategy_3(self, form):
+        return self.get_form_strategy_via_index(form, 2, 3)
+
+    def dehydrate_implement_strategy_4(self, form):
+        return self.get_form_strategy_via_index(form, 3, 4)
+
+    def dehydrate_implement_strategy_5(self, form):
+        return self.get_form_strategy_via_index(form, 4, 5)
+
+    def dehydrate_implement_strategy_6(self, form):
+        return self.get_form_strategy_via_index(form, 5, 6)
+
+    def dehydrate_implement_strategy_7(self, form):
+        return self.get_form_strategy_via_index(form, 6, 7)
+
+    def dehydrate_implement_strategy_8(self, form):
+        return self.get_form_strategy_via_index(form, 7, 8)
+
+    def dehydrate_implement_strategy_9(self, form):
+        return self.get_form_strategy_via_index(form, 8, 9)
+
+    def dehydrate_implement_strategy_10(self, form):
+        return self.get_form_strategy_via_index(form, 9, 10)
+
+
+    def dehydrate_training_outcome_1(self, form):
+        return self.get_form_training_outcome_via_index(form, 0, 1)
+
+    def dehydrate_training_outcome_2(self, form):
+        return self.get_form_training_outcome_via_index(form, 1, 2)
+
+    def dehydrate_training_outcome_3(self, form):
+        return self.get_form_training_outcome_via_index(form, 2, 3)
+
+    def dehydrate_training_outcome_4(self, form):
+        return self.get_form_training_outcome_via_index(form, 3, 4)
+
+    def dehydrate_training_outcome_5(self, form):
+        return self.get_form_training_outcome_via_index(form, 4, 5)
+
+    def dehydrate_training_outcome_6(self, form):
+        return self.get_form_training_outcome_via_index(form, 5, 6)
+
+    def dehydrate_training_outcome_7(self, form):
+        return self.get_form_training_outcome_via_index(form, 6, 7)
+
+    def dehydrate_training_outcome_8(self, form):
+        return self.get_form_training_outcome_via_index(form, 7, 8)
+
+    def dehydrate_training_outcome_9(self, form):
+        return self.get_form_training_outcome_via_index(form, 8, 9)
+
+    def dehydrate_training_outcome_10(self, form):
+        return self.get_form_training_outcome_via_index(form, 9, 10)
+
+    @staticmethod
+    def get_form_strategy_via_index(form, start, end):
         try:
-            strategies = form.implement_strategy.all()
             field = ''
+            strategies = form.implement_strategy.all().order_by('-time_created')[start:end]
             for strategy in strategies:
                 field += strategy.strategy_type.strategy + ', '
-            return '%s, ' % (field)
+            if field != '':
+                return '%s' % (field[:-2])
+            else:
+                return ''
         except Strategy.DoesNotExist:
             return ''
 
+    @staticmethod
+    def get_form_training_outcome_via_index(form, start, end):
+        try:
+            field = ''
+            outcomes = form.evaluation_proximal_training_outcome.all().order_by('-id')[start:end]
+            for outcome in outcomes:
+                field += outcome.outcome + ', '
+            if field != '':
+                return '%s' % (field[:-2])
+            else:
+                return ''
+        except Strategy.DoesNotExist:
+            return ''
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = (

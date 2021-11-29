@@ -112,6 +112,11 @@
 
         $(document).on('click', '.table-add', function () {
             var $clone = $(this).next('table').find('tr.hide').clone(true).removeClass('hide');
+            var rowCount = $(this).next('table').find('tr').length;
+            if(rowCount > 9){
+                alert('You can not add new row. Maximum number of rows are 10.');
+                return false;
+            }
             $(this).next('table').append($clone);
         });
 
