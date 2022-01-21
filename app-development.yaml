@@ -1,5 +1,5 @@
 runtime: python38
-entrypoint: gunicorn --preload -w 8 mhttc.wsgi
+entrypoint: gunicorn --preload -t 0 -w 8 mhttc.wsgi
 # You'll need to define these from your .env file, and *do not put on GitHub*
 # You can remove any that you don't want to define (e.g., FACEBOOK_USERNAME)
 env_variables:
