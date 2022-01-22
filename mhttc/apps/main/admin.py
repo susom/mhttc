@@ -244,7 +244,9 @@ class FormTemplateResource(resources.ModelResource):
                         'training_outcome_how_outcome_measured_10',
                         'training_outcome_outcome_results_10',
                         )
-        exclude = ('implementation_completing_half', 'implementation_completing_majority', 'implement_strategy')
+        exclude = ('implementation_completing_half', 'implementation_completing_majority', 'implement_strategy',
+                   'consider_ascertained', 'consider_sustainment_strategy', 'evaluation_proximal_training_outcome',
+                   'outcome_cost', 'results_cost')
 
     def dehydrate_project_name(self, form):
         try:
