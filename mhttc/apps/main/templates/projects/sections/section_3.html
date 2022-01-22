@@ -7,14 +7,14 @@
               {% if disabled %}disabled{% endif %}>{{ form.target_audience_who.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
-    <label for="id_target_audience_disciplines">b) Specify the audience’s setting (e.g., emergency departments, schools,
-        opioid treatment programs): </label>
+    <label for="id_target_audience_disciplines">b) Specify discipline(s) of individuals: </label>
     <textarea name="target_audience_disciplines" cols="40" rows="1" class="form-control"
               id="id_target_audience_disciplines"
               {% if disabled %}disabled{% endif %}>{{ form.target_audience_disciplines.value|default_if_none:"" }}</textarea>
 </div>
 <div class="form-group">
-    <label for="id_target_audience_disciplines">c) Specify discipline(s) of individuals: </label>
+    <label for="id_target_audience_settings">c) Specify the audience’s setting (e.g., emergency departments, schools,
+        opioid treatment programs): </label>
     <textarea name="target_audience_settings" cols="40" rows="1" class="form-control"
               id="id_target_audience_settings"
               {% if disabled %}disabled{% endif %}>{{ form.target_audience_settings.value|default_if_none:"" }}</textarea>
