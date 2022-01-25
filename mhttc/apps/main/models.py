@@ -16,7 +16,6 @@ import tempfile
 import uuid
 from mhttc.apps.users.models import User
 
-
 class Training(models.Model):
     """A training holds one or more participants and a certificate template to give
     on completion
@@ -290,7 +289,7 @@ class FormTemplate(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Create, update (complete) times
-    time_created = models.DateTimeField("date created", auto_now_add=True)
+    time_created = models.DateTimeField("date created", auto_now_add=True, editable=True)
     time_updated = models.DateTimeField(
         "date modified", auto_now=True, help_text="Template Updated or completed at."
     )

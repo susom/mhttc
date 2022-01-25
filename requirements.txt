@@ -13,3 +13,4 @@ django-csp
 xhtml2pdf
 django-import-export
 ptvsd
+gunicorn

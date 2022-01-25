@@ -9,19 +9,19 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.urls import path
-from django.conf.urls import url, include
+from django.urls import include, re_path
 import mhttc.apps.users.views as views
 
 urlpatterns = [
     # Twitter, and social auth
-    url(r"^login/$", views.login, name="login"),
-    url(r"^accounts/login/$", views.login),
-    url(r"^logout/$", views.logout, name="logout"),
-    url(r"^password/$", views.change_password, name="change_password"),
-    url(r"^terms/agree", views.agree_terms, name="agree_terms"),
-    url(r"^u/delete$", views.delete_account, name="delete_account"),  # delete account
-    url(r"^u/profile", views.view_profile, name="profile"),
-    url("^", include("django.contrib.auth.urls")),
+    re_path(r"^login/$", views.login, name="login"),
+    re_path(r"^accounts/login/$", views.login),
+    re_path(r"^logout/$", views.logout, name="logout"),
+    re_path(r"^password/$", views.change_password, name="change_password"),
+    re_path(r"^terms/agree", views.agree_terms, name="agree_terms"),
+    re_path(r"^u/delete$", views.delete_account, name="delete_account"),  # delete account
+    re_path(r"^u/profile", views.view_profile, name="profile"),
+    re_path("^", include("django.contrib.auth.urls")),
     # Centers
     path("center/<int:uuid>/", views.center_details, name="center_details"),
     path("centers/", views.all_centers, name="all_centers"),
