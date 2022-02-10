@@ -655,6 +655,12 @@ def download_certificate(request, uuid):
     except Training.DoesNotExist:
         raise Http404
 
+    u = request.user
+    if u.id == None:
+        hide_login = True
+    else:
+        hide_login = False
+
     form = CertificateForm()
     if request.method == "POST":
         form = CertificateForm(request.POST)
@@ -686,11 +692,6 @@ def download_certificate(request, uuid):
         else:
             messages.warning(request, "Your form submission is not valid.")
 
-    u = request.user
-    if u.id == None:
-        hide_login = True
-    else:
-        hide_login = False
 
     return render(
         request,
