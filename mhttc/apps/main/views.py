@@ -673,7 +673,7 @@ def download_certificate(request, uuid):
                 return render(
                     request,
                     "events/download_certificate.html",
-                    {"form": form, "training": training},
+                    {"form": form, "training": training, "hide_login": hide_login},
                 )
 
             # Create temporary image (cleaned up from /tmp when container rebuilt weekly)
