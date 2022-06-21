@@ -20,5 +20,19 @@ steps:
     - 'SERVICE_NAME=${_SERVICE_NAME}'
   args: ["app-development.yaml"]
 - name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy", "app-development.yaml", "--version=staging"]
+  args: ["app", "deploy", "app-development.yaml"]
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      versions=$(gcloud app versions list \
+        --service development \
+        --sort-by '~version' \
+        --format 'value(VERSION.ID)' | sed 1,5d)
+      for version in $versions; do
+        gcloud app versions delete "$version" \
+          --service development \
+          --quiet
+      done
 timeout: "1600s"
