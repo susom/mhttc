@@ -12,13 +12,14 @@ services:
         depends_on:
             - db
         ports:
-            - "8000:8000"
+            - "80:8000"
             - "4000:4000" #VSCODE Debug port
         volumes:
             - ./mhttc:/mhttc:delegated
             - ./static:/static:delegated
     db:
-        image: mysql:5.7
+        platform: linux/amd64
+        image: mysql:8
         env_file:
             - ./.env
         #restart: always
