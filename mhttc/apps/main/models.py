@@ -88,7 +88,7 @@ class TrainingParticipant(models.Model):
     the status for a participant.
     """
 
-    name = models.CharField(max_length=250, blank=False)
+    name = models.CharField(max_length=75, blank=False)
     email = models.CharField(max_length=100, blank=True, null=True)
     training = models.ForeignKey("main.Training", on_delete=models.CASCADE, blank=False)
 
