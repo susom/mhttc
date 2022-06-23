@@ -3,7 +3,7 @@
         project. The following list includes specific implementation strategies in 9 categories. Determine which
         implementation strategies were used in your project, and then fill in the table below. For each strategy,
         describe the strategy briefly (including if it was tailored for specific/cultural groups), and provide
-        information about the format, # of units, and frequency</p>
+        information about the format, # of units, and frequency.</p>
     <ul class="list-group">
         <li class="list-group-item"><strong>Use evaluative and iterative strategies</strong><br>
             Assess for readiness<br>
@@ -67,7 +67,7 @@
     <small>Adapted from Waltz, T. J., Powell, B. J., Matthieu, M. M., Damschroder, L. J., Chinman, M. J., Smith, J. L.,
         Proctor, E. K., & Kirchner, J. E. (2015). Use of concept mapping to characterize relationships among
         implementation strategies and assess their feasibility and importance: results from the Expert Recommendations
-        for Implementing Change (ERIC) study. Implementation Science, 10, 109. <a
+        for Implementing Change (ERIC) study. <i>Implementation Science, 10</i>, 109. <a
                 href="https://doi.org/10.1186/s13012-015-0295-0" target="_blank">https://doi.org/10.1186/s13012-015-0295-0</a></small>
     <h4>For each strategy:</h4>
     <ul>
@@ -226,7 +226,7 @@
 </div>
 <div class="form-group">
     <label for="id_implement_strategy_description">Describe the sequence of the planned Implementation Strategies, step
-        by step. {% if project.stage > 1 %}Edit from previous if the plan changed{% endif %}:</label>
+        by step{% if project.stage > 1 %}Edit from previous if the plan changed{% endif %}:</label>
     <textarea name="implement_strategy_description" cols="40" rows="5" class="form-control"
               id="id_implement_strategy_description"
               {% if disabled %}disabled{% endif %}>{{ form.implement_strategy_description.value|default_if_none:"" }}</textarea>
