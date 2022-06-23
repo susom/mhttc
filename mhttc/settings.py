@@ -46,7 +46,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 if os.environ.get("GAE_APPLICATION") is not None and os.environ.get('GAE_SERVICE') == 'development':
     DEBUG = True
 
@@ -231,6 +231,8 @@ CSP_IMG_SRC = ("* 'self' data: https:")
 CSP_CONNECT_SRC = ("'self'",)
 CSP_MANIFEST_SRC = ("'self'",)
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
+
+CSP_FRAME_SRC = ("'self'", "https://docs.google.com")
 
 SECURE_BROWSER_XSS_FILTER = True
 
