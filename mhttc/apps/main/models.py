@@ -26,7 +26,7 @@ class Training(models.Model):
     # Why do these fields use time, and others use date (e.g., see ip_check*)
     time_created = models.DateTimeField("date created", auto_now_add=True)
     time_updated = models.DateTimeField("date modified", auto_now=True)
-    name = models.CharField(max_length=250, blank=False)
+    name = models.CharField(max_length=100, blank=False)
     image_data = models.TextField(null=True, blank=True)
     image_url = models.URLField(
         max_length=500,
