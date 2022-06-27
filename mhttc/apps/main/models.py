@@ -161,7 +161,7 @@ class Project(models.Model):
 
     # A project must be owned by a center, and the contact must be a user
     center = models.ForeignKey("users.Center", on_delete=models.PROTECT, blank=False)
-    contact = models.ForeignKey("users.User", on_delete=models.PROTECT, blank=False)
+    # contact = models.ForeignKey("users.User", on_delete=models.PROTECT, blank=False)
 
     @property
     def stage_label(self):
