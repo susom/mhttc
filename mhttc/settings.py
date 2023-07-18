@@ -50,6 +50,8 @@ DEBUG = False
 if os.environ.get("GAE_APPLICATION") is not None and os.environ.get('GAE_SERVICE') == 'development':
     DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = ['https://mhttcintranet.org']
+
 # Custom user model
 AUTH_USER_MODEL = "users.User"
 
