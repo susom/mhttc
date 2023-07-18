@@ -46,7 +46,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 if os.environ.get("GAE_APPLICATION") is not None and os.environ.get('GAE_SERVICE') == 'development':
     DEBUG = True
 

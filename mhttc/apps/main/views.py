@@ -10,7 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from django.shortcuts import render, redirect
 from django.http import Http404, JsonResponse
-from ratelimit.decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 from mhttc.settings import DOMAIN_NAME
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt

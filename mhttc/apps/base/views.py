@@ -11,7 +11,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from django.db.models import Q
 from django.shortcuts import render
 
-from ratelimit.decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 from mhttc.apps.main.models import Project
 from itertools import chain
 
