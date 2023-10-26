@@ -15,3 +15,4 @@ django-import-export
 ptvsd
 gunicorn
 ratelimit
+google-cloud-secret-manager
