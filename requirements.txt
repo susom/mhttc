@@ -1,4 +1,4 @@
-Django==4.1
+Django
 PyMySQL
 django-extensions
 django-ratelimit
