@@ -16,6 +16,8 @@ env_variables:
   DOMAIN_NAME: ${DOMAIN_NAME}
   RUNNING_APP_ENGINE: ${RUNNING_APP_ENGINE}
   DEBUG: ${DEBUG}
+  GCP_PROJECT_ID: ${GCP_PROJECT_ID}
+  MAINTENANCE_MODE: ${MAINTENANCE_MODE}
 
 handlers:
 # This configures Google App Engine to serve the files in the app's static

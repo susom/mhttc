@@ -9,7 +9,7 @@ class MaintenanceModeMiddleware:
     def __call__(self, request):
         path = request.META.get('PATH_INFO', "")
 
-        if settings.MAINTANANCE_MODE == 1 and path!= reverse("maintenance"):
+        if settings.MAINTENANCE_MODE == 1 and path!= reverse("maintenance"):
             response = redirect(reverse("maintenance"))
             return response
 
