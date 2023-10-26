@@ -18,6 +18,7 @@ steps:
     - 'RUNNING_APP_ENGINE=${_RUNNING_APP_ENGINE}'
     - 'DEBUG=${_DEBUG}'
     - 'SERVICE_NAME=${_SERVICE_NAME}'
+    - 'GCP_PROJECT_ID=${_GCP_PROJECT_ID}'
   args: ["app-development.yaml"]
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy", "app-development.yaml"]

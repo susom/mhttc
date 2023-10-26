@@ -200,7 +200,7 @@ else:
 			"USER": os.environ.get("MYSQL_USER"),
 			"PASSWORD": os.environ.get("MYSQL_PASSWORD"),
 			"NAME": os.environ.get("MYSQL_DATABASE"),
-			'PORT': os.environ.get("MYSQL_PORT", 3306),
+			'PORT': 5432,
 			"OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
 		}
 	}
