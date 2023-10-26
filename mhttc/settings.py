@@ -19,14 +19,13 @@ class globalSettings():
 	def access_secret_version(secret_id, version_id="latest"):
 		
 		# Create the Secret Manager client.
-		client = secretmanager.SecretManagerServiceClient()
-		# if os.getenv('GAE_APPLICATION', None):
-		# 	client = secretmanager.SecretManagerServiceClient()
+		if os.getenv('GAE_APPLICATION', None):
+			client = secretmanager.SecretManagerServiceClient()
 		# else:
-		# 	os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./som-irt-scci-dev-caea1579a524.json"
+		# 	os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./mhttc-service-account.json"
 		# 	client = secretmanager.SecretManagerServiceClient().from_service_account_json(
-		# 		'./som-irt-scci-dev-caea1579a524.json')
-		
+		# 		'./mhttc-service-account.json')
+		#
 		prefix = 'DEV_'
 		if 'SERVICE_NAME' in os.environ and os.environ['SERVICE_NAME'] == 'default':
 			prefix = 'PROD_'
