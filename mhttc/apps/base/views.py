@@ -116,6 +116,8 @@ def run_query(q, available=False):
             results = list(chain(results, searches[query_type](q)))
     return results
 
+def maintenance(request):
+    return render(request, 'base/maintenance.html')
 
 def projects_query(q):
     """specific search for distributions"""

@@ -19,6 +19,7 @@ steps:
     - 'DEBUG=${_DEBUG}'
     - 'SERVICE_NAME=${_SERVICE_NAME}'
     - 'GCP_PROJECT_ID=${_GCP_PROJECT_ID}'
+    - 'MAINTENANCE_MODE=${_MAINTENANCE_MODE}'
   args: ["app-development.yaml"]
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy", "app-development.yaml"]
