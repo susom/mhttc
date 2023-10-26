@@ -13,3 +13,4 @@ pyvenv.cfg
 .DS_Store
 *code-workspace
 launch.json
+/mhhtc-cloud-sql-client.json

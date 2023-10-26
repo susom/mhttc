@@ -89,6 +89,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+	"mhttc.middleware.MaintenanceModeMiddleware"
 ]
 
 ROOT_URLCONF = "mhttc.urls"
@@ -244,3 +245,5 @@ SESSION_COOKIE_SECURE = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_SECONDS = 15768000
+
+MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))

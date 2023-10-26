@@ -23,7 +23,9 @@ urlpatterns = [
     re_path(r"^search/?$", views.search_view, name="search"),
     re_path(r"^searching/?$", views.run_search, name="running_search"),
     re_path(r"^search/(?P<query>.+?)/?$", views.search_view, name="search_query"),
-    re_path(
+	re_path(r"maintenance/", views.maintenance, name='maintenance'),
+
+	re_path(
         r"^robots\.txt/$",
         TemplateView.as_view(
             template_name="base/robots.txt", content_type="text/plain"
