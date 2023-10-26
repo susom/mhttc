@@ -31,7 +31,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django.shortcuts import get_object_or_404, render, redirect
-from ratelimit.decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 from django.utils import timezone
 from uuid import uuid4
 import re

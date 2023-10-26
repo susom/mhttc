@@ -10,26 +10,21 @@ services:
         env_file:
             -   ./.env
         depends_on:
-            - db
+            - cloudsql-proxy
         ports:
             - "80:8000"
             - "4000:4000" #VSCODE Debug port
         volumes:
             - ./mhttc:/mhttc:delegated
             - ./static:/static:delegated
-    db:
-        platform: linux/amd64
-        image: mysql:8
-        env_file:
-            - ./.env
-        #restart: always
+    cloudsql-proxy:
+        container_name: mhttc-cloudsql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.7
+        command: som-mhttcnco:us-west1:mhhtc-intranet --port=5432 -a 0.0.0.0 -c "/secrets/cloudsql/credentials.json"
         volumes:
-            - mhttc-mysql-volume:/var/lib/mysql
-            - ../logs:/var/log/mysql
-            - ./override-mysql:/etc/mysql/mysql.conf.d
+            - ./mhhtc-cloud-sql-client.json:/secrets/cloudsql/credentials.json
         ports:
-            - "3306:3306"
+            - "3306:5432"
 volumes:
-    mhttc-mysql-volume:
     mhttc-logs-volume:
 

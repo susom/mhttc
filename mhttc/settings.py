@@ -46,9 +46,11 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 if os.environ.get("GAE_APPLICATION") is not None and os.environ.get('GAE_SERVICE') == 'development':
     DEBUG = True
+
+CSRF_TRUSTED_ORIGINS = ['https://mhttcintranet.org']
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
@@ -140,34 +142,24 @@ import pymysql  # noqa: 402
 pymysql.version_info = (1, 4, 6, "final", 0)  # change mysqlclient version
 pymysql.install_as_MySQLdb()
 
-if os.getenv("MYSQL_HOST") is not None:
-    # Running on production App Engine, connect to production database
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "HOST": os.environ.get("MYSQL_HOST"),
-            "USER": os.environ.get("MYSQL_USER"),
-            "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
-            "NAME": os.environ.get("MYSQL_DATABASE"),
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-        }
+#if os.getenv("MYSQL_HOST") is not None:
+# Running on production App Engine, connect to production database
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "HOST": os.environ.get("MYSQL_HOST"),
+        "USER": os.environ.get("MYSQL_USER"),
+        "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
+        "NAME": os.environ.get("MYSQL_DATABASE"),
+        'PORT': os.environ.get("MYSQL_PORT", 3306),
+        "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
     }
+}
 
-    # If we are on app engine, ensure https only
-    if os.getenv("RUNNING_APP_ENGINE") == "yes":
-        SECURE_SSL_REDIRECT = True
-else:
-    # Use sqlite when testing locally
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "HOST": os.environ.get("MYSQL_HOST"),
-            "USER": os.environ.get("MYSQL_USER"),
-            "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
-            "NAME": os.environ.get("MYSQL_DATABASE"),
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-        }
-    }
+# If we are on app engine, ensure https only
+if os.getenv("RUNNING_APP_ENGINE") == "yes":
+    SECURE_SSL_REDIRECT = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -231,6 +223,8 @@ CSP_IMG_SRC = ("* 'self' data: https:")
 CSP_CONNECT_SRC = ("'self'",)
 CSP_MANIFEST_SRC = ("'self'",)
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
+
+CSP_FRAME_SRC = ("'self'", "https://docs.google.com")
 
 SECURE_BROWSER_XSS_FILTER = True
 

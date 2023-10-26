@@ -563,7 +563,7 @@ class ProjectAdmin(admin.ModelAdmin):
         "center",
         "description",
         "form",
-        "contact",
+        # "contact",
     )
 
     fields = (
@@ -572,7 +572,7 @@ class ProjectAdmin(admin.ModelAdmin):
         "stage",
         "form",
         "center",
-        "contact",
+        # "contact",
     )
 
 
