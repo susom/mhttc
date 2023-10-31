@@ -27,7 +27,7 @@ class globalSettings():
 		# 		'./mhttc-service-account.json')
 		#
 		prefix = 'DEV_'
-		if 'SERVICE_NAME' in os.environ and os.environ['SERVICE_NAME'] == 'default':
+		if 'GAE_SERVICE' in os.environ and os.environ['GAE_SERVICE'] == 'default':
 			prefix = 'PROD_'
 		
 		secret_id = prefix + secret_id
