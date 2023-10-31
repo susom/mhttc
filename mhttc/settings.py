@@ -9,6 +9,43 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 import os
+from google.cloud import secretmanager
+
+
+
+class globalSettings():
+	
+	@staticmethod
+	def access_secret_version(secret_id, version_id="latest"):
+		
+		# Create the Secret Manager client.
+		if os.getenv('GAE_APPLICATION', None):
+			client = secretmanager.SecretManagerServiceClient()
+		# else:
+		# 	os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./mhttc-service-account.json"
+		# 	client = secretmanager.SecretManagerServiceClient().from_service_account_json(
+		# 		'./mhttc-service-account.json')
+		#
+		prefix = 'DEV_'
+		if 'SERVICE_NAME' in os.environ and os.environ['SERVICE_NAME'] == 'default':
+			prefix = 'PROD_'
+		
+		secret_id = prefix + secret_id
+		# Build the resource name of the secret version.
+		project_id = os.environ['GCP_PROJECT_ID']
+		name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+		# Access the secret version.
+		response = client.access_secret_version(name=name)
+		
+		# Return the decoded payload.
+		return response.payload.data.decode('UTF-8')
+
+
+global_settings = globalSettings()
+
+
+# this will enable maintenance.
+MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,7 +85,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 if os.environ.get("GAE_APPLICATION") is not None and os.environ.get('GAE_SERVICE') == 'development':
-    DEBUG = True
+	DEBUG = True
 
 CSRF_TRUSTED_ORIGINS = ['https://mhttcintranet.org']
 
@@ -64,52 +101,52 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "mhttc.apps.base",
-    "mhttc.apps.main",
-    "mhttc.apps.users",
-    "django.contrib.admin",
-    "import_export",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django_extensions",
-    "django_gravatar",
-    "bootstrap4",
-    "bootstrap_datepicker_plus",
+	"mhttc.apps.base",
+	"mhttc.apps.main",
+	"mhttc.apps.users",
+	"django.contrib.admin",
+	"import_export",
+	"django.contrib.auth",
+	"django.contrib.contenttypes",
+	"django.contrib.sessions",
+	"django.contrib.messages",
+	"django.contrib.staticfiles",
+	"django_extensions",
+	"django_gravatar",
+	"bootstrap4",
+	"bootstrap_datepicker_plus",
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "csp.middleware.CSPMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+	"django.middleware.security.SecurityMiddleware",
+	"django.contrib.sessions.middleware.SessionMiddleware",
+	"django.middleware.common.CommonMiddleware",
+	"django.middleware.csrf.CsrfViewMiddleware",
+	"csp.middleware.CSPMiddleware",
+	"django.contrib.auth.middleware.AuthenticationMiddleware",
+	"django.contrib.messages.middleware.MessageMiddleware",
+	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"mhttc.middleware.MaintenanceModeMiddleware"
 ]
 
 ROOT_URLCONF = "mhttc.urls"
 
 TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-                "mhttc.apps.base.context_processors.domain_processor",
-                "mhttc.apps.base.context_processors.social_processor",
-            ],
-        },
-    },
+	{
+		"BACKEND": "django.template.backends.django.DjangoTemplates",
+		"DIRS": [],
+		"APP_DIRS": True,
+		"OPTIONS": {
+			"context_processors": [
+				"django.template.context_processors.debug",
+				"django.template.context_processors.request",
+				"django.contrib.auth.context_processors.auth",
+				"django.contrib.messages.context_processors.messages",
+				"mhttc.apps.base.context_processors.domain_processor",
+				"mhttc.apps.base.context_processors.social_processor",
+			],
+		},
+	},
 ]
 
 TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG
@@ -121,16 +158,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 SENTRY_ID = os.environ.get("SENTRY_ID")
 if SENTRY_ID is not None:
-    import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
-
-    sentry_sdk.init(
-        dsn=SENTRY_ID,
-        integrations=[DjangoIntegration()],
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True,
-    )
+	import sentry_sdk
+	from sentry_sdk.integrations.django import DjangoIntegration
+	
+	sentry_sdk.init(
+		dsn=SENTRY_ID,
+		integrations=[DjangoIntegration()],
+		# If you wish to associate users to errors (assuming you are using
+		# django.contrib.auth) you may enable sending PII data.
+		send_default_pii=True,
+	)
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -143,51 +180,52 @@ import pymysql  # noqa: 402
 pymysql.version_info = (1, 4, 6, "final", 0)  # change mysqlclient version
 pymysql.install_as_MySQLdb()
 
-if os.getenv("MYSQL_HOST") is not None:
-    # Running on production App Engine, connect to production database
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "HOST": os.environ.get("MYSQL_HOST"),
-            "USER": os.environ.get("MYSQL_USER"),
-            "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
-            "NAME": os.environ.get("MYSQL_DATABASE"),
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-        }
-    }
-
-    # If we are on app engine, ensure https only
-    if os.getenv("RUNNING_APP_ENGINE") == "yes":
-        SECURE_SSL_REDIRECT = True
+if os.getenv('GAE_APPLICATION', None):
+	# Running on production App Engine, connect to production database
+	DATABASES = {
+		"default": {
+			"ENGINE": "django.db.backends.mysql",
+			"HOST": globalSettings.access_secret_version("MYSQL_HOST"),
+			"USER": globalSettings.access_secret_version("MYSQL_USER"),
+			"PASSWORD": globalSettings.access_secret_version("MYSQL_PASSWORD"),
+			"NAME": globalSettings.access_secret_version("MYSQL_DATABASE"),
+			'PORT': 3306,
+			"OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+		}
+	}
+	
+	# If we are on app engine, ensure https only
+	if os.getenv("RUNNING_APP_ENGINE") == "yes":
+		SECURE_SSL_REDIRECT = True
 else:
-    # Use sqlite when testing locally
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "HOST": os.environ.get("MYSQL_HOST"),
-            "USER": os.environ.get("MYSQL_USER"),
-            "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
-            "NAME": os.environ.get("MYSQL_DATABASE"),
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-        }
-    }
+	DATABASES = {
+		"default": {
+			"ENGINE": "django.db.backends.mysql",
+			"HOST": os.environ.get("MYSQL_HOST"),
+			"USER": os.environ.get("MYSQL_USER"),
+			"PASSWORD": os.environ.get("MYSQL_PASSWORD"),
+			"NAME": os.environ.get("MYSQL_DATABASE"),
+			'PORT': 5432,
+			"OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+		}
+	}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: 501
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",  # noqa: 501
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",  # noqa: 501
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",  # noqa: 501
-    },
+	{
+		"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: 501
+	},
+	{
+		"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",  # noqa: 501
+	},
+	{
+		"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",  # noqa: 501
+	},
+	{
+		"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",  # noqa: 501
+	},
 ]
 
 # Internationalization
@@ -213,7 +251,7 @@ STATIC_URL = "/static/"
 
 VIEW_RATE_LIMIT = "100/1d"  # The rate limit for each view, django-ratelimit, "50 per day per ipaddress)
 VIEW_RATE_LIMIT_BLOCK = (
-    True  # Given that someone goes over, are they blocked for the period?
+	True  # Given that someone goes over, are they blocked for the period?
 )
 
 # On any admin or plugin login redirect to standard social-auth entry point for agreement to terms
@@ -225,10 +263,10 @@ CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "https://unpkg.com", "https://htm
                   "https://med.stanford.edu/", "https://code.jquery.com/", "https://cdn.datatables.net/",
                   "https://cdnjs.cloudflare.com/", "https://maxcdn.bootstrapcdn.com/", "https://cdn.jsdelivr.net/"]
 CSP_STYLE_SRC = (
-"'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/",
-"https://maxcdn.bootstrapcdn.com/", "http://code.jquery.com/", "https://cdn.jsdelivr.net/")
+	"'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdn.datatables.net/", "https://cdnjs.cloudflare.com/",
+	"https://maxcdn.bootstrapcdn.com/", "http://code.jquery.com/", "https://cdn.jsdelivr.net/")
 CSP_FONT_SRC = (
-"'self'", "https://fonts.gstatic.com", "https://maxcdn.bootstrapcdn.com/", "http://maxcdn.bootstrapcdn.com/")
+	"'self'", "https://fonts.gstatic.com", "https://maxcdn.bootstrapcdn.com/", "http://maxcdn.bootstrapcdn.com/")
 CSP_IMG_SRC = ("* 'self' data: https:")
 
 CSP_CONNECT_SRC = ("'self'",)
